@@ -66,7 +66,9 @@
 		</span>
 		<span class="min-w-0">
 			<span class="block text-lead font-bold">{r.name}</span>
-			<span class="block text-small text-fg-muted">{r.role} · {r.line}</span>
+			<span class="block text-small text-fg-muted">
+				{r.role[session.language]} · {r.line}
+			</span>
 		</span>
 	</header>
 

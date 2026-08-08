@@ -49,7 +49,40 @@ A worker learns the word that is printed on the machine and written in the
 procedure. An unfamiliar synonym for an emergency stop is a hazard, not a style
 variation. If a task needs a new safety term, it goes in this table first.
 
-## 4. Write for A2 to B1
+## 4. Identifiers are never localised. Descriptors always are.
+
+This is the one place where leaving text untranslated is correct, so it needs
+stating rather than assuming.
+
+**Never translate**, in any language, because the worker has to match these
+against the physical world:
+
+- Machine names (`Füller F2`) and asset IDs (`AST-3121`)
+- Fault codes (`E-212`), which they are reading off an HMI screen
+- Document titles (`Wartungshandbuch Füller F2`) and section references
+  (`§4.2 Fehlercode E-212`), which they may have to find on a shelf
+- Line and area designations that match the signage painted on the floor
+- People's names
+
+Translating `Füller F2` into Romanian means the screen and the nameplate
+disagree, and the worker has no way to resolve which is right. The worst case is
+someone working on the wrong machine.
+
+**Always translate**, because these describe rather than identify:
+
+- Job titles. `Schichtleiter` becomes `Șef de tură`, because it tells the worker
+  whether this person can help them and it is not printed on anything.
+- Area functions, statuses, and any prose about the identifier.
+
+The domain model encodes the distinction: `Identifier` and `Localised` in
+`src/lib/domain/types.ts`. Use the type to say which one you mean.
+
+**Neither check covers this.** `check-i18n.mjs` scans component markup, and these
+strings live in the data layer, where a naive rule would flag exactly the ones
+that must stay German. This boundary is a judgement call, which is why it is
+written down rather than automated.
+
+## 5. Write for A2 to B1
 
 - One instruction per step. If a step contains "and then", it is two steps.
 - Imperative voice. "Put the line into standby", not "the line should be put
@@ -63,14 +96,14 @@ variation. If a task needs a new safety term, it goes in this table first.
 - Say the thing, then the reason. "Do not use emergency stop. It causes a format
   loss." The instruction must survive being read alone.
 
-## 5. Confidence is stated in words, never as a number
+## 6. Confidence is stated in words, never as a number
 
 "87% confident" is meaningless to someone holding a wrench and worse than
 useless in an audit. Use the three states in the domain model: sourced, partial,
 none. A `partial` answer must name what to verify and who verifies it. A hedge
 with no named next action is an unhelpful answer wearing a disclaimer.
 
-## 6. Formatting follows the locale, not the developer
+## 7. Formatting follows the locale, not the developer
 
 - **Decimal separator.** German uses a comma. A torque figure is "4,5 Nm" and
   never "4.5 Nm". Getting this wrong on a specification is a real error, not a
@@ -80,7 +113,7 @@ with no named next action is an unhelpful answer wearing a disclaimer.
 - **Units.** Metric only.
 - **Never hardcode a format.** Use `Intl` with the active language.
 
-## 7. Copy that must never appear
+## 8. Copy that must never appear
 
 - Apologies from the assistant. It refuses or it routes; it does not say sorry.
 - "Oops", "Whoops", or any playful error voice. A stopped line is not playful.

@@ -932,6 +932,24 @@
 				The German copy uses the informal "du" deliberately. These are colleagues on a line rather
 				than customers, and "Sie" reads as management talking at them.
 			</p>
+
+			<p>
+				<b>And some things stay German on purpose.</b> "Füller F2", "AST-3121", "E-212" and the
+				manual's title never translate, in any locale, because the worker has to match them against
+				a nameplate, an HMI screen and a document on a shelf. Translating the machine name means the
+				screen and the machine disagree, and the worker has no way to tell which is right. The worst
+				case is someone working on the wrong machine. Descriptors go the other way: the shift lead's
+				job title is localised, because it tells the worker whether this person can help and it
+				isn't printed on anything.
+			</p>
+
+			<p>
+				That distinction is now in the domain model as <code>Identifier</code> versus
+				<code>Localised</code>, so the type says which one you meant. Worth noting that neither of
+				my checks catches it, because these strings live in the data layer where a naive rule would
+				flag exactly the ones that must stay German. It's a judgement call, so it's written down
+				instead.
+			</p>
 		</div>
 	</section>
 

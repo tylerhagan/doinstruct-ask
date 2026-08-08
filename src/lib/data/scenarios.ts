@@ -1,4 +1,4 @@
-import type { Answer, Escalation, Language, Responder, Source } from '$lib/domain/types';
+import type { Answer, Escalation, Language, Localised, Responder, Source } from '$lib/domain/types';
 
 /**
  * Three scenarios, chosen because together they cover the only three things this
@@ -13,12 +13,10 @@ import type { Answer, Escalation, Language, Responder, Source } from '$lib/domai
  * German; the point is that the worker never has to read it.
  */
 
-type Localised = Record<Language, string>;
-
 const MAREK: Responder = {
 	id: 'r-marek',
 	name: 'Marek Kowalski',
-	role: 'Schichtleiter',
+	role: { de: 'Schichtleiter', ro: 'Șef de tură', en: 'Shift lead' },
 	line: 'Linie 3',
 	typicalResponseMinutes: 4,
 	languages: ['de', 'ro'],

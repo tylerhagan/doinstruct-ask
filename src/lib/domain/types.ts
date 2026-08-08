@@ -8,6 +8,23 @@
 
 export type Language = 'de' | 'ro' | 'en';
 
+/** Content that varies by language. Contrast with identifiers, see below. */
+export type Localised = Record<Language, string>;
+
+/**
+ * IDENTIFIERS ARE NEVER LOCALISED.
+ *
+ * Machine names, asset IDs, fault codes, document titles and section references
+ * stay in the plant's language in every locale, because the worker has to match
+ * them against a nameplate, an HMI screen or a manual on a shelf. Translating
+ * "Füller F2" into Romanian means the screen and the machine disagree, and the
+ * worst case is someone working on the wrong machine.
+ *
+ * Descriptors are localised. A job title tells a worker whether this person can
+ * help them, and it is not printed on anything.
+ */
+export type Identifier = string;
+
 export const LANGUAGE_LABEL: Record<Language, string> = {
 	de: 'Deutsch',
 	ro: 'Română',
@@ -70,9 +87,12 @@ export interface Answer {
 /** A named human. Never "a supervisor". Trust requires a name and a face. */
 export interface Responder {
 	id: string;
-	name: string;
-	role: string;
-	line: string;
+	/** A person's name is an identifier. Never transliterated. */
+	name: Identifier;
+	/** A descriptor, so it is localised. It tells the worker who they are getting. */
+	role: Localised;
+	/** Matches the signage on the floor, so it stays as painted. */
+	line: Identifier;
 	/** Observed, not promised. Sets an honest expectation for the wait. */
 	typicalResponseMinutes: number;
 	languages: Language[];

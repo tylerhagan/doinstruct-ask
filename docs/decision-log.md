@@ -342,3 +342,41 @@ managed across phase changes, which leaves keyboard and screen reader users on a
 control that no longer exists. Both rules are now written so new work does not
 deepen either hole, and both are named in the writeup. Found late, and rushing a
 layout migration the day before sending would have been the wrong trade.
+
+---
+
+## D13. Identifiers are not localisable, and neither check knows that
+
+**Learned:** Tyler spotted that the top-left of the status bar stays German in
+every language: "Linie 3, Abfüllung / Füller F2 · AST-3121". Fair question, and
+the honest answer was that it was half deliberate and entirely undocumented.
+
+**On inspection there were three categories, not one:**
+
+1. **Correct to leave German, for a safety reason.** `Füller F2`, `AST-3121`,
+   `E-212`, `Wartungshandbuch Füller F2`, `§4.2 Fehlercode E-212`. The worker
+   matches all of these against a nameplate, an HMI screen or a document on a
+   shelf. Translate the machine name and the screen and the machine disagree,
+   with no way for the worker to tell which is right. The worst case is someone
+   working on the wrong machine.
+2. **A genuine defect.** `role: 'Schichtleiter'` was hardcoded German. A job
+   title is a descriptor rather than an identifier, it is not printed on
+   anything, and it sits directly under Marek's name where it tells the worker
+   whether this person can actually help. Now localised.
+3. **A judgement call left as it is.** `Linie 3, Abfüllung` matches the signage
+   painted on the floor, so it stays.
+
+**Decision:** encode the distinction in the domain model rather than in comments.
+`Identifier` and `Localised` now exist in `src/lib/domain/types.ts`, and
+`Responder` uses both, so the type declares which kind of string a field holds.
+Rule 4 in `docs/rules/content.md` states it in full.
+
+**Why this one matters beyond the fix.** Neither check caught it, and neither
+should have. Both scan `.svelte` markup, and these strings live in the data
+layer, where a naive "no German literals" rule would flag precisely the ones that
+must stay German. This is the third example in this project of a rule that cannot
+become a check, after the high-contrast border bug and the token name collision.
+
+It also came from the only source that has reliably found this class of problem:
+someone looking at the running product and asking why. Worth remembering when
+deciding how much of a design system to automate.
