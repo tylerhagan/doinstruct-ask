@@ -642,7 +642,7 @@
 			<tbody>
 				<tr>
 					<td>JavaScript, gzipped</td>
-					<td class="num">47 KB</td>
+					<td class="num">48 KB</td>
 					<td>Static and prerendered, with no server round trip before first paint.</td>
 				</tr>
 				<tr>
@@ -834,10 +834,24 @@ pass    3.06:1  (min 3)  border on surface      default border against page
 All contrast checks passed.</code></pre>
 
 			<p>
+				So I did the same to the i18n rule, which is the one the agent had broken.
+				<code>check-i18n.mjs</code> refuses any literal text in component markup outside
+				<code>t()</code>. It found four more defects within seconds of existing, all of them mine,
+				and all of them German <code>aria-label</code> values.
+			</p>
+
+			<p>
+				That last detail is the one I'd point at. Those labels are invisible on screen, compile
+				perfectly, and pass every other check. What they do is read out German to a Romanian
+				speaker using a screen reader, inside a product whose entire argument is that language
+				should not be a barrier. I had written the rule, broken it four times, and not noticed
+				until a twenty-line script told me.
+			</p>
+
+			<p>
 				Every rule in <code>AGENTS.md</code> that can become a check should become one. Prose rules
-				degrade as an agent's context fills up. A failing build doesn't. The i18n rule is the
-				obvious next one, and a lint rule banning literal text in Svelte markup outside
-				<code>t()</code> would have caught all four of those untranslated strings at commit time.
+				degrade as an agent's context fills up. A failing build doesn't. Two are done and
+				<code>npm run check</code> now runs both.
 			</p>
 
 			<h3>On your brand, since I read it rather than guessed</h3>
@@ -892,6 +906,21 @@ All contrast checks passed.</code></pre>
 					<b>Capture needs a verification policy I haven't designed.</b> One shift lead's answer
 					becoming canonical knowledge is how you get fast institutional learning. It's also how
 					you'd propagate a confidently wrong fix to everyone at once.
+				</li>
+				<li>
+					<b>This isn't right-to-left ready, and your language list says it should be.</b> You
+					advertise 35+ languages, and that list includes Arabic and Dari. My components use
+					physical CSS properties rather than logical ones, so the layout would not mirror. The
+					rule is now in <code>docs/rules/accessibility.md</code> so new work doesn't deepen it,
+					but the existing migration is outstanding. I found this late and chose to name it
+					rather than rush it the day before sending.
+				</li>
+				<li>
+					<b>Focus isn't managed across phase changes.</b> Moving between screens leaves a
+					keyboard or screen reader user on a control that no longer exists, which is a dead end
+					inside a product about removing dead ends. Also worth flagging that the European
+					Accessibility Act has applied since June 2025, so for a German B2B seller this is a
+					procurement question rather than only an ethical one.
 				</li>
 			</ul>
 		</div>

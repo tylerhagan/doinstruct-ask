@@ -16,6 +16,8 @@
 	  square to it.
 -->
 <script lang="ts">
+	import { t } from '$lib/i18n/strings';
+
 	interface Props {
 		level: number;
 		noisy?: boolean;
@@ -40,7 +42,7 @@
 	aria-valuenow={Math.round(level * 100)}
 	aria-valuemin={0}
 	aria-valuemax={100}
-	aria-label="Eingangspegel"
+	aria-label={t('a11y.level')}
 >
 	{#each heights as h, i (i)}
 		<span

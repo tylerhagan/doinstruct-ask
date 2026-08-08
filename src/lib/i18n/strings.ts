@@ -57,7 +57,11 @@ const DICT = {
 		'flow.newQuestion': 'Neue Frage',
 		'flow.back': 'Zurück',
 		'standby.fault': 'Fehler',
-		'standby.hint': 'Kein Login. Kein Download. Halt die Taste und frag.'
+		'standby.hint': 'Kein Login. Kein Download. Halt die Taste und frag.',
+		'a11y.answer': 'Antwort',
+		'a11y.sources': 'Quellen',
+		'a11y.level': 'Eingangspegel',
+		'a11y.heard': 'Erkannte Frage'
 	},
 
 	ro: {
@@ -100,7 +104,11 @@ const DICT = {
 		'flow.newQuestion': 'Întrebare nouă',
 		'flow.back': 'Înapoi',
 		'standby.fault': 'Eroare',
-		'standby.hint': 'Fără cont. Fără instalare. Ține apăsat și întreabă.'
+		'standby.hint': 'Fără cont. Fără instalare. Ține apăsat și întreabă.',
+		'a11y.answer': 'Răspuns',
+		'a11y.sources': 'Surse',
+		'a11y.level': 'Nivel de intrare',
+		'a11y.heard': 'Întrebarea recunoscută'
 	},
 
 	en: {
@@ -143,7 +151,11 @@ const DICT = {
 		'flow.newQuestion': 'New question',
 		'flow.back': 'Back',
 		'standby.fault': 'Fault',
-		'standby.hint': 'No login. No download. Hold the button and ask.'
+		'standby.hint': 'No login. No download. Hold the button and ask.',
+		'a11y.answer': 'Answer',
+		'a11y.sources': 'Sources',
+		'a11y.level': 'Input level',
+		'a11y.heard': 'Recognised question'
 	}
 } as const satisfies Record<Language, Record<string, string>>;
 

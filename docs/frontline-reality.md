@@ -10,7 +10,7 @@ something in the code rather than an aspiration.
 
 | Measure | Value |
 | --- | --- |
-| JavaScript, gzipped | **47 KB** |
+| JavaScript, gzipped | **48 KB** |
 | CSS, gzipped | **4 KB** |
 | HTML, gzipped | **2 KB** |
 | Web fonts | **0 bytes** |

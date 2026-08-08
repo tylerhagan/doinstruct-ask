@@ -37,7 +37,7 @@
 	const uncertainSet = $derived(new Set(uncertain.map((w) => w.toLowerCase())));
 </script>
 
-<section aria-label="Erkannte Frage">
+<section aria-label={t('a11y.heard')}>
 	<p class="mb-2 text-small text-fg-muted">{t('confirm.heard')}</p>
 
 	<blockquote

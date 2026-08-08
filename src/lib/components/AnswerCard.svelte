@@ -51,7 +51,7 @@
 	} as const;
 </script>
 
-<article class="flex flex-col gap-5" aria-label="Antwort">
+<article class="flex flex-col gap-5" aria-label={t('a11y.answer')}>
 	{#if answer.confidence !== 'none'}
 		<span
 			class="self-start rounded-full border-2 px-4 py-1 text-small font-bold
@@ -72,7 +72,7 @@
 	{/if}
 
 	{#if answer.sources.length}
-		<section aria-label="Quellen" class="flex flex-col gap-2">
+		<section aria-label={t('a11y.sources')} class="flex flex-col gap-2">
 			<h3 class="text-small font-bold text-fg-muted">{t('answer.source')}</h3>
 			{#each answer.sources as source (source.id)}
 				<SourceChip {source} onopen={() => onopensource?.(source.id)} />

@@ -9,8 +9,8 @@ SvelteKit 2, Svelte 5 runes, Tailwind v4, TypeScript, fully static.
 ```bash
 npm install
 npm run dev      # prototype at /, design system at /system
-npm run check    # types, plus the contrast rules. 0 errors.
-npm run build    # static output, roughly 53 KB gzipped in total
+npm run check    # types, contrast, and no literal text. 0 errors.
+npm run build    # static output, roughly 54 KB gzipped in total
 ```
 
 ## The slice
@@ -60,12 +60,16 @@ It also toggles live versus scripted microphone, a loud room, and offline.
 
 | Document | What it covers |
 | --- | --- |
-| [`AGENTS.md`](AGENTS.md) | The main deliverable. Rules an agent needs in order to produce correct UI in this stack. |
+| [`AGENTS.md`](AGENTS.md) | The main deliverable. Stack traps, the non-negotiables, and an index of when to load the rest. |
+| [`docs/rules/behaviour.md`](docs/rules/behaviour.md) | How an agent should work here. Dependency lock, never weaken a check, don't invent to fill a gap. |
+| [`docs/rules/content.md`](docs/rules/content.md) | Copy, interpolation, locked safety terminology, reading level, locale formatting. |
+| [`docs/rules/accessibility.md`](docs/rules/accessibility.md) | Target spacing, focus, live regions, logical properties, the four required states. |
 | [`docs/handover-proof.md`](docs/handover-proof.md) | The two-to-three prompt claim, tested, including what the agent got wrong. |
 | [`docs/frontline-reality.md`](docs/frontline-reality.md) | Low-end devices, noise, gloves, languages, literacy, lighting. |
 | [`docs/decision-log.md`](docs/decision-log.md) | What I learned, what changed, and why. |
 | [`src/lib/design/tokens.json`](src/lib/design/tokens.json) | Tokens, with the reasoning for every divergence from convention. |
-| [`scripts/check-contrast.mjs`](scripts/check-contrast.mjs) | A prose rule turned into a build failure. |
+| [`scripts/check-contrast.mjs`](scripts/check-contrast.mjs) | A prose rule turned into a build failure. Found 5 defects. |
+| [`scripts/check-i18n.mjs`](scripts/check-i18n.mjs) | The second one. Found 4 German `aria-label` values in seconds. |
 | `/system` route | Every component in every state. |
 
 ## On the brand

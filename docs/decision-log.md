@@ -246,3 +246,54 @@ and the trap is now written into `AGENTS.md`.
 Three defects in this area, all of which compiled without complaint and none of
 which any check would have caught. That is the counterweight to D8: automate what
 you can, and keep looking at the running product for the rest.
+
+---
+
+## D11. Splitting the rules, and the second check
+
+**Learned:** reviewing `AGENTS.md` against the brief, the file was strong on
+stack correctness and physical sizing and thin on the two things that actually
+break agent output: what an agent does when it wants something the system does
+not have, and content rules.
+
+**Decision: split rather than grow.** `AGENTS.md` stays the always-read entry
+point, holding the stack traps, the non-negotiables and an index. Three focused
+files sit beside it, each with a stated trigger for when to load it:
+
+- `docs/rules/behaviour.md` for any code change
+- `docs/rules/content.md` when text a worker reads is involved
+- `docs/rules/accessibility.md` when an interactive element or transition is
+
+The structure is itself the argument. A rules file long enough to cover
+everything gets skimmed by humans and diluted in a long agent session, so every
+rule added makes the others slightly less likely to be followed. Telling an agent
+*when* to load a file is context budgeting made explicit.
+
+**The rules I judged worth adding**, in rough order of how often an agent breaks
+them: the dependency lock, because one convenience library destroys the 48 KB
+budget the frontline claims rest on; never weaken a check to make it pass, which
+is the most dangerous thing an agent does now that there are checks worth
+protecting; never build a sentence by concatenation, because word order is not
+universal and every fragment is individually valid so nothing catches it; and a
+locked terminology table, because a synonym for "Not-Aus" is a hazard rather than
+a style variation.
+
+**Second check built: `check-i18n.mjs`.** It refuses literal text in component
+markup outside `t()`, including `aria-label`, `placeholder`, `title` and `alt`.
+
+It found four defects immediately, all mine, all German `aria-label` values.
+Those are invisible on screen, compile perfectly, pass type checking, and read
+German aloud to a Romanian speaker using a screen reader, inside a product whose
+whole argument is that language should not be a barrier. Second time a
+twenty-line script has caught something no amount of re-reading did.
+
+**Deliberately not added:** testing conventions, naming conventions, git
+workflow. They would pad the file without serving the brief.
+
+**Two gaps named rather than fixed.** Right-to-left is not supported, and the
+language list doinstruct publishes includes Arabic and Dari, so it should be. The
+components use physical CSS properties rather than logical ones. And focus is not
+managed across phase changes, which leaves keyboard and screen reader users on a
+control that no longer exists. Both rules are now written so new work does not
+deepen either hole, and both are named in the writeup. Found late, and rushing a
+layout migration the day before sending would have been the wrong trade.
