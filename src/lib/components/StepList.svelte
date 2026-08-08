@@ -1,10 +1,10 @@
 <!--
 	@component
-	StepList — a procedure, executed with hands busy.
+	StepList: a procedure, executed with hands busy.
 
 	CONTRACT
 	- steps:       ProcedureStep[] (required)
-	- oncomplete?: () => void — fired when the last step is ticked
+	- oncomplete?: () => void: fired when the last step is ticked
 
 	RULES
 	- Steps are ticked off, and the tick persists. A technician reads a step, puts
@@ -14,7 +14,7 @@
 	- The next unticked step is visually dominant; completed steps recede but stay
 	  readable, because verifying what you already did is part of the work.
 	- A step carrying a safety level renders its own inline marker. Safety
-	  information never lives only at the top of a procedure — the worker may
+	  information never lives only at the top of a procedure. The worker may
 	  arrive mid-list.
 	- The tick target spans the entire row. Precision tapping with gloves is not a
 	  reasonable expectation.

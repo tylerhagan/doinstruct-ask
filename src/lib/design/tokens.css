@@ -1,42 +1,48 @@
 /* ---------------------------------------------------------------------------
-   doinstruct Ask — theme
+   doinstruct Ask theme
    Generated from tokens.json. Consumed by Tailwind v4 via @theme.
 
    AGENTS: use the utility classes below. Do NOT write raw hex values, raw px
    sizes, or arbitrary values like `p-[13px]`. If a value you need does not
-   exist here, that is a signal the design intent is unclear — ask, don't invent.
+   exist here, that is a signal the design intent is unclear. Ask, don't invent.
 --------------------------------------------------------------------------- */
 
 @theme {
-	/* -- Brand ------------------------------------------------------------ */
-	--color-ink: #131a0e;
-	--color-lime: #cbf227;
-	--color-cream: #faf9f5;
+	/* -- Brand: exact values from doinstruct's own swatch system ---------- */
+	--color-ink: #11190c; /* --swatch--dark-green */
+	--color-yellow: #d9ff1e; /* --swatch--yellow (their name for it, not "lime") */
+	--color-cream: #fcfbf8; /* --swatch--off-white */
 
 	/* -- Surfaces --------------------------------------------------------- */
-	--color-surface: #faf9f5;
-	--color-surface-raised: #efede6;
-	--color-surface-sunken: #e2e0d6;
-	--color-surface-inverse: #131a0e;
+	--color-surface: #fcfbf8; /* --swatch--off-white */
+	--color-surface-raised: #f2efec; /* --swatch--gray */
+	--color-surface-sunken: #e4e0da; /* derived, they have no equivalent */
+	--color-surface-inverse: #11190c; /* --swatch--dark-green */
 
-	/* -- Text (nothing below 7:1) ----------------------------------------- */
-	--color-fg: #0f1408;
-	--color-fg-muted: #4a5340;
-	--color-fg-inverse: #faf9f5;
+	/* -- Text (nothing below 7:1, enforced by scripts/check-contrast.mjs) - */
+	--color-fg: #11190c;
+	/* Their --swatch--mid-green (#6E7664) is only 4.6:1 on off-white. Fine for
+	   marketing; below the floor for a plant floor. Darkened, hue preserved. */
+	--color-fg-muted: #454c3e;
+	--color-fg-inverse: #fcfbf8;
 
 	/* -- Status (stop is reserved for safety) ------------------------------ */
-	--color-stop: #b01810;
+	/* Darkened from a first pass that failed check-contrast.mjs at 5.4 to 6.1:1.
+	   These now clear 7:1 against their own tinted surfaces. */
+	--color-stop: #8c1109;
 	--color-stop-surface: #fbeae9;
-	--color-caution: #8a5a00;
+	--color-caution: #664300;
 	--color-caution-surface: #fdf3e2;
-	--color-ok: #2c6b34;
+	--color-ok: #1e5024;
 	--color-ok-surface: #eaf3ea;
-	--color-pending: #1d4ed8;
+	--color-pending: #143594;
 	--color-pending-surface: #e8eefc;
 
 	/* -- Borders ---------------------------------------------------------- */
-	--color-border: #c9c6ba;
-	--color-border-strong: #4a5340;
+	/* Their --swatch--light-green (#C1CAB7) is 1.65:1 on off-white, invisible
+	   as a structural border. Darkened to clear 3:1; hue kept. */
+	--color-border: #8a9480;
+	--color-border-strong: #6e7664; /* --swatch--mid-green, unchanged */
 
 	/* -- Type: system stack only, zero webfont bytes ----------------------- */
 	--font-sans:
@@ -74,7 +80,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   High contrast — a lighting condition, not a preference.
+   High contrast: a lighting condition, not a preference.
    Toggled by the worker, persisted per device.
 --------------------------------------------------------------------------- */
 [data-contrast='high'] {

@@ -1,6 +1,6 @@
 <!--
 	@component
-	Button — the only interactive primitive in the system.
+	Button: the only interactive primitive in the system.
 
 	CONTRACT
 	- variant: 'primary' | 'secondary' | 'quiet' | 'stop'   (default 'secondary')
@@ -9,7 +9,7 @@
 	- ...rest: any native button attribute, incl. onclick, disabled, aria-*
 
 	RULES
-	- `primary` is lime and there may be only ONE per screen — the voice action.
+	- `primary` is yellow and there may be only ONE per screen: the voice action.
 	- `stop` is red and is reserved for safety. Never use it for destructive UI
 	  actions like "delete", and never for form validation.
 	- `md` is 64px tall, `lg` is 96px. Neither may be overridden smaller; both are
@@ -39,7 +39,7 @@
 	}: Props = $props();
 
 	const VARIANT: Record<Variant, string> = {
-		primary: 'bg-lime text-ink border-ink',
+		primary: 'bg-yellow text-ink border-ink',
 		secondary: 'bg-surface text-fg border-border-strong',
 		quiet: 'bg-transparent text-fg border-transparent underline underline-offset-4',
 		stop: 'bg-stop text-cream border-stop'

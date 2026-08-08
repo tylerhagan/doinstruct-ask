@@ -1,5 +1,5 @@
 <!--
-	/system — the design system gallery.
+	/system, the design system gallery.
 
 	This route exists for two audiences: an engineer who needs to see what exists
 	before writing a prompt, and an agent that has been pointed at it to ground a
@@ -14,7 +14,7 @@
 
 	const source: Source = {
 		id: 'src-1',
-		document: 'Füller F2 — Wartungshandbuch',
+		document: 'Wartungshandbuch Füller F2',
 		section: '§4.2 Fehlercode E-212',
 		page: 87,
 		language: 'de',
@@ -22,7 +22,7 @@
 	};
 </script>
 
-<svelte:head><title>Ask — Design System</title></svelte:head>
+<svelte:head><title>Ask | Design System</title></svelte:head>
 
 <div class="mx-auto max-w-2xl px-5 py-10">
 	<header class="mb-10">
@@ -60,7 +60,7 @@
 				Schutzbrille und Handschuhe erforderlich, bevor du die Klappe öffnest.
 			</SafetyBanner>
 			<SafetyBanner level="stop">
-				Dieser Fehler betrifft die Verriegelung. Ich gebe dazu keine Anleitung — hol eine
+				Dieser Fehler betrifft die Verriegelung. Ich gebe dazu keine Anleitung. Hol eine
 				Elektrofachkraft.
 			</SafetyBanner>
 		</div>
@@ -68,10 +68,10 @@
 
 	<section>
 		<h2 class="mb-4 text-title font-bold">Type scale</h2>
-		<p class="text-meta text-fg-muted">meta 14 — timestamps and audit refs only</p>
-		<p class="text-small">small 16 — supporting labels</p>
-		<p class="text-body">body 18 — all answer text</p>
-		<p class="text-lead">lead 22 — procedure steps</p>
+		<p class="text-meta text-fg-muted">meta 14: timestamps and audit refs only</p>
+		<p class="text-small">small 16: supporting labels</p>
+		<p class="text-body">body 18: all answer text</p>
+		<p class="text-lead">lead 22: procedure steps</p>
 		<p class="text-title font-bold">title 28</p>
 		<p class="text-display font-bold">display 34</p>
 	</section>

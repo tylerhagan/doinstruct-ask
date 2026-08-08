@@ -1,13 +1,13 @@
 <!--
 	@component
-	TranscriptConfirm — "this is what I heard", before anything acts on it.
+	TranscriptConfirm: "this is what I heard", before anything acts on it.
 
 	CONTRACT
-	- text:       string (required) — the recognised utterance
-	- uncertain:  string[] — words the recogniser was unsure of; rendered marked
+	- text:       string (required): the recognised utterance
+	- uncertain:  string[]: words the recogniser was unsure of; rendered marked
 	- onconfirm:  () => void
 	- onretry:    () => void
-	- ontype:     () => void — escape hatch to the keyboard
+	- ontype:     () => void: escape hatch to the keyboard
 
 	RULES
 	- This step is NOT optional and must not be auto-skipped on high confidence.
@@ -46,7 +46,9 @@
 	>
 		{#each words as word, i (i)}
 			{#if uncertainSet.has(word.toLowerCase().replace(/[.,?]/g, ''))}
-				<mark class="bg-caution-surface font-bold text-caution underline decoration-2 underline-offset-4">
+				<mark
+					class="bg-caution-surface font-bold text-caution underline decoration-2 underline-offset-4"
+				>
 					{word}
 				</mark>
 			{:else}

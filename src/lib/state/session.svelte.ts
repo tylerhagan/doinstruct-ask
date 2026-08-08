@@ -5,7 +5,7 @@ import type { Language, MachineContext } from '$lib/domain/types';
  *
  * AGENTS: this is a Svelte 5 rune class in a `.svelte.ts` file. Reactivity comes
  * from `$state`, NOT from `writable()` stores. Do not import `svelte/store` in
- * this project — if you find yourself reaching for it, you are writing Svelte 4.
+ * this project, if you find yourself reaching for it, you are writing Svelte 4.
  *
  * There is no user identity here on purpose. The device is shared and has no
  * login, which is doinstruct's own product principle. That constraint is what
@@ -24,7 +24,7 @@ class Session {
 
 	/** Resolved from the wall mount. Never typed by a gloved hand. */
 	machine = $state<MachineContext>({
-		line: 'Linie 3 — Abfüllung',
+		line: 'Linie 3, Abfüllung',
 		machine: 'Füller F2',
 		assetId: 'AST-3121',
 		faultCode: 'E-212'
@@ -41,7 +41,7 @@ class Session {
 		}
 	}
 
-	/** Called once on mount. Safe to call during SSR — it no-ops. */
+	/** Called once on mount. Safe to call during SSR, it no-ops. */
 	restore() {
 		if (typeof localStorage === 'undefined') return;
 		this.highContrast = localStorage.getItem('ask:contrast') === 'high';

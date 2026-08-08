@@ -3,16 +3,16 @@ import type { Language } from '$lib/domain/types';
 /**
  * Voice input with a deliberate fallback.
  *
- * `live`     — real microphone: Web Speech API for words, an AnalyserNode for
- *              level and ambient-noise measurement.
- * `scripted` — replays a known utterance at realistic speed with synthesised
- *              level data.
- * `auto`     — live if the browser supports it and the mic is granted, scripted
- *              otherwise.
+ * `live`:     real microphone. Web Speech API for words, an AnalyserNode for
+ *             level and ambient-noise measurement.
+ * `scripted`: replays a known utterance at realistic speed with synthesised
+ *             level data.
+ * `auto`:     live if the browser supports it and the mic is granted, scripted
+ *             otherwise.
  *
  * WHY SCRIPTED MODE EXISTS, and why it is not cheating: the recogniser is the one
- * part of this prototype whose real-world behaviour I cannot honestly simulate —
- * it degrades badly with accents and background noise, which is precisely the
+ * part of this prototype whose real-world behaviour I cannot honestly simulate.
+ * It degrades badly with accents and background noise, which is precisely the
  * condition this product ships into. Scripted mode lets the *interaction design*
  * be evaluated without a demo hanging on whether a laptop mic can parse a
  * Romanian-accented German fault code in a meeting room. Live mode is the default
@@ -209,7 +209,7 @@ export class Recognition {
 export const recognition = new Recognition();
 
 /**
- * Read-aloud. Uses the platform voice — no network round trip, so it still works
+ * Read-aloud. Uses the platform voice, no network round trip, so it still works
  * when the plant's wifi drops in the cold store.
  */
 export function speak(text: string, language: Language, onend?: () => void) {

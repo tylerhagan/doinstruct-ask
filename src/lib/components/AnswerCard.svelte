@@ -1,13 +1,13 @@
 <!--
 	@component
-	AnswerCard — a grounded answer, or an honest refusal.
+	AnswerCard: a grounded answer, or an honest refusal.
 
 	CONTRACT
 	- answer:      Answer (required)
-	- speaking?:   boolean — TTS currently reading this answer
-	- onread?:     () => void — toggle read-aloud
+	- speaking?:   boolean: TTS currently reading this answer
+	- onread?:     () => void: toggle read-aloud
 	- onopensource?: (id: string) => void
-	- onnothelp?:  () => void — the escape hatch into escalation
+	- onnothelp?:  () => void: the escape hatch into escalation
 
 	RULES
 	- Confidence is stated in words, never as a percentage. "87% confident" is
@@ -17,7 +17,7 @@
 	  named next action is just an unhelpful answer wearing a disclaimer.
 	- "Didn't help" is always present and always one tap away. It is the entrance
 	  to the escalation path, and it is the most commercially important control in
-	  the product — every tap is a gap in the knowledge base being reported for
+	  the product. Every tap is a gap in the knowledge base being reported for
 	  free.
 	- Sources render below the answer, never behind a disclosure. Hiding provenance
 	  behind a tap is how you lose an audit.

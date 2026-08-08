@@ -1,10 +1,10 @@
 <!--
 	@component
-	DemoPanel — reviewer controls. NOT part of the product.
+	DemoPanel: reviewer controls. NOT part of the product.
 
 	Deliberately styled as an overlay with a dashed border so nobody mistakes it
 	for shipped UI. It exists so the flow can be driven live in a review without
-	waiting for a real fault on a real line — and so the three states this product
+	waiting for a real fault on a real line, and so the three states this product
 	can be in (answer, refuse, route to a human) are all reachable in one tap.
 
 	Delete this component and its one usage in `+page.svelte` to ship.
@@ -29,10 +29,10 @@
 	}
 </script>
 
-<div class="fixed bottom-4 right-4 z-50 font-mono text-[13px]">
+<div class="fixed right-4 bottom-4 z-50 font-mono text-[13px]">
 	{#if open}
 		<div class="mb-2 w-72 rounded-lg border-2 border-dashed border-ink bg-cream p-4 shadow-none">
-			<p class="mb-3 font-bold uppercase tracking-wide">Reviewer controls</p>
+			<p class="mb-3 font-bold tracking-wide uppercase">Reviewer controls</p>
 
 			<p class="mb-1 text-fg-muted">Scenario</p>
 			<div class="mb-4 flex flex-col gap-1">
@@ -41,7 +41,7 @@
 						type="button"
 						onclick={() => pick(s.id)}
 						class="rounded border-2 px-2 py-2 text-left
-						       {scenarioId === s.id ? 'border-ink bg-lime' : 'border-border bg-surface'}"
+						       {scenarioId === s.id ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
 					>
 						{s.label}
 					</button>
@@ -55,7 +55,7 @@
 					onclick={() => (recognition.mode = 'live')}
 					disabled={!recognition.supported}
 					class="flex-1 rounded border-2 px-2 py-2 disabled:opacity-40
-					       {recognition.mode === 'live' ? 'border-ink bg-lime' : 'border-border bg-surface'}"
+					       {recognition.mode === 'live' ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
 				>
 					live
 				</button>
@@ -63,7 +63,7 @@
 					type="button"
 					onclick={() => (recognition.mode = 'scripted')}
 					class="flex-1 rounded border-2 px-2 py-2
-					       {recognition.mode === 'scripted' ? 'border-ink bg-lime' : 'border-border bg-surface'}"
+					       {recognition.mode === 'scripted' ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
 				>
 					scripted
 				</button>

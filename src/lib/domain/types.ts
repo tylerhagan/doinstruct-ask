@@ -2,7 +2,7 @@
  * Domain model for doinstruct Ask.
  *
  * AGENTS: these types are the contract between the data layer and every
- * component. If you are asked to add a field, add it here first — components
+ * component. If you are asked to add a field, add it here first. Components
  * must never invent shape.
  */
 
@@ -17,16 +17,16 @@ export const LANGUAGE_LABEL: Record<Language, string> = {
 /**
  * Safety level is deliberately three-valued, not boolean.
  *
- * - `none`    — routine, the worker may act on the answer
- * - `caution` — the worker may act, but PPE / verification is required first
- * - `stop`    — the assistant must NOT give a procedure; a qualified person is
+ * - `none`   : routine, the worker may act on the answer
+ * - `caution`: the worker may act, but PPE / verification is required first
+ * - `stop`   : the assistant must NOT give a procedure; a qualified person is
  *               required. This is a refusal, not a low-confidence answer.
  */
 export type SafetyLevel = 'none' | 'caution' | 'stop';
 
 /**
  * Provenance is mandatory on every answer. An unsourced answer about a machine
- * is a liability, not a feature — doinstruct sells audit trails.
+ * is a liability, not a feature. doinstruct sells audit trails.
  */
 export interface Source {
 	id: string;
@@ -42,9 +42,9 @@ export interface Source {
 }
 
 /**
- * - `sourced` — grounded in documentation, quotable in an audit
- * - `partial` — assembled from related material; verify before acting
- * - `none`    — the miss. Do not paper over it; route to a human.
+ * - `sourced`: grounded in documentation, quotable in an audit
+ * - `partial`: assembled from related material; verify before acting
+ * - `none`   : the miss. Do not paper over it; route to a human.
  */
 export type AnswerConfidence = 'sourced' | 'partial' | 'none';
 
@@ -67,7 +67,7 @@ export interface Answer {
 	safetyNote?: string;
 }
 
-/** A named human. Never "a supervisor" — trust requires a name and a face. */
+/** A named human. Never "a supervisor". Trust requires a name and a face. */
 export interface Responder {
 	id: string;
 	name: string;
@@ -91,7 +91,7 @@ export interface Escalation {
 	auditRef?: string;
 }
 
-/** Machine context, resolved from the wall mount or a QR/NFC tap — never typed. */
+/** Machine context, resolved from the wall mount or a QR/NFC tap, never typed. */
 export interface MachineContext {
 	line: string;
 	machine: string;

@@ -5,7 +5,7 @@ import type { Answer, Escalation, Language, Responder, Source } from '$lib/domai
  * product can do: answer, refuse, or route to a human.
  *
  * Content is localised down to the procedure steps, not just the chrome.
- * Switching language changes the answer itself — that is the claim doinstruct
+ * Switching language changes the answer itself, which is the claim doinstruct
  * makes with "35+ languages", and demonstrating it with translated buttons and
  * untranslated content would be a lie.
  *
@@ -27,7 +27,7 @@ const MAREK: Responder = {
 
 const MANUAL: Source = {
 	id: 'src-f2-42',
-	document: 'Füller F2 — Wartungshandbuch',
+	document: 'Wartungshandbuch Füller F2',
 	section: '§4.2 Fehlercode E-212',
 	page: 87,
 	language: 'de',
@@ -36,7 +36,7 @@ const MANUAL: Source = {
 
 const LOTO: Source = {
 	id: 'src-loto',
-	document: 'Betriebsanweisung — Verriegelung & Freischaltung',
+	document: 'Betriebsanweisung Verriegelung und Freischaltung',
 	section: '§2 Schutztüren',
 	page: 12,
 	language: 'de',
@@ -49,7 +49,7 @@ interface Scenario {
 	id: ScenarioId;
 	label: string;
 	utterance: Localised;
-	/** Words the recogniser marks as uncertain — always the fault code, which is
+	/** Words the recogniser marks as uncertain, always the fault code, which is
 	 *  exactly the token you must not get wrong. */
 	uncertain: string[];
 	build: (lang: Language) => { answer?: Answer; escalation?: Escalation };
@@ -59,15 +59,15 @@ interface Scenario {
 
 const SOURCED = {
 	summary: {
-		de: 'Druckabfall an Füllventil 7. Dichtung prüfen und tauschen — etwa 10 Minuten.',
-		ro: 'Cădere de presiune la supapa de umplere 7. Verifică și schimbă garnitura — circa 10 minute.',
-		en: 'Pressure drop at filling valve 7. Check and replace the seal — about 10 minutes.'
+		de: 'Druckabfall an Füllventil 7. Dichtung prüfen und tauschen, etwa 10 Minuten.',
+		ro: 'Cădere de presiune la supapa de umplere 7. Verifică și schimbă garnitura, circa 10 minute.',
+		en: 'Pressure drop at filling valve 7. Check and replace the seal, about 10 minutes.'
 	},
 	steps: [
 		{
-			de: 'Anlage am HMI auf Standby stellen. Nicht Not-Aus — das löst einen Formatverlust aus.',
-			ro: 'Pune instalația pe standby de la HMI. Nu opriere de urgență — asta provoacă pierderea formatului.',
-			en: 'Put the line into standby at the HMI. Not emergency stop — that causes a format loss.'
+			de: 'Anlage am HMI auf Standby stellen. Nicht Not-Aus, das löst einen Formatverlust aus.',
+			ro: 'Pune instalația pe standby de la HMI. Nu opriere de urgență, asta provoacă pierderea formatului.',
+			en: 'Put the line into standby at the HMI. Not emergency stop, that causes a format loss.'
 		},
 		{
 			de: 'Schutzbrille und Handschuhe anlegen, bevor du die Schutztür öffnest.',
@@ -90,9 +90,9 @@ const SOURCED = {
 			en: 'Acknowledge the fault at the HMI and run five bottles as a test.'
 		},
 		{
-			de: 'Den Dichtungstausch im Schichtbuch eintragen — Teile-Nr. und Uhrzeit.',
-			ro: 'Notează schimbarea garniturii în registrul de tură — cod piesă și ora.',
-			en: 'Log the seal replacement in the shift book — part number and time.'
+			de: 'Den Dichtungstausch im Schichtbuch eintragen, mit Teile-Nr. und Uhrzeit.',
+			ro: 'Notează schimbarea garniturii în registrul de tură, cu cod piesă și ora.',
+			en: 'Log the seal replacement in the shift book, with part number and time.'
 		}
 	]
 };
@@ -104,9 +104,9 @@ const REFUSAL = {
 		en: "I won't give instructions for that. Bypassing the guard door while the line is running is prohibited."
 	},
 	note: {
-		de: 'Hol Marek Kowalski oder die Elektrofachkraft. Sie dürfen die Anlage freischalten — du nicht.',
-		ro: 'Cheamă-l pe Marek Kowalski sau electricianul autorizat. Ei pot izola instalația — tu nu.',
-		en: 'Get Marek Kowalski or the qualified electrician. They may isolate the line — you may not.'
+		de: 'Hol Marek Kowalski oder die Elektrofachkraft. Sie dürfen die Anlage freischalten, du nicht.',
+		ro: 'Cheamă-l pe Marek Kowalski sau electricianul autorizat. Ei pot izola instalația, tu nu.',
+		en: 'Get Marek Kowalski or the qualified electrician. They may isolate the line, you may not.'
 	}
 };
 

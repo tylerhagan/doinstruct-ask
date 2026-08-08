@@ -1,6 +1,6 @@
 <!--
 	@component
-	StatusBar — persistent device context. Always visible, never scrolls away.
+	StatusBar: persistent device context. Always visible, never scrolls away.
 
 	CONTRACT
 	Reads `session` directly. This is an app-level component, not a reusable
@@ -11,7 +11,7 @@
 	- The machine context is displayed, never entered. It comes from the wall mount
 	  or an NFC tap. Asking a gloved technician to type an asset ID is a design
 	  failure.
-	- Languages are labelled in their own script — "Română", not "Romanian". A
+	- Languages are labelled in their own script: "Română", not "Romanian". A
 	  worker scanning for their language does not read the interface language.
 	- Language and contrast are the only two settings. There is no settings screen,
 	  because a shared device has no one to own preferences.

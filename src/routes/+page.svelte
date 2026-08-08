@@ -2,7 +2,7 @@
 	The prototype.
 
 	One route holds the whole state machine on purpose. The components below are
-	deliberately dumb — they report gestures and render props — so that an agent
+	deliberately dumb: they report gestures and render props, so that an agent
 	asked to "change the flow" edits this file only, and an agent asked to
 	"restyle the answer" edits AnswerCard only. That separation is what makes the
 	2-to-3-prompt handover in `AGENTS.md` actually work.
@@ -24,13 +24,7 @@
 	import type { Answer, Escalation } from '$lib/domain/types';
 
 	type Phase =
-		| 'standby'
-		| 'listening'
-		| 'confirm'
-		| 'thinking'
-		| 'answer'
-		| 'escalation'
-		| 'handover';
+		'standby' | 'listening' | 'confirm' | 'thinking' | 'answer' | 'escalation' | 'handover';
 
 	let phase = $state<Phase>('standby');
 	let scenarioId = $state<ScenarioId>('sourced');
@@ -51,7 +45,11 @@
 	});
 
 	const pttLabel = $derived(
-		phase === 'listening' ? t('ptt.listening') : phase === 'thinking' ? t('ptt.thinking') : t('ptt.idle')
+		phase === 'listening'
+			? t('ptt.listening')
+			: phase === 'thinking'
+				? t('ptt.thinking')
+				: t('ptt.idle')
 	);
 
 	function startListening() {
@@ -125,7 +123,7 @@
 </script>
 
 <svelte:head>
-	<title>doinstruct Ask — Linie 3</title>
+	<title>doinstruct Ask | Linie 3</title>
 	<meta name="description" content="Voice-first operational answers for the line." />
 </svelte:head>
 
@@ -187,7 +185,8 @@
 					<p class="text-title font-bold">{answer.summary}</p>
 					<div class="mt-auto flex flex-col gap-3">
 						<Button variant="primary" full onclick={reset}>{t('handover.confirm')}</Button>
-						<Button variant="quiet" full onclick={() => (phase = 'answer')}>{t('flow.back')}</Button>
+						<Button variant="quiet" full onclick={() => (phase = 'answer')}>{t('flow.back')}</Button
+						>
 					</div>
 				</section>
 			{/if}
@@ -210,8 +209,7 @@
 							autofocus
 							rows="2"
 							class="w-full rounded-lg border-2 border-border-strong bg-surface-sunken p-4 text-lead"
-							aria-label={t('confirm.type')}
-						></textarea>
+							aria-label={t('confirm.type')}></textarea>
 						<Button variant="primary" full type="submit">{t('confirm.yes')}</Button>
 					</form>
 				{:else}

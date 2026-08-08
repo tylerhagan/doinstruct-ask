@@ -1,10 +1,10 @@
 <!--
 	@component
-	SafetyBanner — the refusal and caution surface.
+	SafetyBanner: the refusal and caution surface.
 
 	CONTRACT
 	- level:    'caution' | 'stop' (required)
-	- children: Snippet — the note text
+	- children: Snippet: the note text
 
 	RULES
 	- `stop` means the assistant will NOT supply a procedure and a qualified person

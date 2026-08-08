@@ -1,10 +1,10 @@
 <!--
 	@component
-	SourceChip — provenance for an answer.
+	SourceChip: provenance for an answer.
 
 	CONTRACT
 	- source:   Source (required)
-	- onopen?:  () => void — opens the underlying document at the cited page
+	- onopen?:  () => void: opens the underlying document at the cited page
 
 	RULES
 	- Every answer renders at least one SourceChip. An answer about a machine with
@@ -45,7 +45,8 @@
 	<span class="min-w-0">
 		<span class="block text-small font-medium text-fg">{source.document}</span>
 		<span class="block text-meta text-fg-muted">
-			{source.section} · {t('source.page')} {source.page} · {age}
+			{source.section} · {t('source.page')}
+			{source.page} · {age}
 			{#if translated}
 				· {t('source.from')} {LANGUAGE_LABEL[source.language]}
 			{/if}

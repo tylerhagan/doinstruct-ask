@@ -1,6 +1,6 @@
 <!--
 	@component
-	EscalationCard — the miss, routed to a named human, then captured.
+	EscalationCard: the miss, routed to a named human, then captured.
 
 	This is the most important component in the system. An assistant that answers
 	most questions and shrugs at the rest has rebuilt the dead-end it was built to
@@ -9,8 +9,8 @@
 
 	CONTRACT
 	- escalation: Escalation (required)
-	- onnotify?:  () => void — subscribe to the reply
-	- oncapture?: () => void — accept the reply into the knowledge base
+	- onnotify?:  () => void: subscribe to the reply
+	- oncapture?: () => void: accept the reply into the knowledge base
 
 	RULES
 	- Always a named person with a role, never "a supervisor". A worker decides

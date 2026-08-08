@@ -1,14 +1,14 @@
 <!--
 	@component
-	PushToTalk — the primary action. There is exactly one per screen.
+	PushToTalk: the primary action. There is exactly one per screen.
 
 	CONTRACT
 	- state:   'idle' | 'listening' | 'thinking' | 'speaking' | 'error' (required)
-	- label:   string (required) — already localised by the caller
-	- level:   number 0..1 — input level, only read while listening
-	- noisy:   boolean — ambient noise threatens recognition
-	- onstart: () => void — fired on press
-	- onstop:  () => void — fired on release, pointer cancel, or focus loss
+	- label:   string (required): already localised by the caller
+	- level:   number 0..1: input level, only read while listening
+	- noisy:   boolean: ambient noise threatens recognition
+	- onstart: () => void: fired on press
+	- onstop:  () => void: fired on release, pointer cancel, or focus loss
 
 	RULES
 	- Hold to talk, never tap to toggle. Three reasons, in order of importance:
@@ -46,7 +46,7 @@
 	function press(event: PointerEvent) {
 		if (busy) return;
 		// Pointer capture keeps the release event ours even if the finger slides off
-		// the control — which it will, on a wet screen.
+		// the control, which it will, on a wet screen.
 		(event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId);
 		onstart?.();
 	}
@@ -63,7 +63,7 @@
 	}
 
 	const SURFACE: Record<PttState, string> = {
-		idle: 'bg-lime border-ink text-ink',
+		idle: 'bg-yellow border-ink text-ink',
 		listening: 'bg-surface-inverse border-ink text-fg-inverse',
 		thinking: 'bg-surface-raised border-border-strong text-fg-muted',
 		speaking: 'bg-surface-raised border-ink text-fg',
@@ -82,8 +82,8 @@
 	onblur={release}
 	onkeydown={key}
 	onkeyup={key}
-	class="flex min-h-tap-primary w-full touch-none select-none flex-col items-center justify-center
-	       gap-2 rounded-xl border-2 px-6 py-5 transition-colors {SURFACE[state]}"
+	class="flex min-h-tap-primary w-full touch-none flex-col items-center justify-center gap-2
+	       rounded-xl border-2 px-6 py-5 transition-colors select-none {SURFACE[state]}"
 >
 	{#if listening}
 		<LevelMeter {level} {noisy} />
