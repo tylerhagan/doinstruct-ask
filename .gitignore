@@ -24,3 +24,6 @@ vite.config.ts.timestamp-*
 
 # Private prep material — never published
 _private/
+
+# doinstruct's own brief. Not mine to redistribute.
+/brief/
