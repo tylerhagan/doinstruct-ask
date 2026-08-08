@@ -75,6 +75,10 @@ Reproduce with `npm run build`.
   German, `SourceChip` says so, so opening a German PDF is never a surprise.
 - **Nothing truncates.** German compounds and Romanian diacritics both overflow,
   and a truncated safety instruction is a hazard.
+- **Enforced, not trusted.** `scripts/check-i18n.mjs` fails the build on any
+  literal text in component markup, including `aria-label`. It found four German
+  `aria-label` values the moment it existed, all mine. Those are invisible on
+  screen and read German aloud to a Romanian speaker using a screen reader.
 
 ## Digital literacy
 

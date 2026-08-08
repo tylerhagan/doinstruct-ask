@@ -133,13 +133,43 @@ reading the high-contrast overrides where every value is pure black or white.
 Both bugs produced a confident, plausible, wrong answer, which is the same
 failure mode this whole document is about.
 
-## What I would do next
+## So I did the same to the i18n rule
 
-The i18n rule is the obvious next candidate. A lint rule banning literal text in
-`.svelte` markup outside `t()` would have caught all four instances, the agent's
-and my three, at commit time.
+`scripts/check-i18n.mjs` refuses literal text in component markup outside `t()`,
+including `aria-label`, `placeholder`, `title` and `alt`. It runs as part of
+`npm run check`.
 
-That is the real lesson here: **every rule in `AGENTS.md` that can become a check
-should become one.** Prose rules degrade as an agent's context fills up. A
-failing build does not. The prose file is where that migration starts rather than
-where it ends.
+It found four more defects within seconds of existing, all of them mine, all of
+them German `aria-label` values.
+
+That detail is the one worth sitting with. Those labels are invisible on screen,
+compile perfectly, and pass every other check. What they do is read German aloud
+to a Romanian speaker using a screen reader, inside a product whose entire
+argument is that language should not be a barrier. I wrote the rule, broke it
+four times, and did not notice until a twenty-line script told me.
+
+**Every rule in `AGENTS.md` that can become a check should become one.** Prose
+rules degrade as an agent's context fills up. A failing build does not. Two are
+done, and between them they caught nine defects that no human review had found.
+
+## Where this stops, which matters just as much
+
+Not every rule can become a check, and pretending otherwise would be the same
+overconfidence this document is about.
+
+While finishing this work I introduced three defects in the high-contrast theme
+and the device frame. A blanket CSS rule handed a visible border to every
+paragraph on the page, the rounded frame failed to clip its children, and two
+design tokens collided on a name so a width silently resolved to the wrong value
+and rendered at roughly twice its intended size.
+
+All three compiled without complaint. All three passed type checking, both
+contrast checks and the literal-text check. Two of them only appear in a theme a
+reviewer has to deliberately toggle into. They were found by looking at the
+running product on a phone, and nothing else would have found them.
+
+So the honest position is narrower than "automate the rules". It is: automate
+every rule you can, write down the ones you cannot, and keep looking at the real
+thing. The next candidates for automation are a bundle-size budget and screenshot
+tests over the high-contrast state, because that state is the one nobody visits
+by default and therefore the one that rots.

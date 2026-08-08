@@ -752,11 +752,30 @@
 
 			<p>
 				<code>AGENTS.md</code> is the deliverable: exact versions, a Svelte 4 to 5 translation
-				table, the token contract, and nine hard rules that encode safety and accessibility rather
-				than taste. One structural decision does most of the work. Components are dumb; they
-				render props and report gestures, and the state machine lives in one route. So "change the
-				flow" touches one file, "restyle the answer" touches another, and neither breaks the
-				other.
+				table, the token contract, and nine non-negotiables that encode safety and accessibility
+				rather than taste. One structural decision does most of the work. Components are dumb;
+				they render props and report gestures, and the state machine lives in one route. So
+				"change the flow" touches one file, "restyle the answer" touches another, and neither
+				breaks the other.
+			</p>
+
+			<p>
+				The rules are split across four files rather than one, and the split is itself a design
+				decision about working with agents. A rules file long enough to cover everything gets
+				skimmed by humans and diluted in a long session, so every rule you add makes the others
+				slightly less likely to be followed. <code>AGENTS.md</code> holds what applies always, and
+				indexes three focused files with a stated trigger for each: conduct rules for any code
+				change, copy rules when text is involved, accessibility rules when an interactive element
+				is. Telling an agent <em>when</em> to load something is context budgeting made explicit.
+			</p>
+
+			<p>
+				The rules I'd point at first aren't the visual ones. <b>The dependency list is closed</b>,
+				because one convenience library quietly destroys the 48 KB budget that every claim in the
+				previous section rests on, and nothing would catch it. And <b>never weaken a check to make
+				it pass</b>, which matters now that there are checks worth protecting. An agent that can't
+				reach 7:1 will lower the threshold rather than fix the colour, and the result compiles,
+				passes, and is a lie.
 			</p>
 
 			<h3>I chose Svelte having never shipped it</h3>
@@ -852,6 +871,28 @@ All contrast checks passed.</code></pre>
 				Every rule in <code>AGENTS.md</code> that can become a check should become one. Prose rules
 				degrade as an agent's context fills up. A failing build doesn't. Two are done and
 				<code>npm run check</code> now runs both.
+			</p>
+
+			<h3>Where that argument stops, which matters just as much</h3>
+
+			<p>
+				Late in this work I introduced three defects in the high-contrast theme and the device
+				frame. A blanket CSS rule handed a visible border to every paragraph on the page. The
+				rounded frame failed to clip its children. And two design tokens collided on a name, so a
+				width silently resolved to the wrong value and rendered at about twice its intended size.
+			</p>
+
+			<p>
+				All three compiled without complaint and passed every check I'd just built. Two of them
+				only appear in a theme you have to deliberately toggle into. They were found by looking at
+				the running product on a phone, and nothing else would have found them.
+			</p>
+
+			<p>
+				So the honest version of my argument is narrower than "turn the rules into checks". It is:
+				automate every rule you can, write down the ones you can't, and keep looking at the real
+				thing. If I'd only made the first claim I'd have been doing the same thing the agent did,
+				which is sounding confident about something I hadn't verified.
 			</p>
 
 			<h3>On your brand, since I read it rather than guessed</h3>
