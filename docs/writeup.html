@@ -292,12 +292,6 @@
 		align-items: start;
 	}
 
-	.branch .tag,
-	.stage .num {
-		grid-column: 1;
-		grid-row: 1 / -1;
-	}
-
 	.branch > :not(.tag),
 	.stage > :not(.num) {
 		grid-column: 2;
@@ -305,6 +299,7 @@
 
 	.branch .tag,
 	.stage .num {
+		grid-column: 1;
 		display: block;
 		font-size: 0.68rem;
 		font-weight: 600;
@@ -432,6 +427,7 @@
 	table {
 		border-collapse: collapse;
 		width: 100%;
+		min-width: 30rem;
 		font-size: 0.95rem;
 	}
 
@@ -706,83 +702,78 @@
 				anything. It has reproduced the original failure with better manners. The miss is the
 				product. There are only three honest responses available:
 			</p>
-		</div>
-	</section>
+			<div class="flow">
+				<p class="flow-caption">The flow, including every escape</p>
 
-	<div class="flow">
-		<p class="flow-caption">The flow, including every escape</p>
+				<div class="flow-stages">
+					<div class="stage">
+						<span class="num"><b>1</b>Stage</span>
+						<h4>Arrive</h4>
+						<p>
+							A wall-mounted device already scoped to Line 3, Filler F2, fault E-212. No login, no
+							download, and nothing typed by a gloved hand.
+						</p>
+					</div>
+					<div class="stage">
+						<span class="num"><b>2</b>Stage</span>
+						<h4>Hold and ask</h4>
+						<p>
+							Hold to talk, never an open mic. The level meter is the only proof the device can hear
+							you at 90 dB, and the room's noise floor is measured rather than assumed.
+						</p>
+						<span class="escape">Escape: type instead. Always present, never buried.</span>
+					</div>
+					<div class="stage">
+						<span class="num"><b>3</b>Stage</span>
+						<h4>Confirm what was heard</h4>
+						<p>
+							Never auto-skipped on high confidence. Uncertain words are marked, and in the demo the
+							marked word is the fault code, which is the token you least want wrong.
+						</p>
+						<span class="escape">Escape: say it again, or switch to typing.</span>
+					</div>
+				</div>
 
-		<div class="flow-stages">
-			<div class="stage">
-				<span class="num"><b>1</b>Stage</span>
-				<h4>Arrive</h4>
-				<p>
-					A wall-mounted device already scoped to Line 3, Filler F2, fault E-212. No login, no
-					download, and nothing typed by a gloved hand.
-				</p>
-			</div>
-			<div class="stage">
-				<span class="num"><b>2</b>Stage</span>
-				<h4>Hold and ask</h4>
-				<p>
-					Hold to talk, never an open mic. The level meter is the only proof the device can hear you
-					at 90 dB, and the room's noise floor is measured rather than assumed.
-				</p>
-				<span class="escape">Escape: type instead. Always present, never buried.</span>
-			</div>
-			<div class="stage">
-				<span class="num"><b>3</b>Stage</span>
-				<h4>Confirm what was heard</h4>
-				<p>
-					Never auto-skipped on high confidence. Uncertain words are marked, and in the demo the
-					marked word is the fault code, which is the token you least want wrong.
-				</p>
-				<span class="escape">Escape: say it again, or switch to typing.</span>
-			</div>
-		</div>
+				<p class="flow-fork">Then exactly one of three</p>
 
-		<p class="flow-fork">Then exactly one of three</p>
+				<div class="loop">
+					<div class="branch">
+						<span class="tag"><b>1</b>Response</span>
+						<h4>Answer, with provenance</h4>
+						<p>
+							Grounded in a named document, section and page, with the document's age visible. Stale
+							documentation is a hazard, and hiding its age quietly transfers that risk to the
+							worker.
+						</p>
+						<span class="escape">Escape: "this didn't help" drops straight into response 3.</span>
+					</div>
+					<div class="branch">
+						<span class="tag"><b>2</b>Response</span>
+						<h4>Refuse, on safety</h4>
+						<p>
+							Guard-door bypass, lockout and tagout: an explicit stop, and a named qualified person.
+							A refusal rather than a hedged procedure wearing a disclaimer.
+						</p>
+					</div>
+					<div class="branch route">
+						<span class="tag"><b>3</b>Response</span>
+						<h4>Route to a named human</h4>
+						<p>
+							Marek, shift lead, usually replies in about four minutes, speaks Romanian. A named
+							person, an observed wait rather than a promised one, and permission to walk away and
+							be fetched.
+						</p>
+						<span class="escape">Then: reply, capture, audit entry, and back into response 1.</span>
+					</div>
+				</div>
 
-		<div class="loop">
-			<div class="branch">
-				<span class="tag"><b>1</b>Response</span>
-				<h4>Answer, with provenance</h4>
-				<p>
-					Grounded in a named document, section and page, with the document's age visible. Stale
-					documentation is a hazard, and hiding its age quietly transfers that risk to the worker.
-				</p>
-				<span class="escape">Escape: "this didn't help" drops straight into response 3.</span>
+				<div class="flow-return">
+					<b>Only the third branch loops, and that loop is the product.</b> Marek's answer is
+					captured, credited to the worker who asked, and written into the knowledge base with an
+					audit entry attached. The next person to ask the same thing gets response 1 instead, in
+					their own language. The wait happens once, and it produces an asset.
+				</div>
 			</div>
-			<div class="branch">
-				<span class="tag"><b>2</b>Response</span>
-				<h4>Refuse, on safety</h4>
-				<p>
-					Guard-door bypass, lockout and tagout: an explicit stop, and a named qualified person. A
-					refusal rather than a hedged procedure wearing a disclaimer.
-				</p>
-			</div>
-			<div class="branch route">
-				<span class="tag"><b>3</b>Response</span>
-				<h4>Route to a named human</h4>
-				<p>
-					Marek, shift lead, usually replies in about four minutes, speaks Romanian. A named person,
-					an observed wait rather than a promised one, and permission to walk away and be fetched.
-				</p>
-				<span class="escape">Then: reply, capture, audit entry, and back into response 1.</span>
-			</div>
-		</div>
-
-		<div class="flow-return">
-			<b>Only the third branch loops, and that loop is the product.</b> Marek's answer is captured,
-			credited to the worker who asked, and written into the knowledge base with an audit entry
-			attached. The next person to ask the same thing gets response 1 instead, in their own
-			language. The wait happens once, and it produces an asset.
-		</div>
-	</div>
-
-	<section style="padding-top: 1.5rem">
-		<div class="ref"></div>
-		<div class="body">
 			<h3>Three decisions in that flow are about people, not machines</h3>
 
 			<p>
@@ -853,73 +844,66 @@
 		<div class="body">
 			<h2>Measured rather than asserted</h2>
 			<p>You can reproduce any of these with <code>npm run build</code>.</p>
-		</div>
-	</section>
-
-	<div class="table-scroll">
-		<table>
-			<thead>
-				<tr>
-					<th scope="col">Measure</th>
-					<th scope="col">Value</th>
-					<th scope="col">Why it's that number</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>JavaScript, gzipped</td>
-					<td class="num">48 KB</td>
-					<td>Static and prerendered, with no server round trip before first paint.</td>
-				</tr>
-				<tr>
-					<td>CSS, gzipped</td>
-					<td class="num">4 KB</td>
-					<td>Token-driven, with no unused framework surface.</td>
-				</tr>
-				<tr>
-					<td>Web font bytes</td>
-					<td class="num">0</td>
-					<td>
-						Covered below. Losing a typeface I control is a real cost, but a technician staring at
-						invisible text while a line is down is a larger one.
-					</td>
-				</tr>
-				<tr>
-					<td>Minimum tap target</td>
-					<td class="num">64 px</td>
-					<td>
-						WCAG 2.2 AAA asks for 44px, which assumes a bare fingertip. A cut-resistant glove has a
-						contact patch of roughly 14 to 16mm and no proprioceptive feedback.
-					</td>
-				</tr>
-				<tr>
-					<td>Push-to-talk target</td>
-					<td class="num">96 px</td>
-					<td>Hittable without looking, while holding a part in the other hand.</td>
-				</tr>
-				<tr>
-					<td>Minimum body text</td>
-					<td class="num">18 px</td>
-					<td>
-						Read at arm's length from a wall mount, often through safety glasses. 14px exists only
-						for timestamps and audit references, never for instructions.
-					</td>
-				</tr>
-				<tr>
-					<td>Minimum text contrast</td>
-					<td class="num">7:1</td>
-					<td>
-						AA's 4.5:1 isn't enough under washdown glare or in a dim cold store. Enforced by a
-						script, not by good intentions.
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-
-	<section style="padding-top: 0">
-		<div class="ref"></div>
-		<div class="body">
+			<div class="table-scroll">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">Measure</th>
+							<th scope="col">Value</th>
+							<th scope="col">Why it's that number</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>JavaScript, gzipped</td>
+							<td class="num">48 KB</td>
+							<td>Static and prerendered, with no server round trip before first paint.</td>
+						</tr>
+						<tr>
+							<td>CSS, gzipped</td>
+							<td class="num">4 KB</td>
+							<td>Token-driven, with no unused framework surface.</td>
+						</tr>
+						<tr>
+							<td>Web font bytes</td>
+							<td class="num">0</td>
+							<td>
+								Covered below. Losing a typeface I control is a real cost, but a technician staring
+								at invisible text while a line is down is a larger one.
+							</td>
+						</tr>
+						<tr>
+							<td>Minimum tap target</td>
+							<td class="num">64 px</td>
+							<td>
+								WCAG 2.2 AAA asks for 44px, which assumes a bare fingertip. A cut-resistant glove
+								has a contact patch of roughly 14 to 16mm and no proprioceptive feedback.
+							</td>
+						</tr>
+						<tr>
+							<td>Push-to-talk target</td>
+							<td class="num">96 px</td>
+							<td>Hittable without looking, while holding a part in the other hand.</td>
+						</tr>
+						<tr>
+							<td>Minimum body text</td>
+							<td class="num">18 px</td>
+							<td>
+								Read at arm's length from a wall mount, often through safety glasses. 14px exists
+								only for timestamps and audit references, never for instructions.
+							</td>
+						</tr>
+						<tr>
+							<td>Minimum text contrast</td>
+							<td class="num">7:1</td>
+							<td>
+								AA's 4.5:1 isn't enough under washdown glare or in a dim cold store. Enforced by a
+								script, not by good intentions.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 			<h3>What a stopped line does to attention</h3>
 			<p>
 				Acute stress narrows working memory. The person using this has a line down, a supervisor
