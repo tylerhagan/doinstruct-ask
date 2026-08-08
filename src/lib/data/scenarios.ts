@@ -88,6 +88,11 @@ const SOURCED = {
 			de: 'Fehler am HMI quittieren und fünf Flaschen im Probelauf fahren.',
 			ro: 'Confirmă eroarea la HMI și fă un test cu cinci sticle.',
 			en: 'Acknowledge the fault at the HMI and run five bottles as a test.'
+		},
+		{
+			de: 'Den Dichtungstausch im Schichtbuch eintragen — Teile-Nr. und Uhrzeit.',
+			ro: 'Notează schimbarea garniturii în registrul de tură — cod piesă și ora.',
+			en: 'Log the seal replacement in the shift book — part number and time.'
 		}
 	]
 };
