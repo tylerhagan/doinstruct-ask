@@ -23,7 +23,14 @@
 	import { scenarioById, type ScenarioId } from '$lib/data/scenarios';
 	import type { Answer, Escalation } from '$lib/domain/types';
 
-	type Phase = 'standby' | 'listening' | 'confirm' | 'thinking' | 'answer' | 'escalation';
+	type Phase =
+		| 'standby'
+		| 'listening'
+		| 'confirm'
+		| 'thinking'
+		| 'answer'
+		| 'escalation'
+		| 'handover';
 
 	let phase = $state<Phase>('standby');
 	let scenarioId = $state<ScenarioId>('sourced');
@@ -136,11 +143,12 @@
 				<div class="flex flex-1 flex-col justify-center gap-3 text-center">
 					<p class="text-display font-bold">{session.machine.machine}</p>
 					{#if session.machine.faultCode}
-						<p class="text-title text-fg-muted">Fehler {session.machine.faultCode}</p>
+						<p class="text-title text-fg-muted">
+							{t('standby.fault')}
+							{session.machine.faultCode}
+						</p>
 					{/if}
-					<p class="mt-2 text-body text-fg-muted">
-						Kein Login. Kein Download. Halt die Taste und frag.
-					</p>
+					<p class="mt-2 text-body text-fg-muted">{t('standby.hint')}</p>
 				</div>
 			{:else if phase === 'listening'}
 				<div class="flex flex-1 flex-col justify-center">
@@ -168,10 +176,20 @@
 				</div>
 			{:else if phase === 'answer' && answer}
 				<AnswerCard {answer} {speaking} onread={readAloud} onnothelp={escalate} />
-				<Button variant="quiet" full onclick={reset}>Neue Frage</Button>
+				<Button full onclick={() => (phase = 'handover')}>{t('handover.cta')}</Button>
+				<Button variant="quiet" full onclick={reset}>{t('flow.newQuestion')}</Button>
 			{:else if phase === 'escalation' && escalation}
 				<EscalationCard {escalation} onnotify={notifyMe} oncapture={reset} />
-				<Button variant="quiet" full onclick={reset}>Neue Frage</Button>
+				<Button variant="quiet" full onclick={reset}>{t('flow.newQuestion')}</Button>
+			{:else if phase === 'handover' && answer}
+				<section class="flex flex-1 flex-col gap-5">
+					<p class="text-small text-fg-muted">{t('handover.title')}</p>
+					<p class="text-title font-bold">{answer.summary}</p>
+					<div class="mt-auto flex flex-col gap-3">
+						<Button variant="primary" full onclick={reset}>{t('handover.confirm')}</Button>
+						<Button variant="quiet" full onclick={() => (phase = 'answer')}>{t('flow.back')}</Button>
+					</div>
+				</section>
 			{/if}
 		</main>
 

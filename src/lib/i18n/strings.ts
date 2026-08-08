@@ -49,7 +49,14 @@ const DICT = {
 		'esc.ok': 'Verstanden',
 		'status.offline': 'Offline',
 		'status.contrast': 'Hoher Kontrast',
-		'status.language': 'Sprache'
+		'status.language': 'Sprache',
+		'handover.cta': 'Für die nächste Schicht notieren',
+		'handover.title': 'Das wird an die nächste Schicht übergeben:',
+		'handover.confirm': 'Übergeben',
+		'flow.newQuestion': 'Neue Frage',
+		'flow.back': 'Zurück',
+		'standby.fault': 'Fehler',
+		'standby.hint': 'Kein Login. Kein Download. Halt die Taste und frag.'
 	},
 
 	ro: {
@@ -85,7 +92,14 @@ const DICT = {
 		'esc.ok': 'Am înțeles',
 		'status.offline': 'Fără conexiune',
 		'status.contrast': 'Contrast ridicat',
-		'status.language': 'Limbă'
+		'status.language': 'Limbă',
+		'handover.cta': 'Notează pentru tura următoare',
+		'handover.title': 'Asta se predă turei următoare:',
+		'handover.confirm': 'Predă',
+		'flow.newQuestion': 'Întrebare nouă',
+		'flow.back': 'Înapoi',
+		'standby.fault': 'Eroare',
+		'standby.hint': 'Fără cont. Fără instalare. Ține apăsat și întreabă.'
 	},
 
 	en: {
@@ -121,7 +135,14 @@ const DICT = {
 		'esc.ok': 'Got it',
 		'status.offline': 'Offline',
 		'status.contrast': 'High contrast',
-		'status.language': 'Language'
+		'status.language': 'Language',
+		'handover.cta': 'Note for the next shift',
+		'handover.title': 'This will be handed to the next shift:',
+		'handover.confirm': 'Hand over',
+		'flow.newQuestion': 'New question',
+		'flow.back': 'Back',
+		'standby.fault': 'Fault',
+		'standby.hint': 'No login. No download. Hold the button and ask.'
 	}
 } as const satisfies Record<Language, Record<string, string>>;
 
