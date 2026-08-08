@@ -1,0 +1,124 @@
+# Frontline reality
+
+The brief asks how this holds up on low-end devices, in noisy or hands-busy
+conditions, and across languages and digital literacy. Each claim below is
+something in the code, not an aspiration.
+
+---
+
+## Low-end devices and bad connectivity
+
+| Measure | Value |
+| --- | --- |
+| JavaScript, gzipped | **47 KB** |
+| CSS, gzipped | **4 KB** |
+| HTML, gzipped | **2 KB** |
+| Web fonts | **0 bytes** |
+| Server round trips to first paint | **0** — fully prerendered |
+
+Reproduce with `npm run build`.
+
+- **Zero webfont bytes.** A system font stack renders instantly and cannot cause
+  a layout shift when a font request times out on plant wifi. Losing a typeface
+  I control is a real cost; a technician staring at invisible text while a line
+  is down is a larger one.
+- **`adapter-static`.** No server, no cold start, cacheable at the edge or by a
+  service worker. After first load this is deliverable from cache.
+- **No shadows, no positional animation, nothing over 200ms** — cheap to paint on
+  a five-year-old mid-range Android, which is the actual device population.
+- **Read-aloud uses the platform speech synthesiser**, not a network TTS call, so
+  it still works when the cold-store wifi drops.
+
+## Noisy — 85 to 95 dB is normal on a filling line
+
+- **Hold-to-talk, never open-mic.** Recognition is bounded to the moment the
+  worker is deliberately speaking, so ambient line noise is never being
+  transcribed.
+- **`LevelMeter` is functional, not decorative.** In a loud room there is no
+  audio feedback, so the meter is the only evidence the device is hearing them.
+- **Ambient noise is measured, not assumed.** `recognition.svelte.ts` samples the
+  room's noise floor over the first 30 frames. Above threshold the UI offers the
+  text path *before* recognition fails rather than after.
+- **`TranscriptConfirm` is mandatory and never auto-skipped on high confidence.**
+  Mis-recognition is the norm here, and a technician acting on a misheard fault
+  code is the exact failure this product exists to prevent. Low-confidence words
+  are marked, and in the demo the marked word is the fault code — the token you
+  most need to get right.
+
+## Hands-busy, gloves, wet surfaces
+
+- **64px minimum tap target; 96px for push-to-talk.** WCAG 2.2 AAA asks 44px,
+  which assumes a bare fingertip. A cut-resistant glove has a ~14–16mm contact
+  patch and no proprioceptive feedback. The token carries this reasoning inline.
+- **Pointer capture on the talk control**, so a finger sliding on a wet screen
+  still produces a clean release rather than a dropped utterance.
+- **`StepList` ticks persist.** A technician reads a step, puts the device down,
+  does the work, comes back. "Where was I" is the most common failure of paper
+  procedures on a line.
+- **Tap targets span the whole row.** Precision tapping with gloves is not a
+  reasonable expectation.
+- **Read-aloud** covers the case where hands and eyes are both committed.
+
+## Languages
+
+- **Three languages ship, down to the procedure steps** — not just the chrome.
+  Switching language changes the *answer*. Translated buttons over untranslated
+  content would be a lie about the capability.
+- **The German "du", not "Sie".** These are colleagues on a line; "Sie" reads as
+  management talking at them.
+- **Language buttons are labelled in their own script** — "Română", not
+  "Romanian". Someone scanning for their language does not read the interface
+  language.
+- **Source language is disclosed.** When the answer is Romanian and the manual is
+  German, `SourceChip` says so, so opening a German PDF is never a surprise.
+- **Nothing truncates.** German compounds and Romanian diacritics both overflow;
+  a truncated safety instruction is a hazard.
+
+## Digital literacy
+
+- **No login, no download, no install.** This is doinstruct's own product
+  principle and the prototype honours it. It is also what scoped this to
+  operational knowledge — HR questions would need per-worker auth on a shared
+  device, and that breaks the principle.
+- **No settings screen.** Two controls exist — language and contrast — both in
+  the persistent bar. A shared device has nobody to own preferences.
+- **Every icon is paired with text.** The microphone is the one control that must
+  never be guessed at.
+- **Confidence is stated in words, never a percentage.** "87% confident" is
+  meaningless to someone holding a wrench, and worse than useless in an audit.
+- **The machine context is displayed, never typed.**
+
+## Lighting
+
+- **High contrast is a lighting condition, not a preference** — washdown glare
+  and dim cold stores are both real. Toggling it takes every border to 2px and
+  strips decorative fills.
+- **No text token below 7:1.** AA's 4.5:1 is not enough under glare.
+- **Hierarchy from border and surface, never shadow.** Soft shadows are invisible
+  under bright plant lighting — and this keeps the system legible when a customer
+  prints a screen to a laminated card for the line, which they do.
+
+## Two things a German customer will ask about before they buy
+
+- **Works council (Betriebsrat).** Hold-to-talk makes "this device is not
+  listening to you" a physical property of the control rather than a policy
+  promise. An always-on microphone on a production floor is a co-determination
+  fight, and it is avoidable.
+- **Safety liability.** The assistant refuses rather than degrades. Guard-door
+  interlocks and lockout/tagout produce an explicit stop and a named qualified
+  person — never a hedged procedure. Every answer carries provenance with the
+  document's age visible, because stale documentation is a hazard and hiding its
+  age transfers that risk silently to the worker.
+
+---
+
+## What I did not build, and would want to
+
+- **Offline answering.** The shell is cacheable but retrieval is not. A small
+  on-device index of the top ~200 fault codes per line would cover most of what
+  gets asked when connectivity drops.
+- **Shift-aware routing.** `Responder.onShift` exists in the model and the UI
+  reads it, but there is no real rota behind it.
+- **Real ASR tuned for accented German over machine noise.** This is the single
+  largest technical risk in the product and it cannot be honestly prototyped in a
+  browser — which is why the demo carries a scripted mode alongside the live one.

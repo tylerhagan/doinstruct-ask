@@ -1,0 +1,894 @@
+<title>doinstruct Ask — Design Engineer case study</title>
+
+<style>
+	/* ---------------------------------------------------------------------
+	   This document follows the same rules as the system it describes:
+	   red appears exactly once, lime appears exactly once, hierarchy comes
+	   from rules and surface rather than shadow, and nothing animates
+	   position. The colophon at the end says so out loud.
+	   --------------------------------------------------------------------- */
+
+	:root {
+		--paper: #f2f2ee;
+		--paper-sunk: #e7e7e0;
+		--ink: #14170f;
+		--ink-muted: #5a5f52;
+		--rule: #c9cabf;
+		--rule-strong: #8d9182;
+		--accent: #8a5a00; /* caution ochre — the working accent */
+		--accent-sunk: #f4ecdc;
+		--stop: #b01810; /* used exactly once */
+		--lime: #a8c81e; /* used exactly once, darkened for contrast on paper */
+
+		--sans: ui-sans-serif, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+		--serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+		--mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, 'Liberation Mono', monospace;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root:not([data-theme='light']) {
+			--paper: #14170f;
+			--paper-sunk: #1c2016;
+			--ink: #edeee6;
+			--ink-muted: #9aa08e;
+			--rule: #333829;
+			--rule-strong: #5f6553;
+			--accent: #d9a441;
+			--accent-sunk: #241d0e;
+			--stop: #e4574c;
+			--lime: #cbf227;
+		}
+	}
+
+	:root[data-theme='dark'] {
+		--paper: #14170f;
+		--paper-sunk: #1c2016;
+		--ink: #edeee6;
+		--ink-muted: #9aa08e;
+		--rule: #333829;
+		--rule-strong: #5f6553;
+		--accent: #d9a441;
+		--accent-sunk: #241d0e;
+		--stop: #e4574c;
+		--lime: #cbf227;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: var(--serif);
+		font-size: 18px;
+		line-height: 1.65;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	.wrap {
+		max-width: 1080px;
+		margin: 0 auto;
+		padding: clamp(2rem, 5vw, 5rem) clamp(1.25rem, 4vw, 3rem) 6rem;
+	}
+
+	/* --- Masthead ------------------------------------------------------- */
+
+	.masthead {
+		border-bottom: 2px solid var(--ink);
+		padding-bottom: 2rem;
+		margin-bottom: 3rem;
+	}
+
+	.eyebrow {
+		font-family: var(--mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		margin: 0 0 1.25rem;
+	}
+
+	h1 {
+		font-family: var(--sans);
+		font-weight: 800;
+		font-size: clamp(2.1rem, 6vw, 3.6rem);
+		line-height: 1.02;
+		letter-spacing: -0.03em;
+		text-wrap: balance;
+		margin: 0 0 1.25rem;
+	}
+
+	.standfirst {
+		font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+		line-height: 1.5;
+		max-width: 34em;
+		margin: 0;
+		color: var(--ink);
+	}
+
+	.standfirst strong {
+		font-weight: 400;
+		border-bottom: 2px solid var(--accent);
+		padding-bottom: 1px;
+	}
+
+	/* --- Link block ------------------------------------------------------ */
+
+	.links {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+		gap: 1px;
+		background: var(--rule);
+		border: 1px solid var(--rule);
+		margin: 2.5rem 0 0;
+	}
+
+	.links a,
+	.links span {
+		display: block;
+		background: var(--paper);
+		padding: 1.1rem 1.25rem;
+		text-decoration: none;
+		color: var(--ink);
+	}
+
+	.links a:hover {
+		background: var(--accent-sunk);
+	}
+
+	.links .label {
+		display: block;
+		font-family: var(--mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		margin-bottom: 0.35rem;
+	}
+
+	.links .value {
+		font-family: var(--sans);
+		font-weight: 600;
+		font-size: 1rem;
+	}
+
+	.links .pending .value {
+		color: var(--ink-muted);
+		font-weight: 400;
+		font-style: italic;
+	}
+
+	/* --- Sections with a marginal reference rail ------------------------- */
+
+	section {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0 3rem;
+		padding-top: 3.5rem;
+		margin-top: 3.5rem;
+		border-top: 1px solid var(--rule);
+	}
+
+	@media (min-width: 900px) {
+		section {
+			grid-template-columns: 7rem minmax(0, 1fr);
+		}
+	}
+
+	.ref {
+		font-family: var(--mono);
+		font-size: 0.72rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		line-height: 1.5;
+		padding-top: 0.55rem;
+		margin-bottom: 1rem;
+	}
+
+	.ref b {
+		display: block;
+		font-size: 1.5rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		color: var(--ink);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.body > * {
+		max-width: 34em;
+	}
+
+	h2 {
+		font-family: var(--sans);
+		font-weight: 750;
+		font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+		line-height: 1.14;
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+		margin: 0 0 1.25rem;
+	}
+
+	h3 {
+		font-family: var(--sans);
+		font-weight: 700;
+		font-size: 1.12rem;
+		letter-spacing: -0.005em;
+		margin: 2.25rem 0 0.6rem;
+	}
+
+	p {
+		margin: 0 0 1.15rem;
+	}
+
+	a {
+		color: var(--ink);
+		text-decoration-color: var(--accent);
+		text-decoration-thickness: 2px;
+		text-underline-offset: 3px;
+	}
+
+	/* --- Pull quote: the cut argument ------------------------------------ */
+
+	blockquote {
+		margin: 2rem 0;
+		padding: 1.4rem 0 1.4rem 1.5rem;
+		border-left: 3px solid var(--accent);
+		font-family: var(--sans);
+		font-size: 1.1rem;
+		line-height: 1.5;
+		max-width: 32em;
+	}
+
+	blockquote p:last-child {
+		margin-bottom: 0;
+	}
+
+	/* --- The loop diagram ------------------------------------------------ */
+
+	.loop {
+		max-width: none;
+		display: grid;
+		gap: 1px;
+		background: var(--rule);
+		border: 1px solid var(--rule);
+		margin: 2rem 0;
+		grid-template-columns: 1fr;
+	}
+
+	@media (min-width: 720px) {
+		.loop {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	.branch {
+		background: var(--paper);
+		padding: 1.4rem 1.35rem;
+	}
+
+	.branch .tag {
+		font-family: var(--mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		display: block;
+		margin-bottom: 0.6rem;
+	}
+
+	.branch h4 {
+		font-family: var(--sans);
+		font-size: 1.05rem;
+		font-weight: 700;
+		margin: 0 0 0.5rem;
+	}
+
+	.branch p {
+		font-size: 0.95rem;
+		line-height: 1.5;
+		margin: 0;
+		color: var(--ink-muted);
+	}
+
+	.branch.route {
+		background: var(--accent-sunk);
+	}
+
+	.branch.route p,
+	.branch.route h4 {
+		color: var(--ink);
+	}
+
+	.loop-note {
+		font-family: var(--sans);
+		font-size: 0.92rem;
+		color: var(--ink-muted);
+		max-width: 40em;
+		margin: -0.5rem 0 0;
+	}
+
+	/* --- Data table ------------------------------------------------------ */
+
+	.table-scroll {
+		overflow-x: auto;
+		max-width: none;
+		margin: 1.5rem 0 2rem;
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+		font-family: var(--sans);
+		font-size: 0.95rem;
+	}
+
+	th,
+	td {
+		text-align: left;
+		padding: 0.7rem 1.25rem 0.7rem 0;
+		border-bottom: 1px solid var(--rule);
+		vertical-align: top;
+	}
+
+	th {
+		font-family: var(--mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		font-weight: 400;
+		border-bottom: 1px solid var(--rule-strong);
+	}
+
+	td.num {
+		font-family: var(--mono);
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+		font-weight: 600;
+	}
+
+	/* --- Code ------------------------------------------------------------ */
+
+	pre {
+		max-width: none;
+		overflow-x: auto;
+		background: var(--paper-sunk);
+		border: 1px solid var(--rule);
+		padding: 1.1rem 1.25rem;
+		font-family: var(--mono);
+		font-size: 0.82rem;
+		line-height: 1.6;
+		margin: 1.5rem 0;
+	}
+
+	code {
+		font-family: var(--mono);
+		font-size: 0.88em;
+		background: var(--paper-sunk);
+		padding: 0.1em 0.35em;
+	}
+
+	pre code {
+		background: none;
+		padding: 0;
+		font-size: inherit;
+	}
+
+	.del {
+		color: var(--ink-muted);
+	}
+
+	.ins {
+		color: var(--ink);
+		font-weight: 700;
+	}
+
+	/* --- The one safety callout — the only red on the page --------------- */
+
+	.safety {
+		max-width: none;
+		border: 2px solid var(--stop);
+		padding: 1.35rem 1.5rem;
+		margin: 2rem 0;
+	}
+
+	.safety .tag {
+		font-family: var(--mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--stop);
+		display: block;
+		margin-bottom: 0.6rem;
+		font-weight: 700;
+	}
+
+	.safety p {
+		margin: 0;
+		font-family: var(--sans);
+		font-size: 1rem;
+		line-height: 1.55;
+		max-width: 38em;
+	}
+
+	/* --- Lists ----------------------------------------------------------- */
+
+	ul {
+		margin: 0 0 1.15rem;
+		padding-left: 1.15rem;
+	}
+
+	li {
+		margin-bottom: 0.55rem;
+	}
+
+	li::marker {
+		color: var(--rule-strong);
+	}
+
+	.plain {
+		list-style: none;
+		padding-left: 0;
+	}
+
+	.plain li {
+		padding-left: 1.4rem;
+		position: relative;
+	}
+
+	.plain li::before {
+		content: '—';
+		position: absolute;
+		left: 0;
+		color: var(--accent);
+	}
+
+	/* --- Colophon -------------------------------------------------------- */
+
+	.colophon {
+		margin-top: 5rem;
+		padding-top: 2rem;
+		border-top: 2px solid var(--ink);
+		font-family: var(--sans);
+		font-size: 0.92rem;
+		line-height: 1.6;
+		color: var(--ink-muted);
+		max-width: 40em;
+	}
+
+	.colophon .lime-mark {
+		display: inline-block;
+		width: 0.85em;
+		height: 0.85em;
+		background: var(--lime);
+		vertical-align: -0.05em;
+		margin-right: 0.15em;
+	}
+
+	:focus-visible {
+		outline: 3px solid var(--accent);
+		outline-offset: 3px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		* {
+			transition: none !important;
+			animation: none !important;
+		}
+	}
+</style>
+
+<div class="wrap">
+	<header class="masthead">
+		<p class="eyebrow">Design Engineer · Case study · August 2026</p>
+		<h1>Knowledge dead-ends are a routing problem, not a chatbot problem.</h1>
+		<p class="standfirst">
+			A voice-first way for a maintenance technician to get an answer mid-shift — and, when there
+			is no answer, to reach the person who has it. Built in <strong>your stack</strong>, with the
+			rules an AI agent needs to keep building it.
+		</p>
+
+		<div class="links">
+			<span class="pending">
+				<span class="label">Prototype</span>
+				<span class="value">link to follow</span>
+			</span>
+			<span class="pending">
+				<span class="label">Repository</span>
+				<span class="value">link to follow</span>
+			</span>
+			<span class="pending">
+				<span class="label">Design system</span>
+				<span class="value">/system route</span>
+			</span>
+		</div>
+	</header>
+
+	<section>
+		<div class="ref"><b>01</b> The slice</div>
+		<div class="body">
+			<h2>The environment picks the domain</h2>
+
+			<p>
+				doinstruct sells into food processing — you're a member of the German meat and sausage
+				producers' association, so this is a core vertical rather than a guess. That setting
+				decides almost everything before a single screen gets drawn.
+			</p>
+
+			<p>
+				In a hygiene zone, personal phones are frequently restricted. Hands are wet and gloved.
+				The realistic device is shared and wall-mounted. And your own product principle —
+				<em>no app download, no passwords</em> — means that device has no login.
+			</p>
+
+			<p>Which settles the scope without me having to have a preference:</p>
+
+			<blockquote>
+				<p>
+					<strong>HR is cut because it's private.</strong> On a shared, no-login device,
+					payroll and vacation questions need per-worker authentication, and that breaks the
+					no-password principle. Operational knowledge isn't private, so it survives on a
+					shared device.
+				</p>
+				<p style="margin-top: 0.9rem">
+					<strong>Voice is primary because gloved, wet hands can't type.</strong> Text stays as
+					a degradation path, never an afterthought.
+				</p>
+			</blockquote>
+
+			<p>
+				Then I narrowed once more, to a single job: one technician, one shift, fault code E-212
+				on a filling line, German documentation, Romanian speaker, five-year-old Android.
+			</p>
+
+			<h3>What else I cut</h3>
+			<ul class="plain">
+				<li>
+					<b>Multi-turn conversation.</b> A technician mid-fault needs one answer, not a
+					dialogue. Follow-up is a new question.
+				</li>
+				<li>
+					<b>The supervisor's side of the app.</b> It's the obvious second surface, and
+					building half of it would have proved nothing.
+				</li>
+				<li>
+					<b>Onboarding and settings.</b> A shared device has nobody to own preferences. Two
+					controls survive: language and contrast.
+				</li>
+				<li>
+					<b>Offline answering.</b> The shell is cacheable; retrieval isn't. I'd rather name
+					the gap than fake it.
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<section>
+		<div class="ref"><b>02</b> The product</div>
+		<div class="body">
+			<h2>An assistant that shrugs has rebuilt the dead-end</h2>
+
+			<p>
+				Your brief describes the problem precisely: <em
+					>"the answer is a colleague or supervisor away. So they wait."</em
+				>
+				The knowledge isn't missing. It's in a person who isn't reachable right now.
+			</p>
+
+			<p>
+				So a system that answers 70% of questions and apologises for the rest hasn't solved
+				anything — it's reproduced the original failure with better manners. The miss is the
+				product. There are only three honest responses:
+			</p>
+		</div>
+	</section>
+
+	<div class="loop">
+		<div class="branch">
+			<span class="tag">Response 1</span>
+			<h4>Answer, with provenance</h4>
+			<p>
+				Grounded in a named document, section and page, with the document's age visible. Stale
+				documentation is a hazard, and hiding its age transfers that risk to the worker silently.
+			</p>
+		</div>
+		<div class="branch">
+			<span class="tag">Response 2</span>
+			<h4>Refuse, on safety</h4>
+			<p>
+				Guard-door bypass, lockout/tagout: an explicit stop and a named qualified person. A
+				refusal, never a hedged procedure wearing a disclaimer.
+			</p>
+		</div>
+		<div class="branch route">
+			<span class="tag">Response 3</span>
+			<h4>Route to a named human</h4>
+			<p>
+				Marek, shift lead, usually replies in ~4 minutes, speaks Romanian. His answer is then
+				captured — and the next person who asks gets it instantly, in their language.
+			</p>
+		</div>
+	</div>
+
+	<section style="border-top: none; padding-top: 0; margin-top: 1.5rem">
+		<div class="ref"></div>
+		<div class="body">
+			<p class="loop-note">
+				That third branch is the whole commercial argument. The wait happens once, and it
+				produces an asset. Every "this didn't help" tap is a gap in the knowledge base being
+				reported for free — and every captured answer emits an audit entry, which compounds into
+				the compliance product you already sell rather than competing with it.
+			</p>
+
+			<h3>Where this sits next to Genius</h3>
+			<p>
+				Genius turns documents into knowledge. Ask retrieves it at the moment of failure, and
+				routes what's missing back into it. Sibling, not rival — which is also why I didn't
+				invent a second AI brand for it.
+			</p>
+
+			<div class="safety">
+				<span class="tag">The one place red appears in this document</span>
+				<p>
+					An AI confidently describing a machine fix is a liability question before it's a UX
+					question. Red is reserved for safety stop across the entire system — never validation
+					errors, never "delete". That exclusivity is the point: a worker has to be able to
+					trust that red means stop working.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="ref"><b>03</b> Frontline reality</div>
+		<div class="body">
+			<h2>Measured, not asserted</h2>
+			<p>
+				Reproduce any of these with <code>npm run build</code>.
+			</p>
+		</div>
+	</section>
+
+	<div class="table-scroll">
+		<table>
+			<thead>
+				<tr>
+					<th scope="col">Measure</th>
+					<th scope="col">Value</th>
+					<th scope="col">Why it's that number</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>JavaScript, gzipped</td>
+					<td class="num">47 KB</td>
+					<td>Static, prerendered, no server round trip to first paint.</td>
+				</tr>
+				<tr>
+					<td>CSS, gzipped</td>
+					<td class="num">4 KB</td>
+					<td>Token-driven; no unused framework surface.</td>
+				</tr>
+				<tr>
+					<td>Web font bytes</td>
+					<td class="num">0</td>
+					<td>
+						System stack. Losing a typeface I control is a real cost; a technician staring at
+						invisible text while a line is down is a larger one.
+					</td>
+				</tr>
+				<tr>
+					<td>Minimum tap target</td>
+					<td class="num">64 px</td>
+					<td>
+						WCAG 2.2 AAA says 44px, which assumes a bare fingertip. A cut-resistant glove has
+						a ~14–16mm contact patch and no proprioceptive feedback.
+					</td>
+				</tr>
+				<tr>
+					<td>Push-to-talk target</td>
+					<td class="num">96 px</td>
+					<td>Hittable without looking, holding a part in the other hand.</td>
+				</tr>
+				<tr>
+					<td>Minimum body text</td>
+					<td class="num">18 px</td>
+					<td>
+						Arm's length from a wall mount, through safety glasses. 14px exists only for
+						timestamps and audit references — never instructions.
+					</td>
+				</tr>
+				<tr>
+					<td>Minimum text contrast</td>
+					<td class="num">7:1</td>
+					<td>AA's 4.5:1 isn't enough under washdown glare or in a dim cold store.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<section style="border-top: none; padding-top: 0; margin-top: 0">
+		<div class="ref"></div>
+		<div class="body">
+			<h3>Noise, at 85–95 dB</h3>
+			<p>
+				The room's noise floor is <em>measured</em>, not assumed — the first 30 frames of audio
+				establish it, and above threshold the interface offers the text path <em>before</em>
+				recognition fails rather than after. The level meter isn't decoration either: in a loud
+				room it's the only evidence the device can hear you.
+			</p>
+			<p>
+				And confirmation is mandatory, never auto-skipped on high confidence. Mis-recognition is
+				the norm here, and a technician acting on a misheard fault code is the exact failure this
+				product exists to prevent. In the demo, the word marked uncertain is the fault code
+				itself.
+			</p>
+
+			<h3>Hold-to-talk, and why it isn't a styling choice</h3>
+			<p>
+				A German works council will not approve a device that listens passively. Hold-to-talk
+				makes <em>"this is not recording you"</em> a physical property of the control rather than
+				a policy promise. It also happens to be more forgiving with gloves than a second precise
+				tap, and it bounds the cost per utterance. Three arguments, one gesture.
+			</p>
+
+			<h3>Language isn't translation</h3>
+			<p>
+				Switching language changes the <em>answer</em>, down to the procedure steps — not just
+				the buttons. Language names appear in their own script, because someone scanning for
+				their language doesn't read the interface language. And when the answer is Romanian and
+				the manual is German, the source chip says so, so opening a German PDF is never a
+				surprise.
+			</p>
+			<p>
+				The German copy is deliberately informal <em>du</em>. These are colleagues on a line, not
+				customers; <em>Sie</em> reads as management talking at them.
+			</p>
+		</div>
+	</section>
+
+	<section>
+		<div class="ref"><b>04</b> The system</div>
+		<div class="body">
+			<h2>Why agents are bad at your stack, specifically</h2>
+
+			<p>
+				This is the part I'd argue is the actual job, so it's where I spent the most thought.
+			</p>
+
+			<p>
+				Svelte 5 runes shipped in late 2024; Tailwind v4's CSS-first config in early 2025. Both
+				replaced the APIs that dominate every model's training data. Left unconstrained, an agent
+				writes confident, plausible, <em>wrong</em> code in this stack — Svelte 4 stores and
+				<code>export let</code>, and a <code>tailwind.config.js</code> that doesn't exist here and
+				is silently ignored.
+			</p>
+
+			<p>
+				So the goal of agents producing &gt;95% good UI isn't failing because agents are bad at
+				UI. It's failing because they're good at the <em>previous</em> version of your stack.
+				That's a rules problem, and rules are fixable.
+			</p>
+
+			<p>
+				<a href="#">AGENTS.md</a> is the deliverable: exact versions, a Svelte-4-to-5 translation
+				table, the token contract, and nine hard rules that encode safety and accessibility rather
+				than taste. One structural decision does most of the work — <b>components are dumb.</b>
+				They render props and report gestures; the state machine lives in one route. So "change the
+				flow" touches one file and "restyle the answer" touches another, and neither breaks the
+				other.
+			</p>
+
+			<h3>I chose Svelte having never shipped it</h3>
+			<p>
+				Worth saying plainly. I've built in React for years. I picked SvelteKit because a React
+				design system would make your fourth requirement impossible for your team — and because
+				the interesting problem turned out to be exactly the gap above. The weakness of the
+				tooling is why the work matters, not an obstacle to it.
+			</p>
+
+			<h2 style="margin-top: 3rem">The handover, tested</h2>
+
+			<p>
+				I ran the prompts and committed each result separately, so the diffs are inspectable in
+				git history rather than described.
+			</p>
+			<p>
+				<b>Prompt 1</b> (add a procedure step, three languages): 1 file, +5 lines, zero errors, no
+				polish needed. The localised content type made a German-only step impossible to compile.
+			</p>
+			<p>
+				<b>Prompt 2</b> (add a whole new phase to the flow): 2 files, +30 lines, zero errors, works.
+				It composed entirely from existing primitives — no new component, no new token, no raw
+				values.
+			</p>
+
+			<h3>What the polish pass caught, which is the interesting part</h3>
+
+			<p>The agent added a "Back" button with a hardcoded German string:</p>
+
+			<pre><code><span class="del">- &lt;Button onclick={() =&gt; (phase = 'answer')}&gt;Zurück&lt;/Button&gt;</span>
+<span class="ins">+ &lt;Button onclick={() =&gt; (phase = 'answer')}&gt;{t('flow.back')}&lt;/Button&gt;</span></code></pre>
+
+			<p>
+				It had followed the instruction it was <em>given</em> — "add all copy to strings.ts" — for
+				the copy the prompt named, then invented an unnamed control and reverted to its default
+				habit for that one. Auditing for it turned up three <em>pre-existing</em> violations of the
+				same rule in my own baseline. The agent's slip was a smaller version of mine.
+			</p>
+
+			<p>
+				Which makes me think &gt;95% is the wrong frame. About 95% of the <em>lines</em> were
+				right, but the missing 5% wasn't randomly distributed — it was precisely the thing that
+				only matters if you know the domain. An untranslated button compiles perfectly, passes
+				every automated check, is invisible in review, and is a dead end for half the workforce on
+				a German line.
+			</p>
+
+			<p>
+				That's a useful result, not a disappointing one. It says the design engineer's job here
+				isn't drawing screens or reviewing syntax. It's <b
+					>writing the rules, then auditing the exact class of thing rules can't yet enforce</b
+				> — and then shrinking that class.
+			</p>
+
+			<h3>So the next move is cheap and obvious</h3>
+			<p>
+				A lint rule banning literal text in Svelte markup outside <code>t()</code> would have
+				caught all four instances — the agent's and my three — at commit time. Every rule in
+				AGENTS.md that <em>can</em> become a check should become one. Prose rules degrade as an
+				agent's context fills up; a failing build doesn't. The prose file is where that migration
+				starts, not where it ends.
+			</p>
+		</div>
+	</section>
+
+	<section>
+		<div class="ref"><b>05</b> Honestly</div>
+		<div class="body">
+			<h2>What I'd want to pressure-test with you</h2>
+			<ul class="plain">
+				<li>
+					<b>The handover test wasn't cold.</b> I wrote both the rules and the code they govern.
+					A genuinely cold run — different engineer, fresh session — is the real proof, and it's
+					the first thing I'd want to do together rather than assert here.
+				</li>
+				<li>
+					<b>ASR is the largest technical risk and I can't honestly prototype it.</b> Romanian-accented
+					German over machine noise is where this product succeeds or fails. The demo carries a
+					scripted mode alongside the live mic for exactly that reason — I'd rather show you the
+					seam than hide it.
+				</li>
+				<li>
+					<b>I've assumed the wall-mounted shared device.</b> It follows from hygiene-zone phone
+					restrictions, but you have the customer contact and I don't. If it's wrong, the HR cut
+					reverses and a lot follows.
+				</li>
+				<li>
+					<b>Capture needs a verification policy I haven't designed.</b> One shift lead's answer
+					becoming canonical knowledge is how you get fast institutional learning, and also how
+					you'd propagate a confidently wrong fix.
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<div class="colophon">
+		<p>
+			<b>Colophon.</b> This document follows the same rules as the system it describes. Red appears
+			exactly once, on the safety note. Lime appears exactly once — <span
+				class="lime-mark"
+				aria-hidden="true"
+			></span>here. Hierarchy comes from rules and surface rather than shadow, because shadows are
+			invisible under washdown lighting and this system is meant to survive being printed to a
+			laminated card for the line. Nothing animates.
+		</p>
+		<p>
+			Set in system sans, Georgia, and a monospace stack for references — zero webfont bytes, for
+			the same reason the product carries none.
+		</p>
+	</div>
+</div>
