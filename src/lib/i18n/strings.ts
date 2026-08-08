@@ -44,8 +44,10 @@ const DICT = {
 		'esc.offShift': 'Ist nicht in der Schicht. Ich frage den Nächsten.',
 		'esc.speaks': 'Spricht {lang}.',
 		'esc.notify': 'Sag mir Bescheid, ich arbeite weiter',
+		// Credits the worker before the system. This is the emotional peak of the
+		// flow, and the end of an interaction is what gets remembered.
 		'esc.saved':
-			'Gespeichert. Wer das nächste Mal fragt, bekommt die Antwort sofort, in seiner Sprache.',
+			'Deine Frage hat das Handbuch verbessert. Wer das nächste Mal fragt, bekommt die Antwort sofort, in seiner Sprache.',
 		'esc.entry': 'Wissenseintrag {ref} · geprüft von {name}',
 		'esc.ok': 'Verstanden',
 		'status.offline': 'Offline',
@@ -92,7 +94,8 @@ const DICT = {
 		'esc.offShift': 'Nu este în tură. Întreb pe următorul.',
 		'esc.speaks': 'Vorbește {lang}.',
 		'esc.notify': 'Anunță-mă, continui lucrul',
-		'esc.saved': 'Salvat. Următorul care întreabă primește răspunsul imediat, în limba lui.',
+		'esc.saved':
+			'Întrebarea ta a îmbunătățit manualul. Următorul care întreabă primește răspunsul imediat, în limba lui.',
 		'esc.entry': 'Înregistrare {ref} · verificat de {name}',
 		'esc.ok': 'Am înțeles',
 		'status.offline': 'Fără conexiune',
@@ -139,7 +142,8 @@ const DICT = {
 		'esc.offShift': 'Not on shift. Asking the next person.',
 		'esc.speaks': 'Speaks {lang}.',
 		'esc.notify': "Let me know, I'll keep working",
-		'esc.saved': 'Saved. The next person who asks gets it instantly, in their language.',
+		'esc.saved':
+			'Your question just improved the manual. The next person who asks gets it instantly, in their language.',
 		'esc.entry': 'Knowledge entry {ref} · verified by {name}',
 		'esc.ok': 'Got it',
 		'status.offline': 'Offline',

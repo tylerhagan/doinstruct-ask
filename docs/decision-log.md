@@ -290,6 +290,51 @@ twenty-line script has caught something no amount of re-reading did.
 **Deliberately not added:** testing conventions, naming conventions, git
 workflow. They would pad the file without serving the brief.
 
+---
+
+## D12. Naming the psychology that was already in the design
+
+**Learned:** re-reading the writeup against the brief, two things stood out.
+
+First, a literal gap. Ask 2 is "a clickable, high-fidelity prototype **plus the
+key UX flows**", and there was no artifact showing the flows at all. Fixed with a
+flow diagram covering the three linear stages, every escape hatch, the three-way
+fork, and the single branch that loops.
+
+Second, and more useful: almost every decision here already encoded user
+psychology, but the writing explained it ergonomically. Gloves, glare, decibels,
+bytes. That reads as a good engineer and undersells the design thinking.
+
+**What changed, without changing the design:**
+
+- The escalation copy says "Das steht in keiner Anleitung", which puts the
+  failure on the documentation rather than the worker. Asking for help carries a
+  real social cost in a shift hierarchy. That line was already doing the work; it
+  just had never been named.
+- The wait screen was already applying waiting psychology: a named person, an
+  observed average rather than a promise, shift status, and explicit permission
+  to walk away. Unexplained, unbounded and idle waits each feel longer, and all
+  three are fixable in copy.
+- Provenance and refusal are one mechanism against automation bias, not two
+  features. A tool that has said "no, get a qualified person" is a tool whose
+  "yes" carries weight.
+- Persistent step ticks exist because acute stress narrows working memory, so the
+  device holds the state the worker can't.
+
+**One design change, not just a reframing.** The capture moment used to lead with
+the system's benefit. It now credits the worker first: their question improved
+the manual. That is the emotional peak of the flow and the part that gets
+remembered, and it converts needing help into having contributed, which is the
+cheapest lever on whether someone asks a second time.
+
+**The tension I decided to name rather than hide.** Voice is public. On a shared
+device on an open floor, asking aloud broadcasts what you don't know to whoever
+is nearby, possibly including the supervisor who sets your shifts. That cuts
+against the modality I chose as primary. The text path is a mitigation rather
+than a solution, and a usability test in a quiet room would never surface it. The
+measurement I'd want is not recognition accuracy but whether the asking rate
+drops when a supervisor is on shift.
+
 **Two gaps named rather than fixed.** Right-to-left is not supported, and the
 language list doinstruct publishes includes Arabic and Dari, so it should be. The
 components use physical CSS properties rather than logical ones. And focus is not

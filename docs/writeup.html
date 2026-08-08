@@ -297,6 +297,102 @@
 		max-width: 40em;
 	}
 
+	/* --- The flow ---------------------------------------------------------
+	   Stages, then the three-way fork, then the one branch that loops back. */
+
+	.flow {
+		max-width: none;
+		margin: 2rem 0 2.5rem;
+	}
+
+	.flow-caption {
+		font-family: var(--mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		margin: 0 0 0.75rem;
+	}
+
+	.flow-stages {
+		display: grid;
+		gap: 1px;
+		background: var(--rule);
+		border: 1px solid var(--rule);
+		grid-template-columns: 1fr;
+	}
+
+	@media (min-width: 720px) {
+		.flow-stages {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	.stage {
+		background: var(--paper);
+		padding: 1.2rem 1.35rem;
+	}
+
+	.stage .num {
+		display: block;
+		font-family: var(--mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		margin-bottom: 0.6rem;
+	}
+
+	.stage h4 {
+		font-family: var(--sans);
+		font-size: 1.05rem;
+		font-weight: 700;
+		margin: 0 0 0.4rem;
+	}
+
+	.stage p {
+		font-size: 0.92rem;
+		line-height: 1.5;
+		margin: 0;
+		color: var(--ink-muted);
+	}
+
+	.escape {
+		display: block;
+		margin-top: 0.8rem;
+		padding-top: 0.7rem;
+		border-top: 1px dashed var(--rule-strong);
+		font-family: var(--mono);
+		font-size: 0.7rem;
+		line-height: 1.45;
+		color: var(--accent);
+	}
+
+	.flow-fork {
+		font-family: var(--mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		text-align: center;
+		margin: 0;
+		padding: 0.9rem 0;
+	}
+
+	.flow .loop {
+		margin: 0;
+	}
+
+	.flow-return {
+		border: 1px solid var(--rule);
+		border-top: none;
+		background: var(--accent-sunk);
+		padding: 1.15rem 1.35rem;
+		font-family: var(--sans);
+		font-size: 0.95rem;
+		line-height: 1.55;
+	}
+
 	.table-scroll {
 		overflow-x: auto;
 		max-width: none;
@@ -464,24 +560,24 @@
 		<p class="eyebrow">Design Engineer · Case study · August 2026</p>
 		<h1>Knowledge dead-ends are a routing problem, not a chatbot problem.</h1>
 		<p class="standfirst">
-			A voice-first way for a maintenance technician to get an answer mid-shift, and, when there
-			is no answer, to reach the person who has it. Built in <strong>your stack</strong>, with the
+			A voice-first way for a maintenance technician to get an answer mid-shift, and, when there is
+			no answer, to reach the person who has it. Built in <strong>your stack</strong>, with the
 			rules an AI agent needs in order to keep building it.
 		</p>
 
 		<div class="links">
-			<span class="pending">
+			<a href="https://doinstruct-ask.vercel.app/">
 				<span class="label">Prototype</span>
-				<span class="value">link to follow</span>
-			</span>
-			<span class="pending">
+				<span class="value">doinstruct-ask.vercel.app</span>
+			</a>
+			<a href="https://github.com/tylerhagan/doinstruct-ask">
 				<span class="label">Repository</span>
-				<span class="value">link to follow</span>
-			</span>
-			<span class="pending">
+				<span class="value">github.com/tylerhagan/doinstruct-ask</span>
+			</a>
+			<a href="https://doinstruct-ask.vercel.app/system">
 				<span class="label">Design system</span>
-				<span class="value">/system route</span>
-			</span>
+				<span class="value">Every component, every state</span>
+			</a>
 		</div>
 	</header>
 
@@ -498,18 +594,17 @@
 
 			<p>
 				In a hygiene zone, personal phones are often restricted. Hands are wet and gloved. The
-				realistic device is shared and wall-mounted. And your own product principle, no app
-				download and no passwords, means that device has no login.
+				realistic device is shared and wall-mounted. And your own product principle, no app download
+				and no passwords, means that device has no login.
 			</p>
 
 			<p>Those constraints settled the scope for me, so I didn't have to have a preference:</p>
 
 			<blockquote>
 				<p>
-					<strong>I cut HR because it's private.</strong> On a shared device with no login,
-					payroll and holiday questions need per-worker authentication, and that breaks the
-					no-password principle. Operational knowledge isn't private, so it survives on a shared
-					device.
+					<strong>I cut HR because it's private.</strong> On a shared device with no login, payroll
+					and holiday questions need per-worker authentication, and that breaks the no-password
+					principle. Operational knowledge isn't private, so it survives on a shared device.
 				</p>
 				<p style="margin-top: 0.9rem">
 					<strong>Voice is primary because wet, gloved hands can't type.</strong> Text stays as a
@@ -518,9 +613,8 @@
 			</blockquote>
 
 			<p>
-				From there I narrowed once more, down to a single job: one technician, one shift, fault
-				code E-212 on a filling line, German documentation, a Romanian speaker, a five-year-old
-				Android.
+				From there I narrowed once more, down to a single job: one technician, one shift, fault code
+				E-212 on a filling line, German documentation, a Romanian speaker, a five-year-old Android.
 			</p>
 
 			<h3>What else I cut</h3>
@@ -538,8 +632,8 @@
 					controls survive: language and contrast.
 				</li>
 				<li>
-					<b>Offline answering.</b> The shell is cacheable but retrieval isn't. I'd rather name
-					the gap than fake it.
+					<b>Offline answering.</b> The shell is cacheable but retrieval isn't. I'd rather name the
+					gap than fake it.
 				</li>
 			</ul>
 		</div>
@@ -551,9 +645,8 @@
 			<h2>An assistant that shrugs has rebuilt the dead-end</h2>
 
 			<p>
-				Your brief describes the problem precisely: <em
-					>"the answer is a colleague or supervisor away. So they wait."</em
-				>
+				Your brief describes the problem precisely:
+				<em>"the answer is a colleague or supervisor away. So they wait."</em>
 				The knowledge isn't missing. It's sitting inside a person who isn't reachable right now.
 			</p>
 
@@ -565,49 +658,131 @@
 		</div>
 	</section>
 
-	<div class="loop">
-		<div class="branch">
-			<span class="tag">Response 1</span>
-			<h4>Answer, with provenance</h4>
-			<p>
-				Grounded in a named document, section and page, with the document's age visible. Stale
-				documentation is a hazard, and hiding its age quietly transfers that risk to the worker.
-			</p>
+	<div class="flow">
+		<p class="flow-caption">The flow, including every escape</p>
+
+		<div class="flow-stages">
+			<div class="stage">
+				<span class="num">Stage 1</span>
+				<h4>Arrive</h4>
+				<p>
+					A wall-mounted device already scoped to Line 3, Filler F2, fault E-212. No login, no
+					download, and nothing typed by a gloved hand.
+				</p>
+			</div>
+			<div class="stage">
+				<span class="num">Stage 2</span>
+				<h4>Hold and ask</h4>
+				<p>
+					Hold to talk, never an open mic. The level meter is the only proof the device can hear you
+					at 90 dB, and the room's noise floor is measured rather than assumed.
+				</p>
+				<span class="escape">Escape: type instead. Always present, never buried.</span>
+			</div>
+			<div class="stage">
+				<span class="num">Stage 3</span>
+				<h4>Confirm what was heard</h4>
+				<p>
+					Never auto-skipped on high confidence. Uncertain words are marked, and in the demo the
+					marked word is the fault code, which is the token you least want wrong.
+				</p>
+				<span class="escape">Escape: say it again, or switch to typing.</span>
+			</div>
 		</div>
-		<div class="branch">
-			<span class="tag">Response 2</span>
-			<h4>Refuse, on safety</h4>
-			<p>
-				Guard-door bypass, lockout and tagout: an explicit stop, and a named qualified person. A
-				refusal rather than a hedged procedure wearing a disclaimer.
-			</p>
+
+		<p class="flow-fork">Then exactly one of three</p>
+
+		<div class="loop">
+			<div class="branch">
+				<span class="tag">Response 1</span>
+				<h4>Answer, with provenance</h4>
+				<p>
+					Grounded in a named document, section and page, with the document's age visible. Stale
+					documentation is a hazard, and hiding its age quietly transfers that risk to the worker.
+				</p>
+				<span class="escape">Escape: "this didn't help" drops straight into response 3.</span>
+			</div>
+			<div class="branch">
+				<span class="tag">Response 2</span>
+				<h4>Refuse, on safety</h4>
+				<p>
+					Guard-door bypass, lockout and tagout: an explicit stop, and a named qualified person. A
+					refusal rather than a hedged procedure wearing a disclaimer.
+				</p>
+			</div>
+			<div class="branch route">
+				<span class="tag">Response 3</span>
+				<h4>Route to a named human</h4>
+				<p>
+					Marek, shift lead, usually replies in about four minutes, speaks Romanian. A named person,
+					an observed wait rather than a promised one, and permission to walk away and be fetched.
+				</p>
+				<span class="escape">Then: reply, capture, audit entry, and back into response 1.</span>
+			</div>
 		</div>
-		<div class="branch route">
-			<span class="tag">Response 3</span>
-			<h4>Route to a named human</h4>
-			<p>
-				Marek, shift lead, usually replies in about four minutes, speaks Romanian. His answer is
-				then captured, so the next person to ask gets it instantly, in their own language.
-			</p>
+
+		<div class="flow-return">
+			<b>Only the third branch loops, and that loop is the product.</b> Marek's answer is captured,
+			credited to the worker who asked, and written into the knowledge base with an audit entry
+			attached. The next person to ask the same thing gets response 1 instead, in their own
+			language. The wait happens once, and it produces an asset.
 		</div>
 	</div>
 
 	<section style="border-top: none; padding-top: 0; margin-top: 1.5rem">
 		<div class="ref"></div>
 		<div class="body">
+			<h3>Three decisions in that flow are about people, not machines</h3>
+
+			<p>
+				<b>Asking for help has a social cost.</b> Admitting you don't know something in front of the
+				person who writes the rota is expensive, and the usual result is that people stop asking. So
+				when the assistant can't answer, it says <em>"Das steht in keiner Anleitung"</em>, which
+				puts the failure on the documentation rather than on the worker. That's one line of copy,
+				and it does more for whether this feature gets used than any amount of retrieval accuracy.
+			</p>
+
+			<p>
+				<b>The wait is designed rather than displayed.</b> Marek is named, four minutes is an
+				observed average rather than a promise the system can break, his shift status is shown, and
+				the worker is explicitly released to carry on working. Unexplained waits feel longer than
+				explained ones, uncertain waits feel longer than bounded ones, and idle waiting feels
+				longest of all. All three are fixable in copy, and none of them require the answer to arrive
+				any sooner.
+			</p>
+
+			<p>
+				<b>The end of the interaction credits the worker.</b> Capture now says their question
+				improved the manual before it says anything about the system. That moment is the emotional
+				peak of the flow and the part that gets remembered, and it reframes needing help as having
+				contributed. It's the cheapest lever available on whether someone asks a second time.
+			</p>
+
 			<p class="loop-note">
-				That third branch is the commercial argument. The wait happens once and it produces an
-				asset. Every "this didn't help" tap is a gap in the knowledge base being reported for
-				free, and every captured answer emits an audit entry, which compounds into the compliance
-				product you already sell rather than competing with it.
+				The same loop is the commercial argument. Every "this didn't help" is a gap in the knowledge
+				base reported for free, and every captured answer emits an audit entry, which compounds into
+				the compliance product you already sell rather than competing with it.
 			</p>
 
 			<h3>Where this sits next to Genius</h3>
 			<p>
-				Genius turns documents into knowledge. Ask retrieves that knowledge at the moment
-				something breaks, and routes whatever is missing back into it. A sibling rather than a
-				rival, which is also why I didn't invent a second AI brand to sit alongside yours. The
-				name is a placeholder and I'd expect you to overrule it.
+				Genius turns documents into knowledge. Ask retrieves that knowledge at the moment something
+				breaks, and routes whatever is missing back into it. A sibling rather than a rival, which is
+				also why I didn't invent a second AI brand to sit alongside yours. The name is a placeholder
+				and I'd expect you to overrule it.
+			</p>
+
+			<h3>Provenance and refusal are the same mechanism</h3>
+			<p>
+				Under time pressure, people over-trust automated advice, and a stopped line is precisely the
+				condition that produces it. The counterweight isn't a disclaimer, because nobody reads
+				disclaimers. It's two things that change what the worker actually does: a source they can
+				open and check, and a system that visibly declines to answer some questions at all.
+			</p>
+			<p>
+				A tool that has said "no, get a qualified person" in front of you is a tool whose "yes"
+				carries weight. Refusing well is how the rest of the answers earn being believed, which is
+				why I'd resist any pressure to soften the stop state into a hedge.
 			</p>
 
 			<div class="safety">
@@ -615,8 +790,8 @@
 				<p>
 					An AI confidently describing a machine fix is a liability question before it's a UX
 					question. Red is reserved for safety stop across the whole system, never for validation
-					errors and never for "delete". That exclusivity is the point. A worker has to be able
-					to trust that red means stop working.
+					errors and never for "delete". That exclusivity is the point. A worker has to be able to
+					trust that red means stop working.
 				</p>
 			</div>
 		</div>
@@ -654,16 +829,16 @@
 					<td>Web font bytes</td>
 					<td class="num">0</td>
 					<td>
-						Covered below. Losing a typeface I control is a real cost, but a technician staring
-						at invisible text while a line is down is a larger one.
+						Covered below. Losing a typeface I control is a real cost, but a technician staring at
+						invisible text while a line is down is a larger one.
 					</td>
 				</tr>
 				<tr>
 					<td>Minimum tap target</td>
 					<td class="num">64 px</td>
 					<td>
-						WCAG 2.2 AAA asks for 44px, which assumes a bare fingertip. A cut-resistant glove
-						has a contact patch of roughly 14 to 16mm and no proprioceptive feedback.
+						WCAG 2.2 AAA asks for 44px, which assumes a bare fingertip. A cut-resistant glove has a
+						contact patch of roughly 14 to 16mm and no proprioceptive feedback.
 					</td>
 				</tr>
 				<tr>
@@ -675,8 +850,8 @@
 					<td>Minimum body text</td>
 					<td class="num">18 px</td>
 					<td>
-						Read at arm's length from a wall mount, often through safety glasses. 14px exists
-						only for timestamps and audit references, never for instructions.
+						Read at arm's length from a wall mount, often through safety glasses. 14px exists only
+						for timestamps and audit references, never for instructions.
 					</td>
 				</tr>
 				<tr>
@@ -694,11 +869,26 @@
 	<section style="border-top: none; padding-top: 0; margin-top: 0">
 		<div class="ref"></div>
 		<div class="body">
+			<h3>What a stopped line does to attention</h3>
+			<p>
+				Acute stress narrows working memory. The person using this has a line down, a supervisor
+				forming an opinion, and a procedure to follow, and they are the least able to hold a
+				five-step sequence in their head at exactly the moment they most need to.
+			</p>
+			<p>
+				So the device holds the state instead. Steps are ticked and the ticks persist, because a
+				technician reads a step, puts the device down, does the work with both hands, and comes back
+				thirty seconds later needing to know where they were. The next step is visually dominant and
+				completed ones recede without disappearing, since verifying what you already did is part of
+				the work. One instruction per step, imperative, with the reason after the instruction rather
+				than before it, so the sentence survives being read alone and in a hurry.
+			</p>
+
 			<h3>Noise, at 85 to 95 dB</h3>
 			<p>
 				The room's noise floor is measured rather than assumed. The first thirty frames of audio
-				establish it, and above the threshold the interface offers the text path before
-				recognition fails rather than after it.
+				establish it, and above the threshold the interface offers the text path before recognition
+				fails rather than after it.
 			</p>
 			<p>
 				Confirmation of what was heard is mandatory and never auto-skipped on high confidence.
@@ -711,16 +901,32 @@
 			<p>
 				A German works council will not approve a device that listens passively. Holding to talk
 				makes "this is not recording you" a physical property of the control rather than a policy
-				promise. It also happens to be more forgiving with gloves than a second precise tap, and
-				it bounds the cost of each utterance. Three arguments, one gesture.
+				promise. It also happens to be more forgiving with gloves than a second precise tap, and it
+				bounds the cost of each utterance. Three arguments, one gesture.
+			</p>
+
+			<h3>The part of this I'm least comfortable with</h3>
+			<p>
+				Voice is public. On a shared device on an open floor, asking a question out loud broadcasts
+				what you don't know to whoever is standing nearby, and that can include the supervisor whose
+				opinion sets your shifts. Everything above about the social cost of asking applies double
+				when the asking is audible, and it cuts against the modality I chose as primary.
+			</p>
+			<p>
+				The text path is the honest answer, which is why it's never buried and why the interface
+				offers it before recognition fails rather than after. But it's a mitigation rather than a
+				solution, and a usability test in a quiet room would never surface the problem at all. If
+				this went further, the thing I'd want to watch is not accuracy but who asks and when. I'd
+				expect the asking rate to drop when a supervisor is on shift, and that one measurement would
+				tell you more about whether this works than any recognition benchmark.
 			</p>
 
 			<h3>Language isn't translation</h3>
 			<p>
 				Switching language changes the answer itself, down to the procedure steps, not just the
 				buttons. Language names appear in their own script, because someone scanning for their
-				language doesn't read the interface language. When the answer is Romanian and the manual
-				is German, the source chip says so, so opening a German PDF is never a surprise.
+				language doesn't read the interface language. When the answer is Romanian and the manual is
+				German, the source chip says so, so opening a German PDF is never a surprise.
 			</p>
 			<p>
 				The German copy uses the informal "du" deliberately. These are colleagues on a line rather
@@ -737,11 +943,11 @@
 			<p>I think this is the actual job, so it's where I spent most of the thinking.</p>
 
 			<p>
-				Svelte 5 runes shipped in late 2024, and Tailwind v4's CSS-first config in early 2025.
-				Both replaced the APIs that dominate the training data every model learned from. Left
+				Svelte 5 runes shipped in late 2024, and Tailwind v4's CSS-first config in early 2025. Both
+				replaced the APIs that dominate the training data every model learned from. Left
 				unconstrained, an agent writes confident, plausible, wrong code in your stack: Svelte 4
-				stores and <code>export let</code>, and a <code>tailwind.config.js</code> that doesn't
-				exist here and is silently ignored.
+				stores and <code>export let</code>, and a <code>tailwind.config.js</code> that doesn't exist
+				here and is silently ignored.
 			</p>
 
 			<p>
@@ -751,12 +957,14 @@
 			</p>
 
 			<p>
-				<code>AGENTS.md</code> is the deliverable: exact versions, a Svelte 4 to 5 translation
-				table, the token contract, and nine non-negotiables that encode safety and accessibility
-				rather than taste. One structural decision does most of the work. Components are dumb;
-				they render props and report gestures, and the state machine lives in one route. So
-				"change the flow" touches one file, "restyle the answer" touches another, and neither
-				breaks the other.
+				<a href="https://github.com/tylerhagan/doinstruct-ask/blob/master/AGENTS.md"
+					><code>AGENTS.md</code></a
+				>
+				is the deliverable: exact versions, a Svelte 4 to 5 translation table, the token contract,
+				and nine non-negotiables that encode safety and accessibility rather than taste. One
+				structural decision does most of the work. Components are dumb; they render props and report
+				gestures, and the state machine lives in one route. So "change the flow" touches one file,
+				"restyle the answer" touches another, and neither breaks the other.
 			</p>
 
 			<p>
@@ -772,35 +980,35 @@
 			<p>
 				The rules I'd point at first aren't the visual ones. <b>The dependency list is closed</b>,
 				because one convenience library quietly destroys the 48 KB budget that every claim in the
-				previous section rests on, and nothing would catch it. And <b>never weaken a check to make
-				it pass</b>, which matters now that there are checks worth protecting. An agent that can't
-				reach 7:1 will lower the threshold rather than fix the colour, and the result compiles,
-				passes, and is a lie.
+				previous section rests on, and nothing would catch it. And
+				<b>never weaken a check to make it pass</b>, which matters now that there are checks worth
+				protecting. An agent that can't reach 7:1 will lower the threshold rather than fix the
+				colour, and the result compiles, passes, and is a lie.
 			</p>
 
 			<h3>I chose Svelte having never shipped it</h3>
 			<p>
 				Worth saying plainly. I've built in React for years. I picked SvelteKit because a React
 				design system would make your fourth requirement impossible for your team, and because the
-				interesting problem turned out to be the gap described above. The weakness of the tooling
-				is the reason the work matters rather than an obstacle to it.
+				interesting problem turned out to be the gap described above. The weakness of the tooling is
+				the reason the work matters rather than an obstacle to it.
 			</p>
 
 			<h2 style="margin-top: 3rem">The handover, tested</h2>
 
 			<p>
-				I ran the prompts and committed each result separately, so the diffs are inspectable in
-				git history rather than described in prose.
+				I ran the prompts and committed each result separately, so the diffs are inspectable in git
+				history rather than described in prose.
 			</p>
 			<p>
 				<b>Prompt 1</b>, adding a procedure step in three languages: one file, five lines added,
-				zero errors, no polish needed. The localised content type made a German-only step
-				impossible to compile.
+				zero errors, no polish needed. The localised content type made a German-only step impossible
+				to compile.
 			</p>
 			<p>
-				<b>Prompt 2</b>, adding a whole new phase to the flow: two files, thirty lines, zero
-				errors, working feature. It composed entirely from existing primitives, with no new
-				component, no new token and no raw values.
+				<b>Prompt 2</b>, adding a whole new phase to the flow: two files, thirty lines, zero errors,
+				working feature. It composed entirely from existing primitives, with no new component, no
+				new token and no raw values.
 			</p>
 
 			<h3>What the polish pass caught, which is the interesting part</h3>
@@ -811,18 +1019,18 @@
 <span class="ins">+ &lt;Button onclick={() =&gt; (phase = 'answer')}&gt;{t('flow.back')}&lt;/Button&gt;</span></code></pre>
 
 			<p>
-				It had followed the instruction it was given, "add all copy to strings.ts", for the copy
-				the prompt actually named. Then it invented an unnamed control and fell back to its
-				default habit for that one. When I went looking, I found three more violations of the same
-				rule sitting in my own baseline. The agent's slip was a smaller version of mine.
+				It had followed the instruction it was given, "add all copy to strings.ts", for the copy the
+				prompt actually named. Then it invented an unnamed control and fell back to its default
+				habit for that one. When I went looking, I found three more violations of the same rule
+				sitting in my own baseline. The agent's slip was a smaller version of mine.
 			</p>
 
 			<p>
-				Which makes me think 95% is the wrong way to frame the target. Roughly 95% of the lines
-				were right, but the missing part wasn't randomly distributed. It was precisely the thing
-				that only matters if you know the domain. An untranslated button compiles perfectly,
-				passes every automated check, is invisible in review, and is a dead end for half the
-				workforce on a German line.
+				Which makes me think 95% is the wrong way to frame the target. Roughly 95% of the lines were
+				right, but the missing part wasn't randomly distributed. It was precisely the thing that
+				only matters if you know the domain. An untranslated button compiles perfectly, passes every
+				automated check, is invisible in review, and is a dead end for half the workforce on a
+				German line.
 			</p>
 
 			<p>
@@ -834,15 +1042,15 @@
 			<h3>So I started shrinking it</h3>
 
 			<p>
-				<code>AGENTS.md</code> claimed "no text token below 7:1 exists". That was prose, which
-				meant it stopped being true the moment anyone changed a colour. I replaced it with a
-				script that fails the build.
+				<code>AGENTS.md</code> claimed "no text token below 7:1 exists". That was prose, which meant
+				it stopped being true the moment anyone changed a colour. I replaced it with a script that
+				fails the build.
 			</p>
 
 			<p>
 				It immediately caught five colour pairs that didn't meet the rule I'd written, including
-				four of my own status colours sitting between 5.4:1 and 6.1:1. I'd asserted a standard in
-				a document and then not met it, and no human review had noticed. It also found two of your
+				four of my own status colours sitting between 5.4:1 and 6.1:1. I'd asserted a standard in a
+				document and then not met it, and no human review had noticed. It also found two of your
 				brand swatches that don't clear the floor on a plant floor, which I'll come to below.
 			</p>
 
@@ -861,10 +1069,10 @@ All contrast checks passed.</code></pre>
 
 			<p>
 				That last detail is the one I'd point at. Those labels are invisible on screen, compile
-				perfectly, and pass every other check. What they do is read out German to a Romanian
-				speaker using a screen reader, inside a product whose entire argument is that language
-				should not be a barrier. I had written the rule, broken it four times, and not noticed
-				until a twenty-line script told me.
+				perfectly, and pass every other check. What they do is read out German to a Romanian speaker
+				using a screen reader, inside a product whose entire argument is that language should not be
+				a barrier. I had written the rule, broken it four times, and not noticed until a twenty-line
+				script told me.
 			</p>
 
 			<p>
@@ -883,9 +1091,9 @@ All contrast checks passed.</code></pre>
 			</p>
 
 			<p>
-				All three compiled without complaint and passed every check I'd just built. Two of them
-				only appear in a theme you have to deliberately toggle into. They were found by looking at
-				the running product on a phone, and nothing else would have found them.
+				All three compiled without complaint and passed every check I'd just built. Two of them only
+				appear in a theme you have to deliberately toggle into. They were found by looking at the
+				running product on a phone, and nothing else would have found them.
 			</p>
 
 			<p>
@@ -928,20 +1136,20 @@ All contrast checks passed.</code></pre>
 			<h2>What I'd want to pressure-test with you</h2>
 			<ul class="plain">
 				<li>
-					<b>The handover test wasn't cold.</b> I wrote both the rules and the code they govern.
-					A genuinely cold run, with a different engineer and a fresh session, is the real proof,
-					and it's the first thing I'd want to do together rather than assert here.
+					<b>The handover test wasn't cold.</b> I wrote both the rules and the code they govern. A
+					genuinely cold run, with a different engineer and a fresh session, is the real proof, and
+					it's the first thing I'd want to do together rather than assert here.
 				</li>
 				<li>
-					<b>Speech recognition is the largest technical risk and I can't honestly prototype
-						it.</b> Romanian-accented German over machine noise is where this product succeeds or
-					fails. The demo carries a scripted mode alongside the live microphone for exactly that
-					reason. I'd rather show you the seam than hide it.
+					<b>Speech recognition is the largest technical risk and I can't honestly prototype it.</b>
+					Romanian-accented German over machine noise is where this product succeeds or fails. The
+					demo carries a scripted mode alongside the live microphone for exactly that reason. I'd
+					rather show you the seam than hide it.
 				</li>
 				<li>
 					<b>I've assumed a shared, wall-mounted device.</b> It follows from hygiene-zone phone
-					restrictions, but you have the customer contact and I don't. If that assumption is
-					wrong, the HR cut reverses and a good deal follows from it.
+					restrictions, but you have the customer contact and I don't. If that assumption is wrong,
+					the HR cut reverses and a good deal follows from it.
 				</li>
 				<li>
 					<b>Capture needs a verification policy I haven't designed.</b> One shift lead's answer
@@ -951,17 +1159,17 @@ All contrast checks passed.</code></pre>
 				<li>
 					<b>This isn't right-to-left ready, and your language list says it should be.</b> You
 					advertise 35+ languages, and that list includes Arabic and Dari. My components use
-					physical CSS properties rather than logical ones, so the layout would not mirror. The
-					rule is now in <code>docs/rules/accessibility.md</code> so new work doesn't deepen it,
-					but the existing migration is outstanding. I found this late and chose to name it
-					rather than rush it the day before sending.
+					physical CSS properties rather than logical ones, so the layout would not mirror. The rule
+					is now in <code>docs/rules/accessibility.md</code> so new work doesn't deepen it, but the
+					existing migration is outstanding. I found this late and chose to name it rather than rush
+					it the day before sending.
 				</li>
 				<li>
-					<b>Focus isn't managed across phase changes.</b> Moving between screens leaves a
-					keyboard or screen reader user on a control that no longer exists, which is a dead end
-					inside a product about removing dead ends. Also worth flagging that the European
-					Accessibility Act has applied since June 2025, so for a German B2B seller this is a
-					procurement question rather than only an ethical one.
+					<b>Focus isn't managed across phase changes.</b> Moving between screens leaves a keyboard
+					or screen reader user on a control that no longer exists, which is a dead end inside a
+					product about removing dead ends. Also worth flagging that the European Accessibility Act
+					has applied since June 2025, so for a German B2B seller this is a procurement question
+					rather than only an ethical one.
 				</li>
 			</ul>
 		</div>
