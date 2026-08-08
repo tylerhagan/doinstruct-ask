@@ -380,3 +380,50 @@ become a check, after the high-contrast border bug and the token name collision.
 It also came from the only source that has reliably found this class of problem:
 someone looking at the running product and asking why. Worth remembering when
 deciding how much of a design system to automate.
+
+---
+
+## D14. Setting the writeup in their brand rather than mine
+
+**Decision:** restyle the writeup to match doinstruct's own deck.
+
+The document previously had a deliberately separate identity: cool paper, ochre
+accent, a serif for reading, square rules. It was a defensible choice, and it
+made the document look like a considered piece of design that happened to be
+about doinstruct.
+
+Matching their deck makes a different and, on reflection, better argument. A
+design engineer joining a company does not arrive and impose a look. They work
+inside the identity that exists. Doing that visibly, using values read out of
+their production stylesheet rather than eyedropped from a PDF, demonstrates the
+thing the role actually requires.
+
+**What was adopted:** the exact swatches, pill-shaped section eyebrows,
+oversized numerals on cards, generously rounded cards, dark statement bands, and
+a halftone dot motif from their cover, built in CSS rather than as an image.
+
+**Structural note.** Their deck alternates dark statement slides with light
+content slides. That is also the right structure for something this long to
+read, so body copy always sits on off-white and the dark treatment is reserved
+for the masthead, the pull quote, the branch that loops, and the colophon. A
+brand deck can set a paragraph on near-black. A three-thousand word document
+should not.
+
+**Two deliberate deviations, both stated in the colophon.** Their mid-green is
+4.6:1 on their own off-white, so body text uses a darkened version. And red still
+appears exactly once, on the safety note, because that rule belongs to the
+product rather than the brand and it is worth keeping true.
+
+**Single theme, on purpose.** A brand has one look, so there is no light and dark
+variant here. Every colour is painted explicitly so the page holds on whatever
+background it is rendered against.
+
+**Verified rather than assumed:** every text pair in the document clears 7:1,
+which is the same floor the product holds itself to. The lowest is red on
+off-white at 7.58:1.
+
+**Typeface stays a system stack.** Their brand face is Manrope. Loading it would
+cost a request that can fail, and the product ships zero font bytes for a
+reason I would rather stay consistent about. The colophon says so and offers to
+change it, which seemed better than either silently diverging or silently
+conforming.
