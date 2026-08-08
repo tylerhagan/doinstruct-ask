@@ -1,0 +1,138 @@
+/* ---------------------------------------------------------------------------
+   doinstruct Ask — theme
+   Generated from tokens.json. Consumed by Tailwind v4 via @theme.
+
+   AGENTS: use the utility classes below. Do NOT write raw hex values, raw px
+   sizes, or arbitrary values like `p-[13px]`. If a value you need does not
+   exist here, that is a signal the design intent is unclear — ask, don't invent.
+--------------------------------------------------------------------------- */
+
+@theme {
+	/* -- Brand ------------------------------------------------------------ */
+	--color-ink: #131a0e;
+	--color-lime: #cbf227;
+	--color-cream: #faf9f5;
+
+	/* -- Surfaces --------------------------------------------------------- */
+	--color-surface: #faf9f5;
+	--color-surface-raised: #efede6;
+	--color-surface-sunken: #e2e0d6;
+	--color-surface-inverse: #131a0e;
+
+	/* -- Text (nothing below 7:1) ----------------------------------------- */
+	--color-fg: #0f1408;
+	--color-fg-muted: #4a5340;
+	--color-fg-inverse: #faf9f5;
+
+	/* -- Status (stop is reserved for safety) ------------------------------ */
+	--color-stop: #b01810;
+	--color-stop-surface: #fbeae9;
+	--color-caution: #8a5a00;
+	--color-caution-surface: #fdf3e2;
+	--color-ok: #2c6b34;
+	--color-ok-surface: #eaf3ea;
+	--color-pending: #1d4ed8;
+	--color-pending-surface: #e8eefc;
+
+	/* -- Borders ---------------------------------------------------------- */
+	--color-border: #c9c6ba;
+	--color-border-strong: #4a5340;
+
+	/* -- Type: system stack only, zero webfont bytes ----------------------- */
+	--font-sans:
+		system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+	--text-meta: 14px;
+	--text-meta--line-height: 20px;
+	--text-small: 16px;
+	--text-small--line-height: 24px;
+	--text-body: 18px;
+	--text-body--line-height: 28px;
+	--text-lead: 22px;
+	--text-lead--line-height: 32px;
+	--text-title: 28px;
+	--text-title--line-height: 36px;
+	--text-display: 34px;
+	--text-display--line-height: 42px;
+	--text-hero: 42px;
+	--text-hero--line-height: 48px;
+
+	/* -- Gloved-hand sizing ------------------------------------------------ */
+	--spacing-tap: 64px;
+	--spacing-tap-primary: 96px;
+
+	/* -- Radii ------------------------------------------------------------- */
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 16px;
+	--radius-xl: 24px;
+
+	/* -- Motion: short, and never positional ------------------------------- */
+	--ease-out-soft: cubic-bezier(0.2, 0, 0, 1);
+
+	/* -- No elevation scale. Shadows are invisible under washdown lighting. - */
+}
+
+/* ---------------------------------------------------------------------------
+   High contrast — a lighting condition, not a preference.
+   Toggled by the worker, persisted per device.
+--------------------------------------------------------------------------- */
+[data-contrast='high'] {
+	--color-surface: #ffffff;
+	--color-surface-raised: #ffffff;
+	--color-surface-sunken: #f0f0f0;
+	--color-fg: #000000;
+	--color-fg-muted: #1a1a1a;
+	--color-border: #000000;
+	--color-border-strong: #000000;
+	--color-stop-surface: #ffffff;
+	--color-caution-surface: #ffffff;
+	--color-ok-surface: #ffffff;
+	--color-pending-surface: #ffffff;
+}
+
+[data-contrast='high'] * {
+	border-width: 2px !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+:root {
+	color-scheme: light;
+	-webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+	background-color: var(--color-surface);
+	color: var(--color-fg);
+	font-family: var(--font-sans);
+	font-size: var(--text-body);
+	line-height: var(--text-body--line-height);
+}
+
+/* Focus is thick because it may be driven by a knuckle, a stylus, or a
+   screen reader in an environment where audio cues are inaudible. */
+:where(a, button, [role='button'], input, select, textarea, [tabindex]):focus-visible {
+	outline: 4px solid var(--color-ink);
+	outline-offset: 3px;
+	border-radius: var(--radius-sm);
+}
+
+[data-contrast='high']
+	:where(a, button, [role='button'], input, select, textarea, [tabindex]):focus-visible {
+	outline-color: #000000;
+}
+
+/* Nothing animates position; a worker who glances away must find the screen
+   where they left it. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
