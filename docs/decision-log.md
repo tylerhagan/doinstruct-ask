@@ -186,3 +186,63 @@ Worth recording that the script itself took three attempts. The first reported
 The second passed everything, because it was reading the high-contrast overrides
 where every value is pure black or white. Both were confident, plausible and
 wrong, which is the same failure mode the whole submission is about.
+
+---
+
+## D9. High contrast was drawing borders nobody asked for
+
+**Learned:** turning on high contrast put a black box around almost everything,
+including bare paragraphs, layout containers and the "Type" link. Caught by
+looking at the running app rather than by any check.
+
+**Cause:** one line.
+
+```css
+[data-contrast='high'] * { border-width: 2px !important; }
+```
+
+Tailwind's preflight sets `border: 0 solid` on every element, so forcing a width
+gives a visible border to everything, not just to things that opted in.
+
+**Decision:** delete it rather than narrow it. An audit showed every bordered
+element in the product already uses `border-2`, and there is not a single 1px
+border anywhere, so the rule was buying nothing. High contrast still works
+entirely through the token overrides: surfaces go white, borders and text go pure
+black.
+
+**What I changed as a result.** The contrast script was deliberately ignoring the
+high-contrast block, on the grounds that letting black-on-white win would make
+every check trivially pass. That reasoning was right about merging and wrong
+about coverage, so the two palettes are now checked separately. Both pass.
+
+**The honest lesson.** I had just finished arguing that rules should become
+checks, and this defect was in the same file as the tokens those checks read. It
+was a visual regression in a state a reviewer has to deliberately toggle into, so
+neither the type checker nor the contrast script would ever have seen it. Some
+rules are only enforceable by looking, which is an argument for screenshot tests
+on the high-contrast state rather than an argument against automation.
+
+---
+
+## D10. The device frame was not clipping its children
+
+**Learned:** the rounded frame had square corners poking through at the top,
+because the StatusBar's corners and bottom border sat outside the radius.
+
+**Decision:** `sm:overflow-hidden` on the frame, with the main area scrolling
+inside it at that breakpoint. Scoped to `sm` deliberately: below it there is no
+radius to clip to, and introducing an overflow container would break the sticky
+footer, which depends on the body being the scrollport on a phone.
+
+**A second bug found while fixing the first.** The frame used `max-w-[440px]` and
+`min-h-[860px]`, both arbitrary values that my own rule 4 in `AGENTS.md`
+prohibits. Replacing them with tokens exposed something worth knowing: Tailwind
+resolves `max-w-*` against `--container-*` but falls back to `--spacing-*`, so
+naming both `--container-device` and `--spacing-device` made `max-w-device`
+silently resolve to 860px instead of 440px. It compiled clean and rendered at
+twice the intended width. Renamed to `--container-device` and `--spacing-frame`,
+and the trap is now written into `AGENTS.md`.
+
+Three defects in this area, all of which compiled without complaint and none of
+which any check would have caught. That is the counterweight to D8: automate what
+you can, and keep looking at the running product for the rest.

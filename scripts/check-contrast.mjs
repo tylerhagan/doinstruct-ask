@@ -15,17 +15,23 @@ import { readFileSync } from 'node:fs';
 
 const css = readFileSync(new URL('../src/lib/design/tokens.css', import.meta.url), 'utf8');
 
-/**
- * Only the @theme block. The [data-contrast='high'] block redefines the same
- * token names in pure black and white, and letting those win would make every
- * check trivially pass, which is exactly the kind of silent green tick this
- * script exists to prevent.
- */
-const theme = css.slice(css.indexOf('@theme'), css.indexOf("[data-contrast='high']"));
+const readTokens = (block) =>
+	Object.fromEntries(
+		[...block.matchAll(/--color-([a-z-]+):\s*(#[0-9a-fA-F]{6})/g)].map((m) => [m[1], m[2]])
+	);
 
-const tokens = Object.fromEntries(
-	[...theme.matchAll(/--color-([a-z-]+):\s*(#[0-9a-fA-F]{6})/g)].map((m) => [m[1], m[2]])
-);
+const highStart = css.indexOf("[data-contrast='high']");
+
+/**
+ * The two palettes are checked separately rather than merged into one lookup.
+ * Letting the high-contrast overrides win globally would make every check
+ * trivially pass, since that block is mostly pure black and white, and a silent
+ * green tick is exactly what this script exists to prevent.
+ */
+const base = readTokens(css.slice(css.indexOf('@theme'), highStart));
+
+/** High contrast only overrides some names; the rest fall through to base. */
+const high = { ...base, ...readTokens(css.slice(highStart, css.indexOf('[data-contrast', highStart + 1))) };
 
 const channel = (v) => {
 	const c = v / 255;
@@ -62,19 +68,25 @@ const PAIRS = [
 
 let failed = 0;
 
-for (const [fg, bg, min, label] of PAIRS) {
-	if (!tokens[fg] || !tokens[bg]) {
-		console.error(`MISSING  --color-${fg} or --color-${bg}`);
-		failed++;
-		continue;
+function run(name, tokens) {
+	console.log(`\n${name}`);
+	for (const [fg, bg, min, label] of PAIRS) {
+		if (!tokens[fg] || !tokens[bg]) {
+			console.error(`MISSING  --color-${fg} or --color-${bg}`);
+			failed++;
+			continue;
+		}
+		const r = ratio(tokens[fg], tokens[bg]);
+		const ok = r >= min;
+		if (!ok) failed++;
+		console.log(
+			`${ok ? 'pass' : 'FAIL'}  ${r.toFixed(2).padStart(6)}:1  (min ${min})  ${fg} on ${bg}  ${label}`
+		);
 	}
-	const r = ratio(tokens[fg], tokens[bg]);
-	const ok = r >= min;
-	if (!ok) failed++;
-	console.log(
-		`${ok ? 'pass' : 'FAIL'}  ${r.toFixed(2).padStart(6)}:1  (min ${min})  ${fg} on ${bg}  ${label}`
-	);
 }
+
+run('Default palette', base);
+run('High contrast', high);
 
 if (failed) {
 	console.error(`\n${failed} contrast check(s) failed.`);

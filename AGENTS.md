@@ -78,6 +78,16 @@ report a task complete without running it.
   `p-[13px]` or `text-[#333]`. Every value you need already exists as a token.
 - If the token you need does not exist, **stop and ask**. A missing token means
   the design intent is undefined, and inventing one silently forks the system.
+- **Namespaces overlap, so never give two tokens the same name.** `max-w-*`
+  resolves against `--container-*` but falls back to `--spacing-*`. Defining both
+  `--container-device` and `--spacing-device` means `max-w-device` silently picks
+  the spacing value, builds clean, and renders at the wrong size. This happened
+  here; the tokens are now `--container-device` and `--spacing-frame`.
+- **Do not add a blanket rule under `[data-contrast='high']`.** Tailwind's
+  preflight sets `border: 0 solid` on every element, so a rule like
+  `[data-contrast='high'] * { border-width: 2px }` gives a visible border to
+  every div and paragraph on the page. High contrast works through the token
+  overrides alone.
 
 ---
 

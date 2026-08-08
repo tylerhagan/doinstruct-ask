@@ -130,13 +130,18 @@
 <div class="min-h-dvh bg-surface-sunken py-0 sm:py-8">
 	<!-- The frame is a demo affordance for desktop review. On the actual device
 	     this is full-bleed. -->
+	<!-- sm:overflow-hidden clips the children to the frame's radius. Without it
+	     the StatusBar's square top corners and its bottom border sit outside the
+	     rounded edge. It is scoped to sm because below that there is no radius to
+	     clip to, and an overflow container would break the sticky footer, which
+	     relies on the body being the scrollport on a phone. -->
 	<div
-		class="mx-auto flex min-h-dvh w-full max-w-[440px] flex-col bg-surface sm:min-h-[860px]
-		       sm:rounded-xl sm:border-2 sm:border-ink"
+		class="mx-auto flex min-h-dvh w-full max-w-device flex-col bg-surface
+		       sm:h-frame sm:min-h-0 sm:overflow-hidden sm:rounded-xl sm:border-2 sm:border-ink"
 	>
 		<StatusBar />
 
-		<main class="flex flex-1 flex-col gap-6 p-5">
+		<main class="flex flex-1 flex-col gap-6 p-5 sm:min-h-0 sm:overflow-y-auto">
 			{#if phase === 'standby'}
 				<div class="flex flex-1 flex-col justify-center gap-3 text-center">
 					<p class="text-display font-bold">{session.machine.machine}</p>

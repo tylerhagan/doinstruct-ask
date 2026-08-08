@@ -45,8 +45,7 @@
 	--color-border-strong: #6e7664; /* --swatch--mid-green, unchanged */
 
 	/* -- Type: system stack only, zero webfont bytes ----------------------- */
-	--font-sans:
-		system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	--font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
 	--text-meta: 14px;
 	--text-meta--line-height: 20px;
@@ -66,6 +65,14 @@
 	/* -- Gloved-hand sizing ------------------------------------------------ */
 	--spacing-tap: 64px;
 	--spacing-tap-primary: 96px;
+
+	/* -- Demo frame only, for desktop review. Not a product surface. On the
+	   real device the app is full-bleed and neither of these applies. ------- */
+	/* Names must not collide: Tailwind resolves max-w-* against --container-*
+	   but falls back to --spacing-*, so a shared name silently wins the wrong
+	   value. */
+	--container-device: 440px;
+	--spacing-frame: 860px;
 
 	/* -- Radii ------------------------------------------------------------- */
 	--radius-sm: 8px;
@@ -97,9 +104,11 @@
 	--color-pending-surface: #ffffff;
 }
 
-[data-contrast='high'] * {
-	border-width: 2px !important;
-}
+/* No blanket border rule here. Tailwind's preflight sets `border: 0 solid` on
+   every element, so forcing a width in high contrast hands a border to every
+   div and paragraph that never asked for one. Contrast comes from the token
+   overrides above: every border in this system is already 2px and becomes pure
+   black, and every surface becomes white. */
 
 /* ---------------------------------------------------------------------------
    Base

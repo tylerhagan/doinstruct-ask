@@ -29,7 +29,7 @@
 	}
 </script>
 
-<div class="fixed right-4 bottom-4 z-50 font-mono text-[13px]">
+<div class="fixed right-4 bottom-4 z-50 font-mono text-meta">
 	{#if open}
 		<div class="mb-2 w-72 rounded-lg border-2 border-dashed border-ink bg-cream p-4 shadow-none">
 			<p class="mb-3 font-bold tracking-wide uppercase">Reviewer controls</p>
