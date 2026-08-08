@@ -153,8 +153,9 @@ modifying a component.
 
 ## 8. Prompts that work
 
-Copy-paste. Each was run against this repo; results are in
-`docs/handover-proof.md`.
+Copy-paste. The first two were run against this repo and the results — including
+what the agent got wrong — are in `docs/handover-proof.md`. The third follows the
+same shape but has not been run.
 
 **Add a step to a procedure**
 
