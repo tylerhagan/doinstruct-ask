@@ -67,16 +67,35 @@
 
 	/* Their cover halftone. A real halftone modulates dot RADIUS against a fixed
 	   grid, which is what makes it read as printed rather than as a fade. Six
-	   bands share one 8px grid; the dots grow left to right. Past a 4px radius
-	   the circles touch and the gaps inverse into dark diamonds, which is how the
-	   dense end goes yellow-on-dark without a second colour layer. */
+	   bands share one 8px grid and the dots grow along it.
+
+	   Two deliberate limits. The largest dot is 3.1px on an 8px cell, so the
+	   circles never merge: at 4px they touch and the dense end becomes a slab of
+	   the brightest colour on the page, sitting right next to the headline.
+	   Texture is wanted, a solid block is not.
+
+	   And the falloff is two-dimensional, a tilted band gradient crossed with a
+	   radial mask, because theirs is halftoned photography where density follows
+	   light across a surface. A single horizontal ramp reads mechanical. */
 	.halftone {
 		position: absolute;
 		inset: 0 0 0 auto;
 		width: 46%;
 		overflow: hidden;
 		pointer-events: none;
-		opacity: 0.9;
+		opacity: 0.72;
+		-webkit-mask-image: radial-gradient(
+			130% 105% at 108% 38%,
+			#000 22%,
+			rgba(0, 0, 0, 0.62) 62%,
+			transparent 100%
+		);
+		mask-image: radial-gradient(
+			130% 105% at 108% 38%,
+			#000 22%,
+			rgba(0, 0, 0, 0.62) 62%,
+			transparent 100%
+		);
 	}
 
 	.halftone span {
@@ -93,28 +112,28 @@
 	}
 
 	.halftone span:nth-child(1) {
-		--dot: 0.85px;
-		--band: linear-gradient(to right, transparent 0%, #000 10%, transparent 30%);
+		--dot: 0.8px;
+		--band: linear-gradient(102deg, transparent 0%, #000 10%, transparent 30%);
 	}
 	.halftone span:nth-child(2) {
-		--dot: 1.4px;
-		--band: linear-gradient(to right, transparent 10%, #000 30%, transparent 50%);
+		--dot: 1.2px;
+		--band: linear-gradient(102deg, transparent 10%, #000 30%, transparent 50%);
 	}
 	.halftone span:nth-child(3) {
-		--dot: 2px;
-		--band: linear-gradient(to right, transparent 30%, #000 50%, transparent 68%);
+		--dot: 1.7px;
+		--band: linear-gradient(102deg, transparent 30%, #000 50%, transparent 68%);
 	}
 	.halftone span:nth-child(4) {
-		--dot: 2.7px;
-		--band: linear-gradient(to right, transparent 50%, #000 68%, transparent 84%);
+		--dot: 2.2px;
+		--band: linear-gradient(102deg, transparent 50%, #000 68%, transparent 84%);
 	}
 	.halftone span:nth-child(5) {
-		--dot: 3.4px;
-		--band: linear-gradient(to right, transparent 68%, #000 84%, transparent 97%);
+		--dot: 2.7px;
+		--band: linear-gradient(102deg, transparent 68%, #000 84%, transparent 97%);
 	}
 	.halftone span:nth-child(6) {
-		--dot: 4.2px;
-		--band: linear-gradient(to right, transparent 84%, #000 97%, #000 100%);
+		--dot: 3.1px;
+		--band: linear-gradient(102deg, transparent 84%, #000 97%, #000 100%);
 	}
 
 	/* On a phone the text occupies the full width, so the halftone retreats to a
@@ -122,7 +141,7 @@
 	@media (max-width: 700px) {
 		.halftone {
 			width: 30%;
-			opacity: 0.55;
+			opacity: 0.45;
 		}
 	}
 
