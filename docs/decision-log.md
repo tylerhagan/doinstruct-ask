@@ -477,3 +477,39 @@ cold one.
 observation, not a property of the system. Repeating it with a doinstruct
 engineer on a real ticket is still the right next step, and the writeup now says
 that instead of promising the cold run itself.
+
+---
+
+## D16. The documentation was shipping CSS
+
+**Learned:** Tyler spotted the colour swatches on `/system` showing yellow and
+white bleeding past their rounded corners. Two causes sat behind one symptom.
+
+**Cause one, the visible bug.** The swatch had a 12px rounded parent with no
+`overflow-hidden`, and the coloured fill used `rounded-t`. That bare utility
+resolves to Tailwind's own 0.25rem rather than to this system, because the theme
+defines `--radius-sm/md/lg/xl` but no bare `--radius`. A 4px fill inside a 12px
+border, unclipped, so the corners poked through. Same family as the device frame
+in D10: a rounded container that does not clip its children.
+
+**Cause two, found while fixing the first.** Checking whether `rounded-t` was
+still in the bundle showed that it was, even after nothing in `src/` used it.
+Tailwind v4 auto-detects sources across the project, including markdown, so it
+had been reading `AGENTS.md` and generating utilities from the class names the
+rules file lists as *forbidden*. Writing "never use `rounded-t`" is what put
+`rounded-t` in the stylesheet.
+
+**Decisions:**
+
+1. `overflow-hidden` on the swatch, and the fill inherits the parent's radius.
+2. Bare radius utilities banned in `AGENTS.md`, alongside a rule that a rounded
+   container must clip children that carry their own background or border.
+3. `@source not` in `layout.css` excludes markdown and stray HTML from Tailwind's
+   source detection, so documentation cannot ship CSS.
+
+**Why it is worth recording.** The size cost was negligible, a few bytes. The
+interesting part is the mechanism: a documentation file silently altering build
+output, with nothing in any check able to see it. That is now four instances in
+this project of a defect that compiled cleanly, passed every check, and was only
+findable by looking at the running product. Every one of them was found by a
+person, and three of the four by Tyler rather than by me.

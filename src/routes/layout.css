@@ -1,2 +1,9 @@
 @import 'tailwindcss';
 @import '../lib/design/tokens.css';
+
+/* Tailwind v4 auto-detects sources across the project, which means it scans the
+   markdown docs too. AGENTS.md names forbidden utilities like `rounded-t` in its
+   rules, and Tailwind dutifully generated them into the bundle. Documentation
+   should not ship CSS, so the docs are excluded from source detection. */
+@source not "../../**/*.md";
+@source not "../../*.html";
