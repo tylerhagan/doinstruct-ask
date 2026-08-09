@@ -270,7 +270,7 @@ rule added makes the others slightly less likely to be followed. Telling an agen
 *when* to load a file is context budgeting made explicit.
 
 **The rules I judged worth adding**, in rough order of how often an agent breaks
-them: the dependency lock, because one convenience library destroys the 48 KB
+them: the dependency lock, because one convenience library destroys the 46 KB
 budget the frontline claims rest on; never weaken a check to make it pass, which
 is the most dangerous thing an agent does now that there are checks worth
 protecting; never build a sentence by concatenation, because word order is not

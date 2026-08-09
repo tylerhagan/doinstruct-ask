@@ -13,7 +13,7 @@ pass every check, and are invisible in review. Nothing here is stylistic.
 Do not add a dependency. Not a date library, not an icon set, not a headless UI
 kit, not a utility belt.
 
-The frontline-reality claims in this project rest on 48 KB of gzipped
+The frontline-reality claims in this project rest on 46 KB of gzipped
 JavaScript, which is the budget that makes the product usable on a five-year-old
 Android over plant wifi. A single convenience dependency can double it, and the
 loss will not show up in any test.

@@ -1028,8 +1028,11 @@
 					<tbody>
 						<tr>
 							<td>JavaScript, gzipped</td>
-							<td class="num">48 KB</td>
-							<td>Static and prerendered, with no server round trip before first paint.</td>
+							<td class="num">46 KB</td>
+							<td>
+								What the device actually fetches: 41 KB shared runtime plus the route. The
+								design-system gallery is a separate 4 KB chunk a worker never loads.
+							</td>
 						</tr>
 						<tr>
 							<td>CSS, gzipped</td>
@@ -1204,7 +1207,7 @@
 
 			<p>
 				The rules I'd point at first aren't the visual ones. <b>The dependency list is closed</b>,
-				because one convenience library quietly destroys the 48 KB budget that every claim in the
+				because one convenience library quietly destroys the 46 KB budget that every claim in the
 				previous section rests on, and nothing would catch it. And
 				<b>never weaken a check to make it pass</b>, which matters now that there are checks worth
 				protecting. An agent that can't reach 7:1 will lower the threshold instead of fixing the

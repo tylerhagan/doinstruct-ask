@@ -10,7 +10,7 @@ SvelteKit 2, Svelte 5 runes, Tailwind v4, TypeScript, fully static.
 npm install
 npm run dev      # prototype at /, design system at /system
 npm run check    # types, contrast, and no literal text. 0 errors.
-npm run build    # static output, roughly 54 KB gzipped in total
+npm run build    # static output, roughly 52 KB gzipped for the route a worker loads
 ```
 
 ## The slice
