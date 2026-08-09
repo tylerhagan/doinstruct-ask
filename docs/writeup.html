@@ -277,8 +277,8 @@
 		border-radius: 18px;
 		padding: 1.4rem 1.45rem;
 		display: grid;
-		grid-template-columns: 3.25rem 1fr;
-		column-gap: 1.15rem;
+		grid-template-columns: 4rem 1fr;
+		column-gap: 1.6rem;
 		align-items: start;
 	}
 
@@ -342,6 +342,11 @@
 
 	.branch.route .tag {
 		color: var(--light-green);
+	}
+
+	/* The numeral is dark ink by default, which disappears on the dark card. */
+	.branch.route .tag b {
+		color: var(--yellow);
 	}
 
 	.branch.route .escape {
