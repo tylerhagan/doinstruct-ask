@@ -53,6 +53,7 @@
 
 	const SECTIONS = [
 		['foundations', 'Foundations'],
+		['statusbar', 'StatusBar'],
 		['button', 'Button'],
 		['pushtotalk', 'PushToTalk'],
 		['levelmeter', 'LevelMeter'],
@@ -61,8 +62,7 @@
 		['steplist', 'StepList'],
 		['sourcechip', 'SourceChip'],
 		['safetybanner', 'SafetyBanner'],
-		['escalation', 'EscalationCard'],
-		['statusbar', 'StatusBar']
+		['escalation', 'EscalationCard']
 	] as const;
 </script>
 
@@ -144,6 +144,22 @@
 					<p class="mt-2 text-meta text-fg-muted">96px push-to-talk</p>
 				</div>
 			</div>
+		</section>
+
+		<!-- ── StatusBar ──────────────────────────────────────────────────── -->
+		<section id="statusbar" class="mb-14 scroll-mt-4">
+			<h2 class="text-title font-bold">StatusBar</h2>
+			<p class="mt-2 mb-5 max-w-prose text-small text-fg-muted">
+				App-level, reads <code class="text-meta">session</code> directly. Machine context is displayed,
+				never typed. Languages are labelled in their own script. It is also the live control for this
+				page: switch language and every component below follows, content included.
+			</p>
+			<div class="overflow-hidden rounded-lg border-2 border-ink">
+				<StatusBar />
+			</div>
+			<p class="mt-3 text-meta text-fg-muted">
+				Toggle Connection in the header to see the offline badge appear.
+			</p>
 		</section>
 
 		<!-- ── Button ─────────────────────────────────────────────────────── -->
@@ -339,22 +355,6 @@
 				<p class="mb-2 text-meta font-bold text-fg-muted">answered · the capture moment</p>
 				<EscalationCard escalation={answered} />
 			</div>
-		</section>
-
-		<!-- ── StatusBar ──────────────────────────────────────────────────── -->
-		<section id="statusbar" class="mb-6 scroll-mt-4">
-			<h2 class="text-title font-bold">StatusBar</h2>
-			<p class="mt-2 mb-5 max-w-prose text-small text-fg-muted">
-				App-level, reads <code class="text-meta">session</code> directly. Machine context is displayed,
-				never typed. Languages are labelled in their own script. This is the live control for the whole
-				page: switch language and every component above follows.
-			</p>
-			<div class="overflow-hidden rounded-lg border-2 border-ink">
-				<StatusBar />
-			</div>
-			<p class="mt-3 text-meta text-fg-muted">
-				Toggle Connection above to see the offline badge appear.
-			</p>
 		</section>
 
 		<footer class="border-t-2 border-border pt-6">
