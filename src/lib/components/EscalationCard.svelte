@@ -65,7 +65,7 @@
 			{initials}
 		</span>
 		<span class="min-w-0">
-			<span class="block text-lead font-bold">{r.name}</span>
+			<span class="block text-title font-bold">{r.name}</span>
 			<span class="block text-small text-fg-muted">
 				{r.role[session.language]} · {r.line}
 			</span>
@@ -74,9 +74,11 @@
 
 	{#if waiting}
 		<div>
-			<p class="text-body">{t('esc.notFound')} {r.name}.</p>
-			<ul class="mt-3 flex flex-col gap-1 text-small text-fg-muted">
-				<li>{t('esc.replies', { n: r.typicalResponseMinutes })}</li>
+			<p class="text-title font-bold text-fg">
+				{t('esc.replies', { n: r.typicalResponseMinutes })}
+			</p>
+			<p class="mt-2 text-small text-fg-muted">{t('esc.notFound')} {r.name}.</p>
+			<ul class="mt-3 flex flex-col gap-1 text-meta text-fg-muted">
 				<li>{r.onShift ? t('esc.onShift') : t('esc.offShift')}</li>
 				{#if sharesLanguage}
 					<li>{t('esc.speaks', { lang: LANGUAGE_LABEL[session.language] })}</li>
