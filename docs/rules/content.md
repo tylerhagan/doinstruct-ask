@@ -34,20 +34,31 @@ go through the `vars` parameter so a translator can move the slot.
 
 ## 3. Locked terminology
 
-These terms are fixed. Never paraphrase them, never substitute a synonym, and
-never let a translation drift.
+Safety terms are fixed **within each language**. Never paraphrase them, never
+substitute a synonym, and never let a rendering drift between one string and the
+next.
 
-| Locked term | Never write |
-| --- | --- |
-| Not-Aus | Notstopp, Notabschaltung, Emergency Off |
-| Schutztür | Schutzklappe, Tür, guard |
-| Verriegelung | Sperre, Sicherung |
-| Freischaltung | Abschaltung, Trennung |
-| Schichtbuch | Logbuch, Protokoll |
+The German column is the anchor, because that is what is printed on the machine.
+The other columns are the approved renderings, not suggestions.
 
-A worker learns the word that is printed on the machine and written in the
-procedure. An unfamiliar synonym for an emergency stop is a hazard, not a style
-variation. If a task needs a new safety term, it goes in this table first.
+| German (anchor) | Never write in German | Romanian | English |
+| --- | --- | --- | --- |
+| Not-Aus | Notstopp, Notabschaltung | oprire de urgență | emergency stop |
+| Schutztür | Schutzklappe, Tür | ușa de protecție | guard door |
+| Verriegelung | Sperre, Sicherung | interblocare | interlock |
+| Freischaltung | Abschaltung, Trennung | izolare | isolation |
+| Schichtbuch | Logbuch, Protokoll | registrul de tură | shift book |
+
+A worker learns the word printed on the machine and written in the procedure. An
+unfamiliar synonym for an emergency stop is a hazard rather than a style
+variation, and that holds in every language, not only the one on the nameplate.
+
+Note that this is about *copy*, not about identifiers. `Füller F2` is never
+translated at all; see rule 4. `Schutztür` is translated, but only ever to the
+one approved rendering above.
+
+If a task needs a new safety term, it goes in this table, in all three languages,
+before it goes in the product.
 
 ## 4. Identifiers are never localised. Descriptors always are.
 

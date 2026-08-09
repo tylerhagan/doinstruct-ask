@@ -119,8 +119,13 @@ four of them my own status colours sitting between 5.4:1 and 6.1:1. I had
 asserted a standard in a document and then not met it, and no amount of human
 review had noticed.
 
-It also caught two of doinstruct's own brand swatches that do not clear the floor
-in this context. `--swatch--mid-green` measures 4.6:1 on their off-white and
+Two of doinstruct's own brand swatches also fall below the floor, but the script
+did not find those and should not be credited with them. I caught them by hand
+while adopting the palette, before the script existed. Being exact about which
+findings came from the tool and which came from a person is the whole reason for
+having the tool.
+
+`--swatch--mid-green` measures 4.6:1 on their off-white and
 `--swatch--light-green` measures 1.65:1, which is invisible as a structural
 border. Both are fine marketing values. Neither survives washdown glare. Both are
 now darkened with the hue preserved, and recorded in `tokens.json` with the
