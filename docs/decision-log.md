@@ -427,3 +427,53 @@ cost a request that can fail, and the product ships zero font bytes for a
 reason I would rather stay consistent about. The colophon says so and offers to
 change it, which seemed better than either silently diverging or silently
 conforming.
+
+---
+
+## D15. The cold run, and what it cost me to be right
+
+**Decision:** run the third documented prompt properly cold, on a branch, and
+keep the branch as evidence.
+
+Prompts 1 and 2 were run by me, which means they only ever demonstrated that I
+could follow instructions I had written. `docs/handover-proof.md` said so, and
+offered a genuinely cold run as something to do together later. Offering it later
+is weaker than doing it now, so a fresh agent got the four sentences from
+`AGENTS.md` §9 and nothing else. No mention of the token system, the i18n rule,
+the contrast floor, or that anyone would examine the output.
+
+**Why a branch.** Master stays untouched the night before submission, the raw
+output is inspectable on GitHub without cloning, and the branch demonstrates the
+workflow instead of describing it. Committed with no polish from me, because the
+unedited artefact is the point. Prompts 1 and 2 on master were followed by my
+polish pass, which makes them less useful as evidence.
+
+**Result.** Everything mechanical was correct on the first attempt: token classes
+only, no raw values, props and aria preserved, existing translation keys reused,
+one file touched, both checks passing. Verified by me rather than taken from the
+agent's own summary.
+
+Three failures, none visible to any check:
+
+1. It made an observed average read as a promise by setting it at headline size.
+2. It demoted the face-saving line that makes asking socially survivable.
+3. It used 14px for a status, which rule 2 reserves for timestamps and audit refs.
+
+**And one failure that was mine.** Auditing point 3 showed rule 2 contradicted
+`tokens.json`. The rule banned text under 18px; the token file defines a 16px
+size for supporting labels, which my own baseline used. The agent was obeying an
+ambiguous rule, not breaking a clear one. Rule 2 now states its actual intent:
+instructions and answer content at 18px or above, labels may use 16px, 14px only
+for timestamps and audit references.
+
+**Why this matters more than the successes.** The result reproduced the
+prediction in the writeup with nobody's thumb on the scale. The mechanical layer
+is genuinely solved by rules plus checks. The layer where meaning lives is not,
+and the failures cluster there every time. The number worth quoting is not 95%,
+it is *which* 5%, and it is the same 5% in both the contaminated runs and the
+cold one.
+
+**What I would still not claim.** One task, one component, one agent. It is an
+observation, not a property of the system. Repeating it with a doinstruct
+engineer on a real ticket is still the right next step, and the writeup now says
+that instead of promising the cold run itself.

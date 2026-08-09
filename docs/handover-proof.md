@@ -12,14 +12,19 @@ Each prompt below was run against this repository with `AGENTS.md` as the
 governing context, and committed separately so the diff is inspectable in git
 history. Every result was verified with `npm run check` and `npm run build`.
 
-The caveat that matters: I wrote both `AGENTS.md` and the code it governs, so
-this is not a fully cold test. A genuinely cold run, meaning a different
-engineer, a fresh session and no memory of the codebase, is the real proof. It is
-the first thing I would want to do together rather than assert here.
+Prompts 1 and 2 carry a caveat: I wrote both `AGENTS.md` and the code it governs,
+so those two runs only prove that I can follow my own instructions.
 
-What this document does establish is the shape of the handover: which files a
-change touches, how much lands correctly, and what class of thing is left for a
-human.
+**Prompt 3 does not carry that caveat.** It was executed by a different agent
+with no knowledge of this codebase, this conversation, or the fact that anyone
+would look at the result. It received the four sentences documented in
+`AGENTS.md` §9 and nothing else. No mention of the token system, the i18n rule,
+the contrast floor, or that it was being evaluated. The raw output is committed
+unedited on the `handover-prompt-3` branch, so you can read exactly what came out
+before any human touched it.
+
+That is the cold run this document used to promise and could not provide. It is
+the most useful thing here, and it is the section I would read first.
 
 ---
 
@@ -82,6 +87,71 @@ my own baseline: `Neue Frage`, `Fehler`, and the standby hint were all hardcoded
 German. The agent's slip was a smaller version of mine.
 
 Polish diff: 19 lines added, 6 removed, across the same 2 files.
+
+---
+
+## Prompt 3, the cold run
+
+> Restyle `EscalationCard` so the responder's name and expected wait are the
+> dominant elements and the explanatory text is secondary. Use token classes
+> only, no raw values, and keep every existing prop and aria attribute. Run
+> `npm run check`.
+
+Run by an agent with no knowledge of this repository beyond what it found on
+disk. Raw output on the `handover-prompt-3` branch, committed with no human
+edits:
+
+```
+git diff master handover-prompt-3
+1 file changed, 6 insertions(+), 4 deletions(-)
+```
+
+**What it got right.** Token classes only, with zero raw values and zero
+arbitrary Tailwind. All three props preserved. `aria-live="polite"` intact.
+Reused existing `t()` keys instead of inventing strings. Touched exactly the one
+file named. `npm run check` and `npm run build` both pass, verified independently
+rather than taken from its own report. And it did the job asked: the name and the
+wait are unmistakably dominant now.
+
+As instruction-following, that is a good result. Roughly 95% of it is right,
+which is the figure the brief asks for.
+
+**What no check caught.**
+
+1. **It broke rule 2.** The shift-status and shared-language lines were set to
+   `text-meta`, which is 14px and reserved for timestamps and audit references.
+   Neither script noticed, because one checks colour and the other checks literal
+   strings. Nothing checks type size.
+
+2. **It turned an estimate into a promise.** `esc.replies` reads "Antwortet
+   normalerweise in ~4 Min." It is now a 28px bold headline, the largest element
+   on the card. That number is an observed average, and the whole escalation flow
+   depends on it not reading as a commitment the system can fail to keep.
+   Typography made a claim the copy was carefully worded to avoid.
+
+3. **It demoted the line doing the most work.** `esc.notFound`, "Das steht in
+   keiner Anleitung", dropped from 18px body text to 16px muted. That line puts
+   the failure on the documentation instead of on the worker, which is what makes
+   asking socially survivable on a shop floor. It is now the quietest thing in the
+   card.
+
+**And one it caught me on.** Auditing its work showed that rule 2 as written
+("no text below 18px, except 14px meta") contradicted `tokens.json`, where
+`text-small` exists at 16px for supporting labels. My own baseline used
+`text-small` for the role and line. So the agent was not breaking a clear rule so
+much as obeying an unclear one. Rule 2 now says what it always meant:
+instructions and answer content at 18px or above, labels may use 16px, and 14px
+is only ever timestamps and audit references.
+
+**What this run is actually evidence of.** Every one of the three findings needs
+a person who knows why the copy was written that way. Two of them are invisible
+to any linter that could reasonably be written. The third is a stated rule that
+no check enforces. Meanwhile the things automation *can* see, tokens, props, aria
+and types, were all correct on the first attempt.
+
+That is the shape of the job: the machine reliably handles the mechanical layer,
+and a human is still required for the layer where meaning lives. The number to
+take from this is not 95%. It is *which* 5%.
 
 ---
 

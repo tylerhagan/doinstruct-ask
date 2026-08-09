@@ -64,7 +64,8 @@ It also toggles live versus scripted microphone, a loud room, and offline.
 | [`docs/rules/behaviour.md`](docs/rules/behaviour.md) | How an agent should work here. Dependency lock, never weaken a check, don't invent to fill a gap. |
 | [`docs/rules/content.md`](docs/rules/content.md) | Copy, interpolation, locked safety terminology, reading level, locale formatting. |
 | [`docs/rules/accessibility.md`](docs/rules/accessibility.md) | Target spacing, focus, live regions, logical properties, the four required states. |
-| [`docs/handover-proof.md`](docs/handover-proof.md) | The two-to-three prompt claim, tested, including what the agent got wrong. |
+| [`docs/handover-proof.md`](docs/handover-proof.md) | Three prompts run, including one **cold**, with a full audit of what the agent got wrong. |
+| [`handover-prompt-3` branch](https://github.com/tylerhagan/doinstruct-ask/compare/master...handover-prompt-3) | Raw, unedited output of the cold run. Committed exactly as produced. |
 | [`docs/frontline-reality.md`](docs/frontline-reality.md) | Low-end devices, noise, gloves, languages, literacy, lighting. |
 | [`docs/decision-log.md`](docs/decision-log.md) | What I learned, what changed, and why. |
 | [`src/lib/design/tokens.json`](src/lib/design/tokens.json) | Tokens, with the reasoning for every divergence from convention. |

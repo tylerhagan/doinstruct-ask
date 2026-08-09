@@ -93,8 +93,12 @@ taste, so breaking one is a defect even if the result looks fine.
 
 1. **Nothing interactive below 64px** (`min-h-tap`), 96px for push-to-talk.
    Gloves, not fingertips.
-2. **No text below 18px** (`text-body`), except timestamps and audit references
-   at 14px (`text-meta`). Never set an instruction in `text-meta`.
+2. **Instructions and answer content are never below 18px** (`text-body`).
+   Supporting labels may use 16px (`text-small`). 14px (`text-meta`) is reserved
+   for timestamps and audit references and nothing else, so never a status, never
+   a name, never an instruction. (This rule previously said "no text below 18px",
+   which contradicted `tokens.json`, where `text-small` exists for labels. A cold
+   agent run exposed the disagreement; see `docs/handover-proof.md`.)
 3. **Yellow appears exactly once per screen**, on the primary voice action.
 4. **Red (`stop`) is reserved for safety.** Never for validation errors, never
    for "delete". A worker must be able to trust that red means stop working.
