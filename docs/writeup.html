@@ -1151,6 +1151,42 @@
 					</tbody>
 				</table>
 			</div>
+			<h3>See it hold up, rather than take my word for it</h3>
+			<p>
+				Every condition below is switchable in the prototype. The controls sit behind the
+				<b>Demo</b> button at the bottom right, which is deliberately styled as scaffolding so
+				nobody mistakes it for shipped UI.
+			</p>
+			<ul class="plain">
+				<li>
+					<b>A low-end device.</b> Open devtools, throttle to slow 3G and reload. There are no web
+					fonts to wait for and no server round trip, so first paint does not depend on the network
+					finishing.
+				</li>
+				<li>
+					<b>A noisy line.</b> Demo, then <em>Loud room</em>. The level meter turns to caution and
+					the interface offers the text path <em>before</em> recognition fails rather than after.
+				</li>
+				<li>
+					<b>Washdown glare.</b> Demo, then <em>Washdown glare</em>. Every border goes to 2px black,
+					surfaces go white, decorative fills strip out. It is a lighting condition, not a
+					preference.
+				</li>
+				<li>
+					<b>Hands busy.</b> Run the first scenario, tick a step, then move away and come back. The
+					tick persists, because the device holds the state the worker cannot. Read-aloud covers the
+					case where eyes are committed too.
+				</li>
+				<li>
+					<b>Another language.</b> Switch to Deutsch or English in the top bar. The procedure steps
+					change, not just the buttons, and the source chip discloses that the manual stayed German.
+				</li>
+				<li>
+					<b>Low digital literacy</b> is the one that shows by absence. No login, no download, no
+					onboarding, no settings screen. There is nothing to learn before you can ask a question.
+				</li>
+			</ul>
+
 			<h3>What a stopped line does to attention</h3>
 			<p>
 				Acute stress narrows working memory. The person using this has a line down, a supervisor

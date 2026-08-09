@@ -72,9 +72,21 @@
 				<p class="-mt-3 mb-4 text-fg-muted">No Web Speech API in this browser.</p>
 			{/if}
 
+			<p class="mb-1 text-fg-muted">Frontline conditions</p>
+
 			<label class="mb-2 flex items-center justify-between">
 				<span>Loud room</span>
 				<input type="checkbox" bind:checked={recognition.noisy} class="size-6" />
+			</label>
+
+			<label class="mb-2 flex items-center justify-between">
+				<span>Washdown glare</span>
+				<input
+					type="checkbox"
+					checked={session.highContrast}
+					onchange={() => session.toggleContrast()}
+					class="size-6"
+				/>
 			</label>
 
 			<label class="mb-4 flex items-center justify-between">
