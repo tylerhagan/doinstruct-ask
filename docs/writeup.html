@@ -65,21 +65,70 @@
 		margin-bottom: clamp(2.5rem, 6vw, 5rem);
 	}
 
-	/* The halftone gradient from their cover. */
-	.masthead::after {
-		content: '';
+	/* Their cover halftone. A real halftone modulates dot RADIUS against a fixed
+	   grid, which is what makes it read as printed rather than as a fade. Six
+	   bands share one 8px grid; the dots grow left to right. Past a 4px radius
+	   the circles touch and the gaps inverse into dark diamonds, which is how the
+	   dense end goes yellow-on-dark without a second colour layer. */
+	.halftone {
 		position: absolute;
 		inset: 0 0 0 auto;
-		width: 42%;
-		background-image: radial-gradient(var(--yellow) 1.3px, transparent 1.4px);
-		background-size: 9px 9px;
-		-webkit-mask-image: linear-gradient(to right, transparent, #000 75%);
-		mask-image: linear-gradient(to right, transparent, #000 75%);
-		opacity: 0.5;
+		width: 46%;
+		overflow: hidden;
 		pointer-events: none;
+		opacity: 0.9;
 	}
 
-	.masthead > * {
+	.halftone span {
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(
+			var(--yellow) calc(var(--dot) - 0.4px),
+			transparent var(--dot)
+		);
+		background-size: 8px 8px;
+		background-position: center;
+		-webkit-mask-image: var(--band);
+		mask-image: var(--band);
+	}
+
+	.halftone span:nth-child(1) {
+		--dot: 0.85px;
+		--band: linear-gradient(to right, transparent 0%, #000 10%, transparent 30%);
+	}
+	.halftone span:nth-child(2) {
+		--dot: 1.4px;
+		--band: linear-gradient(to right, transparent 10%, #000 30%, transparent 50%);
+	}
+	.halftone span:nth-child(3) {
+		--dot: 2px;
+		--band: linear-gradient(to right, transparent 30%, #000 50%, transparent 68%);
+	}
+	.halftone span:nth-child(4) {
+		--dot: 2.7px;
+		--band: linear-gradient(to right, transparent 50%, #000 68%, transparent 84%);
+	}
+	.halftone span:nth-child(5) {
+		--dot: 3.4px;
+		--band: linear-gradient(to right, transparent 68%, #000 84%, transparent 97%);
+	}
+	.halftone span:nth-child(6) {
+		--dot: 4.2px;
+		--band: linear-gradient(to right, transparent 84%, #000 97%, #000 100%);
+	}
+
+	/* On a phone the text occupies the full width, so the halftone retreats to a
+	   narrow edge rather than sitting behind the headline. */
+	@media (max-width: 700px) {
+		.halftone {
+			width: 30%;
+			opacity: 0.55;
+		}
+	}
+
+	/* Excludes the halftone, which is absolutely positioned. Without :not() this
+	   rule has equal specificity, comes later, and silently resets it to relative. */
+	.masthead > *:not(.halftone) {
 		position: relative;
 		z-index: 1;
 		max-width: var(--content);
@@ -705,6 +754,10 @@
 
 <div class="wrap">
 	<header class="masthead">
+		<div class="halftone" aria-hidden="true">
+			<span></span><span></span><span></span><span></span><span></span><span></span>
+		</div>
+
 		<span class="pill">Design Engineer · Case study · August 2026</span>
 		<h1>Knowledge dead-ends are a <em>routing problem</em>, not a chatbot problem.</h1>
 		<p class="standfirst">
