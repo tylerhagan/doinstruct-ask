@@ -13,6 +13,12 @@ npm run check    # types, contrast, and no literal text. 0 errors.
 npm run build    # static output, roughly 52 KB gzipped for the route a worker loads
 ```
 
+`.vscode/` is committed on purpose. It recommends the three extensions this stack
+needs and tells the editor to parse `.css` as Tailwind, so `@theme` and `@source`
+don't get flagged as syntax errors the moment you open `tokens.css`. No personal
+settings, no themes. If an engineer is meant to clone this and ship, they should
+not have to fix their editor first.
+
 ## The slice
 
 **Operational knowledge. Voice primary, text fallback.** One scenario: a food
