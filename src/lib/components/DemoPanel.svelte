@@ -40,7 +40,7 @@
 					<button
 						type="button"
 						onclick={() => pick(s.id)}
-						class="rounded border-2 px-2 py-2 text-left
+						class="rounded-sm border-2 px-2 py-2 text-left
 						       {scenarioId === s.id ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
 					>
 						{s.label}
@@ -54,7 +54,7 @@
 					type="button"
 					onclick={() => (recognition.mode = 'live')}
 					disabled={!recognition.supported}
-					class="flex-1 rounded border-2 px-2 py-2 disabled:opacity-40
+					class="flex-1 rounded-sm border-2 px-2 py-2 disabled:opacity-40
 					       {recognition.mode === 'live' ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
 				>
 					live
@@ -62,7 +62,7 @@
 				<button
 					type="button"
 					onclick={() => (recognition.mode = 'scripted')}
-					class="flex-1 rounded border-2 px-2 py-2
+					class="flex-1 rounded-sm border-2 px-2 py-2
 					       {recognition.mode === 'scripted' ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
 				>
 					scripted
@@ -90,7 +90,7 @@
 			<button
 				type="button"
 				onclick={onreset}
-				class="w-full rounded border-2 border-ink bg-surface px-2 py-2"
+				class="w-full rounded-sm border-2 border-ink bg-surface px-2 py-2"
 			>
 				Reset flow
 			</button>

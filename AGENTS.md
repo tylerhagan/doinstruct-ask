@@ -79,6 +79,14 @@ Two more that are easy to miss:
   `--container-device` and `--spacing-device` makes `max-w-device` silently pick
   the spacing value, build clean, and render at the wrong size. This happened
   here; the tokens are now `--container-device` and `--spacing-frame`.
+- **Never use a bare radius utility.** `rounded`, `rounded-t` and `rounded-b`
+  resolve to Tailwind's own 0.25rem rather than to this system, because the theme
+  defines `--radius-sm/md/lg/xl` but no bare `--radius`. Always name the step:
+  `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl` or `rounded-full`.
+- **A rounded container must clip its children.** Add `overflow-hidden` whenever
+  a child carries its own background or border, or the child's corners will sit
+  outside the parent's radius. This has bitten the project twice, on the device
+  frame and on the colour swatches, and both times it compiled clean.
 - **Never add a blanket rule under `[data-contrast='high']`.** Preflight sets
   `border: 0 solid` on every element, so `[data-contrast='high'] * {
   border-width: 2px }` hands a visible border to every div and paragraph on the

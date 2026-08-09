@@ -111,8 +111,8 @@
 			<h3 class="mb-3 text-lead font-bold">Colour</h3>
 			<div class="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
 				{#each [['bg-ink', 'ink', '17.4:1'], ['bg-yellow', 'yellow', '15.6:1 on ink'], ['bg-surface-raised', 'surface-raised', 'card'], ['bg-stop', 'stop', 'safety only'], ['bg-caution', 'caution', '8.1:1'], ['bg-ok', 'ok', '8.3:1']] as [cls, name, note] (name)}
-					<div class="rounded-md border-2 border-border">
-						<div class="h-14 rounded-t {cls}"></div>
+					<div class="overflow-hidden rounded-md border-2 border-border">
+						<div class="h-14 {cls}"></div>
 						<div class="p-2">
 							<p class="text-meta font-bold">{name}</p>
 							<p class="text-meta text-fg-muted">{note}</p>
