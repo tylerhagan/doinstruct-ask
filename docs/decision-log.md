@@ -554,3 +554,35 @@ animation, not feedback.
 targets, the 7:1 floor, no shadows, no positional motion, high contrast as a
 lighting condition. The critique was about craft, not about the reasoning, and
 conceding the reasoning would have been the wrong response to it.
+
+---
+
+## D18. An unlabelled icon, and the rule that already forbade it
+
+**Learned:** Thomas read the high-contrast control as a light/dark mode toggle.
+
+He was not being careless. A half-filled circle is the standard contrast glyph
+_and_ the most common dark-mode toggle on the web, so two unrelated functions
+have converged on one shape. The glyph cannot disambiguate itself.
+
+**But the icon is not the defect.** `docs/rules/accessibility.md` rule 5 says
+"Every icon is paired with text", and `docs/frontline-reality.md` repeats it. The
+control had an `aria-label` and no visible word, so a screen reader was served
+and a sighted person was left guessing. Thomas guessed wrong, live, which is a
+tidy demonstration of the exact failure the rule exists to prevent.
+
+It is also the worst control in the product to leave to a glyph. The person who
+needs high contrast is dealing with glare, or tired eyes, or is at the end of a
+shift, and is the least likely to decode an abstract symbol, in any of three
+languages.
+
+**Decision:** label it. The button now reads icon plus "Kontrast", "Contrast",
+"Contrast". The full phrase stays as the accessible name and contains the visible
+word, so Label in Name still holds. The icon is unchanged, because the icon was
+never the problem.
+
+**The pattern, for the fifth time.** A rule the project states, does not enforce
+with a check, and then breaks. Type size cannot be linted easily and neither can
+"has a visible label", so both live in prose and both drifted. Every one of these
+was found by a person looking at the running product: three by me, one by a cold
+agent, and this one by the person the work was made for.

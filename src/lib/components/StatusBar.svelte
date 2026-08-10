@@ -46,12 +46,13 @@
 				onclick={() => session.toggleContrast()}
 				aria-pressed={session.highContrast}
 				aria-label={t('status.contrast')}
-				class="grid size-tap place-items-center rounded-md border-2 border-hairline bg-surface transition-colors"
+				class="flex min-h-tap items-center gap-2 rounded-md border-2 border-hairline bg-surface px-3 transition-colors"
 			>
-				<svg class="size-7" viewBox="0 0 24 24" aria-hidden="true">
+				<svg class="size-6 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
 					<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" />
 					<path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" />
 				</svg>
+				<span class="text-meta font-bold">{t('status.contrastShort')}</span>
 			</button>
 		</div>
 	</div>
