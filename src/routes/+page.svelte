@@ -143,15 +143,22 @@
 
 		<main class="flex flex-1 flex-col gap-6 p-5 sm:min-h-0 sm:overflow-y-auto">
 			{#if phase === 'standby'}
-				<div class="flex flex-1 flex-col justify-center gap-3 text-center">
+				<div class="flex flex-1 flex-col items-center justify-center gap-5 text-center">
 					<p class="text-display font-bold">{session.machine.machine}</p>
+
 					{#if session.machine.faultCode}
-						<p class="text-title text-fg-muted">
-							{t('standby.fault')}
-							{session.machine.faultCode}
+						<p
+							class="inline-flex items-center gap-3 rounded-full border-2 border-hairline
+							       bg-surface-sunken py-2 pr-5 pl-4"
+						>
+							<span class="text-meta font-bold tracking-wide text-fg-muted uppercase">
+								{t('standby.fault')}
+							</span>
+							<span class="text-lead font-bold tabular-nums">{session.machine.faultCode}</span>
 						</p>
 					{/if}
-					<p class="mt-2 text-body text-fg-muted">{t('standby.hint')}</p>
+
+					<p class="mt-1 max-w-xs text-small text-fg-muted">{t('standby.hint')}</p>
 				</div>
 			{:else if phase === 'listening'}
 				<div class="flex flex-1 flex-col justify-center">
@@ -198,7 +205,7 @@
 		</main>
 
 		{#if phase === 'standby' || phase === 'listening' || phase === 'thinking'}
-			<div class="sticky bottom-0 border-t-2 border-border bg-surface p-5">
+			<div class="sticky bottom-0 border-t-2 border-hairline bg-surface p-5">
 				{#if typing}
 					<form
 						class="flex flex-col gap-3"
@@ -213,7 +220,7 @@
 							bind:value={typed}
 							autofocus
 							rows="2"
-							class="w-full rounded-lg border-2 border-border-strong bg-surface-sunken p-4 text-lead"
+							class="w-full rounded-lg border-2 border-hairline bg-surface-sunken p-4 text-lead"
 							aria-label={t('confirm.type')}></textarea>
 						<Button variant="primary" full type="submit">{t('confirm.yes')}</Button>
 					</form>

@@ -24,7 +24,7 @@
 	const LANGS: Language[] = ['de', 'ro', 'en'];
 </script>
 
-<header class="border-b-2 border-border bg-surface-raised">
+<header class="border-b-2 border-hairline bg-surface-raised">
 	<div class="flex items-center justify-between gap-4 px-4 py-3">
 		<div class="min-w-0">
 			<p class="truncate text-small font-bold">{session.machine.line}</p>
@@ -46,7 +46,7 @@
 				onclick={() => session.toggleContrast()}
 				aria-pressed={session.highContrast}
 				aria-label={t('status.contrast')}
-				class="grid size-tap place-items-center rounded-md border-2 border-border-strong bg-surface"
+				class="grid size-tap place-items-center rounded-md border-2 border-hairline bg-surface transition-colors"
 			>
 				<svg class="size-7" viewBox="0 0 24 24" aria-hidden="true">
 					<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" />
@@ -65,7 +65,7 @@
 				class="min-h-tap flex-1 rounded-md border-2 px-3 text-small font-bold transition-colors
 				       {session.language === lang
 					? 'border-ink bg-ink text-fg-inverse'
-					: 'border-border bg-surface text-fg-muted'}"
+					: 'border-hairline bg-surface text-fg-muted'}"
 			>
 				{LANGUAGE_LABEL[lang]}
 			</button>

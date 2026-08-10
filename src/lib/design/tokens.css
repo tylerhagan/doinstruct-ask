@@ -39,8 +39,19 @@
 	--color-pending-surface: #e8eefc;
 
 	/* -- Borders ---------------------------------------------------------- */
-	/* Their --swatch--light-green (#C1CAB7) is 1.65:1 on off-white, invisible
-	   as a structural border. Darkened to clear 3:1; hue kept. */
+	/* Three jobs, three tokens.
+
+	   `hairline` is a decorative edge on a filled surface. It is never the only
+	   thing carrying a boundary: in normal light the fill does that, and in high
+	   contrast this token flips to pure black and takes over. That is why it is
+	   exempt from the 3:1 floor and why the exemption is safe.
+
+	   `border` and `border-strong` carry meaning on their own and both clear 3:1.
+
+	   Filling surfaces rather than outlining them is the difference between a
+	   product and a wireframe. Outlined boxes on a flat ground read as unresolved
+	   no matter how correct the spacing is. */
+	--color-hairline: #e7e2d9;
 	--color-border: #8a9480;
 	--color-border-strong: #6e7664; /* --swatch--mid-green, unchanged */
 
@@ -57,10 +68,13 @@
 	--text-lead--line-height: 32px;
 	--text-title: 28px;
 	--text-title--line-height: 36px;
+	--text-title--letter-spacing: -0.012em;
 	--text-display: 34px;
 	--text-display--line-height: 42px;
+	--text-display--letter-spacing: -0.02em;
 	--text-hero: 42px;
 	--text-hero--line-height: 48px;
+	--text-hero--letter-spacing: -0.028em;
 
 	/* -- Gloved-hand sizing ------------------------------------------------ */
 	--spacing-tap: 64px;
@@ -96,6 +110,7 @@
 	--color-surface-sunken: #f0f0f0;
 	--color-fg: #000000;
 	--color-fg-muted: #1a1a1a;
+	--color-hairline: #000000;
 	--color-border: #000000;
 	--color-border-strong: #000000;
 	--color-stop-surface: #ffffff;

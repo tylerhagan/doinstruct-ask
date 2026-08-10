@@ -62,6 +62,10 @@ const PAIRS = [
 	['caution', 'caution-surface', 7, 'caution text'],
 	['ok', 'ok-surface', 7, 'sourced-answer badge'],
 	['pending', 'pending-surface', 7, 'escalation-waiting text'],
+	// --color-hairline is deliberately absent. It is a decorative edge on a filled
+	// surface and never the sole carrier of a boundary: fill does that in normal
+	// light, and in high contrast the token flips to pure black. Exempting it is
+	// a statement about what it is for, not a threshold quietly lowered.
 	['border', 'surface', 3, 'default border against page'],
 	['border-strong', 'surface', 3, 'strong border against page']
 ];

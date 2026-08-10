@@ -40,7 +40,7 @@
 
 	const VARIANT: Record<Variant, string> = {
 		primary: 'bg-yellow text-ink border-ink',
-		secondary: 'bg-surface text-fg border-border-strong',
+		secondary: 'bg-surface-raised text-fg border-hairline',
 		quiet: 'bg-transparent text-fg border-transparent underline underline-offset-4',
 		stop: 'bg-stop text-cream border-stop'
 	};

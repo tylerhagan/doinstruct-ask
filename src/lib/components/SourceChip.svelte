@@ -40,7 +40,7 @@
 	type="button"
 	onclick={onopen}
 	class="flex min-h-tap w-full touch-manipulation items-center justify-between gap-4
-	       rounded-md border-2 border-border bg-surface-raised px-4 py-3 text-left"
+	       rounded-md border-2 border-hairline bg-surface-raised px-4 py-3 text-left transition-colors"
 >
 	<span class="min-w-0">
 		<span class="block text-small font-medium text-fg">{source.document}</span>

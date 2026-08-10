@@ -70,7 +70,7 @@
 
 <div class="min-h-dvh bg-surface-sunken">
 	<div class="mx-auto max-w-3xl bg-surface px-5 py-10 sm:px-8">
-		<header class="mb-10 border-b-2 border-border pb-8">
+		<header class="mb-10 border-b-2 border-hairline pb-8">
 			<h1 class="text-display font-bold">Design system</h1>
 			<p class="mt-3 max-w-prose text-body text-fg-muted">
 				Every component, in every state, sized for a gloved hand on a shared wall-mounted device.
@@ -82,7 +82,7 @@
 				{#each SECTIONS as [id, label] (id)}
 					<a
 						href="#{id}"
-						class="rounded-md border-2 border-border bg-surface-raised px-3 py-2 text-meta font-bold text-fg"
+						class="rounded-md border-2 border-hairline bg-surface-raised px-3 py-2 text-meta font-bold text-fg transition-colors"
 					>
 						{label}
 					</a>
@@ -111,7 +111,7 @@
 			<h3 class="mb-3 text-lead font-bold">Colour</h3>
 			<div class="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
 				{#each [['bg-ink', 'ink', '17.4:1'], ['bg-yellow', 'yellow', '15.6:1 on ink'], ['bg-surface-raised', 'surface-raised', 'card'], ['bg-stop', 'stop', 'safety only'], ['bg-caution', 'caution', '8.1:1'], ['bg-ok', 'ok', '8.3:1']] as [cls, name, note] (name)}
-					<div class="overflow-hidden rounded-md border-2 border-border">
+					<div class="overflow-hidden rounded-md border-2 border-hairline">
 						<div class="h-14 {cls}"></div>
 						<div class="p-2">
 							<p class="text-meta font-bold">{name}</p>
@@ -122,7 +122,9 @@
 			</div>
 
 			<h3 class="mb-3 text-lead font-bold">Type scale</h3>
-			<div class="mb-8 flex flex-col gap-1 rounded-md border-2 border-border p-4">
+			<div
+				class="mb-8 flex flex-col gap-1 rounded-md border-2 border-hairline bg-surface-raised p-4"
+			>
 				<p class="text-meta text-fg-muted">meta 14 · timestamps and audit refs only</p>
 				<p class="text-small">small 16 · supporting labels</p>
 				<p class="text-body">body 18 · all answer text and instructions</p>
@@ -223,7 +225,7 @@
 				Bars grow from the centre so the shape reads from an oblique angle.
 			</p>
 			<div
-				class="grid gap-4 rounded-md border-2 border-border bg-surface-inverse p-4 sm:grid-cols-3"
+				class="grid gap-4 rounded-md border-2 border-hairline bg-surface-inverse p-4 sm:grid-cols-3"
 			>
 				{#each [0.15, 0.55, 0.95] as level (level)}
 					<div>
@@ -232,7 +234,7 @@
 					</div>
 				{/each}
 			</div>
-			<div class="mt-3 rounded-md border-2 border-border bg-surface-inverse p-4">
+			<div class="mt-3 rounded-md border-2 border-hairline bg-surface-inverse p-4">
 				<LevelMeter level={0.6} noisy />
 				<p class="mt-1 text-center text-meta text-fg-inverse">noisy · switches to caution</p>
 			</div>
@@ -357,7 +359,7 @@
 			</div>
 		</section>
 
-		<footer class="border-t-2 border-border pt-6">
+		<footer class="border-t-2 border-hairline pt-6">
 			<p class="max-w-prose text-small text-fg-muted">
 				Contracts live in the header comment of each component file. Rules live in
 				<code class="text-meta">AGENTS.md</code>

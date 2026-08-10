@@ -15,8 +15,8 @@ Newest entries at the bottom.
 **Decision:** Build in SvelteKit 2, Svelte 5, Tailwind v4 and TypeScript, despite
 React being my faster path.
 
-**Why:** The brief's fourth ask is a design system *an engineer takes and ships
-with 2 to 3 prompts*. A React system makes that sentence impossible for this
+**Why:** The brief's fourth ask is a design system _an engineer takes and ships
+with 2 to 3 prompts_. A React system makes that sentence impossible for this
 team. Every argument for React is an argument about my velocity, and it loses to
 an argument about their adoption.
 
@@ -47,8 +47,8 @@ tooling is the reason the work matters rather than an obstacle to it.
 
 1. No login screen. Entry is a wall-mounted device already scoped to a line, or a
    QR or NFC deep link. Honouring their own principle beats inventing auth.
-2. The buddy reads as a sibling to Genius. Genius *makes* knowledge, Ask
-   *retrieves* it, rather than competing for the same surface.
+2. The buddy reads as a sibling to Genius. Genius _makes_ knowledge, Ask
+   _retrieves_ it, rather than competing for the same surface.
 3. Translation is leverage rather than something to reinvent.
 4. The knowledge-capture loop emits an audit entry. That turns the flywheel from
    a nice idea into something that reinforces the business they already sell.
@@ -76,8 +76,8 @@ The environment picks the domain. That ordering is the point.
 
 ## D4. It's a routing problem, not a Q&A problem
 
-**Learned:** from the brief's own words, *"the answer is a colleague or
-supervisor away. So they wait."*
+**Learned:** from the brief's own words, _"the answer is a colleague or
+supervisor away. So they wait."_
 
 **Decision:** The flow deliberately includes the miss. An assistant that answers
 seven questions in ten and shrugs at the rest has rebuilt the dead-end it was
@@ -198,7 +198,9 @@ looking at the running app rather than by any check.
 **Cause:** one line.
 
 ```css
-[data-contrast='high'] * { border-width: 2px !important; }
+[data-contrast='high'] * {
+	border-width: 2px !important;
+}
 ```
 
 Tailwind's preflight sets `border: 0 solid` on every element, so forcing a width
@@ -267,7 +269,7 @@ files sit beside it, each with a stated trigger for when to load it:
 The structure is itself the argument. A rules file long enough to cover
 everything gets skimmed by humans and diluted in a long agent session, so every
 rule added makes the others slightly less likely to be followed. Telling an agent
-*when* to load a file is context budgeting made explicit.
+_when_ to load a file is context budgeting made explicit.
 
 **The rules I judged worth adding**, in rough order of how often an agent breaks
 them: the dependency lock, because one convenience library destroys the 46 KB
@@ -470,7 +472,7 @@ for timestamps and audit references.
 prediction in the writeup with nobody's thumb on the scale. The mechanical layer
 is genuinely solved by rules plus checks. The layer where meaning lives is not,
 and the failures cluster there every time. The number worth quoting is not 95%,
-it is *which* 5%, and it is the same 5% in both the contaminated runs and the
+it is _which_ 5%, and it is the same 5% in both the contaminated runs and the
 cold one.
 
 **What I would still not claim.** One task, one component, one agent. It is an
@@ -496,7 +498,7 @@ in D10: a rounded container that does not clip its children.
 still in the bundle showed that it was, even after nothing in `src/` used it.
 Tailwind v4 auto-detects sources across the project, including markdown, so it
 had been reading `AGENTS.md` and generating utilities from the class names the
-rules file lists as *forbidden*. Writing "never use `rounded-t`" is what put
+rules file lists as _forbidden_. Writing "never use `rounded-t`" is what put
 `rounded-t` in the stylesheet.
 
 **Decisions:**
@@ -513,3 +515,42 @@ output, with nothing in any check able to see it. That is now four instances in
 this project of a defect that compiled cleanly, passed every check, and was only
 findable by looking at the running product. Every one of them was found by a
 person, and three of the four by Tyler rather than by me.
+
+---
+
+## D17. The visual pass, after being told it looked like a prototype
+
+**Learned:** in the live session Thomas said it lacked visual polish, and that it
+read as "more of a UX thing, a prototype" than a product. That is a fair note and
+worth recording properly rather than defending.
+
+**The diagnosis.** The no-shadow rule is sound, and it is sound for the reason
+given: elevation shadows are invisible under washdown lighting. But I let it
+become "no depth at all", and then replaced the missing depth with 2px borders on
+almost every element. Outlined boxes stacked on a flat ground is the visual
+language of a wireframe. It reads as unresolved however correct the spacing is.
+
+Austere and unpolished are not the same thing. A Braun calculator is both austere
+and immaculate. The constraint never required the second quality to be missing.
+
+**The fix: fill instead of stroke.** Surfaces now carry the hierarchy and borders
+are reserved for things that mean something. That required a third border token,
+`hairline`, for a decorative edge on a filled surface. It is never the sole
+carrier of a boundary: in normal light the fill does that, and in high contrast
+it flips to pure black and takes over, which is why it is exempt from the 3:1
+floor. The exemption is documented in `check-contrast.mjs` as a statement about
+what the token is for, rather than a threshold quietly lowered to make something
+pass.
+
+**Also changed:** the standby screen, which was three lines of centred text and is
+the first thing anyone sees. The fault code is now an object rather than a
+sentence, because it is the reason the worker is standing there. Letter-spacing
+tokens on the three display sizes, since large type at default tracking is one of
+the reliable tells of unfinished work. And colour-only transitions at 150ms on
+interactive elements, which the motion rule always permitted; it bans positional
+animation, not feedback.
+
+**What did not change.** Every constraint that was defended in the room: 64px
+targets, the 7:1 floor, no shadows, no positional motion, high contrast as a
+lighting condition. The critique was about craft, not about the reasoning, and
+conceding the reasoning would have been the wrong response to it.

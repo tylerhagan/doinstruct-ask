@@ -54,12 +54,12 @@
 				aria-pressed={isDone}
 				class="flex min-h-tap w-full touch-manipulation items-start gap-4 rounded-lg border-2 p-4 text-left
 				       transition-colors
-				       {isNext ? 'border-ink bg-surface-raised' : 'border-border bg-surface'}
+				       {isNext ? 'border-ink bg-surface-raised' : 'border-hairline bg-surface'}
 				       {isDone ? 'opacity-60' : ''}"
 			>
 				<span
 					class="grid size-10 shrink-0 place-items-center rounded-full border-2 text-lead font-bold
-					       {isDone ? 'border-ok bg-ok text-cream' : 'border-ink text-ink'}"
+					       {isDone ? 'border-ok bg-ok text-cream' : 'border-hairline bg-surface text-ink'}"
 					aria-hidden="true"
 				>
 					{#if isDone}✓{:else}{step.n}{/if}

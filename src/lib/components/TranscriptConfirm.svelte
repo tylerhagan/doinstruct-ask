@@ -41,7 +41,7 @@
 	<p class="mb-2 text-small text-fg-muted">{t('confirm.heard')}</p>
 
 	<blockquote
-		class="rounded-lg border-2 border-border bg-surface-sunken p-4 text-lead"
+		class="rounded-lg border-2 border-hairline bg-surface-sunken p-4 text-lead"
 		aria-live="polite"
 	>
 		{#each words as word, i (i)}
