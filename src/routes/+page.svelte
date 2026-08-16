@@ -16,6 +16,7 @@
 	import EscalationCard from '$lib/components/floor/EscalationCard.svelte';
 	import Button from '$lib/components/floor/Button.svelte';
 	import DemoPanel from '$lib/components/floor/DemoPanel.svelte';
+	import LanguagePicker from '$lib/components/floor/LanguagePicker.svelte';
 
 	import { session } from '$lib/state/session.svelte';
 	import { t } from '$lib/i18n/floor';
@@ -24,9 +25,24 @@
 	import type { Answer, Escalation } from '$lib/domain/types';
 
 	type Phase =
-		'standby' | 'listening' | 'confirm' | 'thinking' | 'answer' | 'escalation' | 'handover';
+		| 'language'
+		| 'standby'
+		| 'listening'
+		| 'confirm'
+		| 'thinking'
+		| 'answer'
+		| 'escalation'
+		| 'handover';
 
-	let phase = $state<Phase>('standby');
+	/**
+	 * The flow starts at the language choice, not at standby.
+	 *
+	 * doinstruct's own flow is scan, pick a language, begin, and the first
+	 * version of this prototype skipped straight to a Romanian interface nobody
+	 * had asked for. Matching their pattern costs one screen and removes the
+	 * single worst assumption in the old build. See docs/office-surface.md.
+	 */
+	let phase = $state<Phase>('language');
 	let scenarioId = $state<ScenarioId>('sourced');
 	let answer = $state<Answer | null>(null);
 	let escalation = $state<Escalation | null>(null);
@@ -120,6 +136,14 @@
 		escalation = null;
 		phase = 'standby';
 	}
+
+	/**
+	 * Reset returns to standby rather than to the language screen. The worker has
+	 * not changed, so asking them to pick their language again after every
+	 * question would be the interface forgetting who it is talking to. Language
+	 * stays changeable in the status bar for the case where the device is handed
+	 * over mid-shift.
+	 */
 </script>
 
 <svelte:head>
@@ -139,10 +163,22 @@
 		class="mx-auto flex min-h-dvh w-full max-w-device flex-col bg-surface
 		       sm:h-frame sm:min-h-0 sm:overflow-hidden sm:rounded-xl sm:border-2 sm:border-ink"
 	>
-		<StatusBar />
+		<!-- No status bar on the language screen. It carries its own language
+		     buttons, and offering the same choice twice on one screen is how a
+		     worker ends up unsure which one counted. -->
+		{#if phase !== 'language'}
+			<StatusBar />
+		{/if}
 
 		<main class="flex flex-1 flex-col gap-6 p-5 sm:min-h-0 sm:overflow-y-auto">
-			{#if phase === 'standby'}
+			{#if phase === 'language'}
+				<LanguagePicker
+					onchoose={(lang) => {
+						session.setLanguage(lang);
+						phase = 'standby';
+					}}
+				/>
+			{:else if phase === 'standby'}
 				<div class="flex flex-1 flex-col items-center justify-center gap-5 text-center">
 					<p class="text-display font-bold">{session.machine.machine}</p>
 

@@ -25,10 +25,21 @@
 	import SafetyBanner from '$lib/components/floor/SafetyBanner.svelte';
 	import EscalationCard from '$lib/components/floor/EscalationCard.svelte';
 	import StatusBar from '$lib/components/floor/StatusBar.svelte';
+	import LanguagePicker from '$lib/components/floor/LanguagePicker.svelte';
+
+	import OfficeButton from '$lib/components/office/Button.svelte';
+	import Panel from '$lib/components/office/Panel.svelte';
+	import TriageBadge from '$lib/components/office/TriageBadge.svelte';
+	import FilterGroup from '$lib/components/office/FilterGroup.svelte';
+	import QueueRow from '$lib/components/office/QueueRow.svelte';
+	import RankedBars from '$lib/components/office/RankedBars.svelte';
+	import Trend from '$lib/components/office/Trend.svelte';
+	import KnowledgeCard from '$lib/components/office/KnowledgeCard.svelte';
 
 	import { session } from '$lib/state/session.svelte';
 	import { t } from '$lib/i18n/floor';
 	import { scenarioById } from '$lib/data/floor';
+	import { COVERAGE, COVERAGE_WEEKS, KNOWLEDGE, QUEUE } from '$lib/data/office';
 	import type { Source } from '$lib/domain/types';
 
 	// Real scenario content, so the gallery cannot drift from the product.
@@ -52,20 +63,25 @@
 	const staleSource: Source = { ...translatedSource, id: 'src-stale', updatedAt: '2024-11-03' };
 
 	/**
-	 * Ranked-bar demo data for the office register.
-	 *
-	 * Asset IDs rather than sentences on purpose. An identifier is never
-	 * localised, so this row of labels reads the same in all three languages and
-	 * the gallery does not need a t() key to show a chart.
+	 * Chart demo data comes from the real office fixtures rather than being
+	 * invented here, for the same reason the floor components pull from the real
+	 * scenarios: a gallery that makes up its own content is a gallery that can
+	 * drift away from the product without anyone noticing.
 	 */
-	const COVERAGE = [
-		{ asset: 'F2-4471', unanswered: 34 },
-		{ asset: 'PAL-2210', unanswered: 27 },
-		{ asset: 'F1-4470', unanswered: 19 },
-		{ asset: 'WRP-118', unanswered: 11 },
-		{ asset: 'CIP-030', unanswered: 6 }
-	];
-	const coverageMax = Math.max(...COVERAGE.map((d) => d.unanswered));
+	const docBuckets = COVERAGE.filter((b) => b.triage === 'documentation');
+	const docMax = Math.max(...COVERAGE.map((b) => b.count ?? 0), 1);
+	const docRows = $derived(
+		docBuckets.map((b) => ({
+			id: b.id,
+			label: b.label,
+			detail: b.detail[session.language],
+			count: b.count,
+			tone: 'bg-series-1'
+		}))
+	);
+	const trendBucket = docBuckets.find((b) => b.trend.length > 0);
+
+	let galleryShift = $state('all');
 
 	const SECTIONS = [
 		['foundations', 'Foundations'],
@@ -79,6 +95,7 @@
 		['sourcechip', 'SourceChip'],
 		['safetybanner', 'SafetyBanner'],
 		['escalation', 'EscalationCard'],
+		['language', 'LanguagePicker'],
 		['register', 'Office register']
 	] as const;
 </script>
@@ -377,6 +394,20 @@
 			</div>
 		</section>
 
+		<!-- ── LanguagePicker ─────────────────────────────────────────────── -->
+		<section id="language" class="mb-14 scroll-mt-4">
+			<h2 class="text-title font-bold">LanguagePicker</h2>
+			<p class="mt-2 mb-5 max-w-prose text-small text-fg-muted">
+				The first screen after the QR code, and the fix for the worst assumption in the first build,
+				which defaulted silently to Romanian. Nothing here depends on already knowing the worker's
+				language: the machine context is identifiers, and the one word of chrome is rendered in all
+				three languages at once, read out of the dictionary so it cannot drift.
+			</p>
+			<div class="overflow-hidden rounded-lg border-2 border-ink">
+				<LanguagePicker onchoose={() => {}} />
+			</div>
+		</section>
+
 		<!-- ── Office register ────────────────────────────────────────────── -->
 		<!--
 			Deliberately last. The copy below says "everything above this point is
@@ -464,33 +495,122 @@
 
 			<h3 class="mb-3 text-lead font-bold">Marks, in place</h3>
 			<p class="mb-4 max-w-prose text-small text-fg-muted">
-				A palette judged from swatches is a palette nobody has read. These bars are one nominal
-				series, so every bar takes slot one: colouring them by their own value would spend the
-				identity channel re-encoding what length already shows. Rounded at the data end, square
-				against the baseline, 2px of surface between them, values in text tokens rather than in the
-				series colour.
+				A palette judged from swatches is a palette nobody has read. This is the real
+				<code class="text-meta">RankedBars</code> component on the real coverage fixtures, not a mock
+				of it: a gallery that reimplements what it documents is a gallery that drifts. One nominal series,
+				so every bar takes slot one, because colouring them by their own value would spend the identity
+				channel re-encoding what length already shows. The last row is below the suppression threshold
+				and says so instead of drawing a very short bar.
 			</p>
 			<div class="rounded-md border border-hairline bg-surface-raised p-4">
-				<p class="mb-1 text-small font-bold">Unanswered questions by asset</p>
-				<p class="mb-4 text-meta text-fg-muted">Last 30 days · buckets below five suppressed</p>
-				<div class="flex flex-col gap-0.5">
-					{#each COVERAGE as row (row.asset)}
-						<div class="flex items-center gap-3">
-							<p class="w-20 shrink-0 text-meta font-bold tabular-nums">{row.asset}</p>
-							<div class="flex min-w-0 flex-1 items-center gap-2">
-								<!--
-									A data-driven width is geometry, not a design decision, so it is
-									the one place an inline style is correct rather than a token
-									violation. Nothing about the mark's colour or radius is inline.
-								-->
-								<div
-									class="h-4 rounded-e-xs bg-series-1"
-									style="width: {(row.unanswered / coverageMax) * 100}%"
-								></div>
-								<p class="shrink-0 text-meta text-fg-muted tabular-nums">{row.unanswered}</p>
-							</div>
+				<p class="mb-1 text-small font-bold">Unanswered questions, documentation gaps</p>
+				<p class="mb-4 text-meta text-fg-muted">Last 6 weeks · buckets below five suppressed</p>
+				<RankedBars rows={docRows} max={docMax} suppressedLabel="Too few to show" />
+			</div>
+
+			<h3 class="mt-8 mb-3 text-lead font-bold">Office components</h3>
+			<p class="mb-4 max-w-prose text-small text-fg-muted">
+				The desk-register set. Contracts live in each file's header, same as the floor components
+				above. Content comes from the office fixtures, so switching language in the header changes
+				what these say too.
+			</p>
+
+			<div class="flex flex-col gap-6">
+				<div>
+					<p class="mb-2 text-meta font-bold text-fg-muted">
+						Button · 36px, ink rather than yellow
+					</p>
+					<div class="flex flex-wrap items-center gap-2">
+						<OfficeButton variant="primary">primary</OfficeButton>
+						<OfficeButton>secondary</OfficeButton>
+						<OfficeButton variant="quiet">quiet</OfficeButton>
+						<OfficeButton disabled>disabled</OfficeButton>
+					</div>
+				</div>
+
+				<div>
+					<p class="mb-2 text-meta font-bold text-fg-muted">
+						TriageBadge · icon and word, never colour alone
+					</p>
+					<div class="flex flex-wrap gap-4">
+						<TriageBadge triage="documentation" showAction />
+						<TriageBadge triage="machine" showAction />
+						<TriageBadge triage="people" showAction />
+					</div>
+				</div>
+
+				<div>
+					<p class="mb-2 text-meta font-bold text-fg-muted">FilterGroup · radios, not buttons</p>
+					<FilterGroup
+						label="Shift"
+						options={[
+							{ value: 'all', label: 'All' },
+							{ value: 'early', label: 'Early' },
+							{ value: 'late', label: 'Late' }
+						]}
+						bind:value={galleryShift}
+						name="gallery-shift"
+					/>
+				</div>
+
+				<div>
+					<p class="mb-2 text-meta font-bold text-fg-muted">
+						Panel · flat, raised, overlay. Toggle high contrast: the shadows go, the hairlines stay.
+					</p>
+					<div class="grid gap-3 sm:grid-cols-3">
+						<Panel level={3} title="flat"><p class="px-4 py-3 text-meta">on the plane</p></Panel>
+						<Panel level={3} title="raised" elevation="raised">
+							<p class="px-4 py-3 text-meta">chrome content scrolls under</p>
+						</Panel>
+						<Panel level={3} title="overlay" elevation="overlay">
+							<p class="px-4 py-3 text-meta">genuinely detached</p>
+						</Panel>
+					</div>
+				</div>
+
+				<div>
+					<p class="mb-2 text-meta font-bold text-fg-muted">
+						Trend · six points, values printed. Four is the floor; below it the component says so
+						rather than drawing a line through noise.
+					</p>
+					<div class="grid gap-6 rounded-md border border-hairline bg-surface p-4 sm:grid-cols-2">
+						<Trend
+							values={trendBucket?.trend ?? []}
+							labels={COVERAGE_WEEKS}
+							title="Trend · documentation gap"
+							tooFew="Too little data for a trend."
+						/>
+						<Trend
+							values={[2, 3]}
+							labels={COVERAGE_WEEKS}
+							tone="text-series-2"
+							title="Trend · not enough points"
+							tooFew="Too little data for a trend."
+						/>
+					</div>
+				</div>
+
+				<div>
+					<p class="mb-2 text-meta font-bold text-fg-muted">
+						QueueRow · the whole row is the target, and the wait carries the emphasis rather than
+						the name
+					</p>
+					<div class="overflow-hidden rounded-md border border-hairline">
+						<div class="divide-y divide-hairline">
+							{#each QUEUE.slice(0, 2) as item, i (item.id)}
+								<QueueRow {item} selected={i === 0} onselect={() => {}} />
+							{/each}
 						</div>
-					{/each}
+					</div>
+				</div>
+
+				<div>
+					<p class="mb-2 text-meta font-bold text-fg-muted">
+						KnowledgeCard · every field is one an auditor asks for
+					</p>
+					<div class="overflow-hidden rounded-md border border-hairline bg-surface">
+						<KnowledgeCard entry={KNOWLEDGE[0]} />
+					</div>
 				</div>
 			</div>
 		</section>
