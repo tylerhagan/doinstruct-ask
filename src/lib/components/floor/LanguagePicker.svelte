@@ -3,70 +3,133 @@
 	LanguagePicker: the first screen after the QR code.
 
 	CONTRACT
-	- onchoose: (lang: Language) => void
+	- options:  { code, label }[]  languages the CONTENT exists in, any length
+	- onchoose: (code: string) => void
 
 	WHY THIS EXISTS
 	The first version of this prototype silently defaulted to Romanian and buried
-	language in a status bar. Reading doinstruct's product pages properly showed
-	that is not their flow: theirs is scan, pick a language, begin. Theirs is
-	better, and it is already familiar to every worker who has used the training
-	product, so the prototype now matches it. See docs/office-surface.md.
+	language in a status bar. doinstruct's own flow is scan, pick a language,
+	begin, and theirs is better: it is already familiar to every worker who has
+	used the training product. See docs/office-surface.md.
+
+	WHY IT TAKES A LIST RATHER THAN THE THREE THIS PROTOTYPE HAS
+	doinstruct advertises 35+ languages, and a first pass at this screen rendered
+	three fixed buttons, which quietly claims the product speaks three.
+
+	But a worker never picks from 35. They pick from the languages the content in
+	front of them actually exists in, which for one German food plant is more like
+	six to ten: German, Romanian, Polish, Bulgarian, Turkish, Ukrainian, Arabic.
+	The employer configures that set; nobody scrolls a language atlas at a machine.
+
+	So the list is data, it is ordered by what the device already tells us, and it
+	scrolls. The prototype passes three because three is what the scenarios are
+	translated into, and faking a fourth would be a lie told in a language I
+	cannot check. `/system` shows it at nine, which is the shape a real site has.
 
 	RULES
-	- Nothing on this screen depends on already knowing the worker's language,
-	  because they have not chosen yet. The machine context is identifiers, which
-	  are never translated. The one word of chrome is rendered in all three
-	  languages at once, read straight out of the dictionary so it cannot drift.
-	- Languages are labelled in their own script. "Română", not "Romanian". A
-	  worker scanning for their language does not read the interface language.
-	- 96px targets, not 64px. This is the primary action of the screen and it is
-	  the first thing a gloved hand touches.
-	- The accessible name uses the device's current language, which is the best
-	  available guess before a choice exists. Naming it in one language is better
-	  than leaving the heading unnamed.
+	- Nothing here may depend on already knowing the worker's language, because
+	  they have not chosen. Machine context is identifiers, which are never
+	  translated, and the one word of chrome renders in every offered language at
+	  once, read out of the dictionary so it cannot drift.
+	- Labels are endonyms. "Română", not "Romanian"; "العربية", not "Arabic". A
+	  worker scanning for their language is not reading the interface language.
+	- The device's own language goes first, from `navigator.languages`. On a
+	  personal phone that is very often the right answer, and it costs nothing
+	  when it is wrong because the rest of the list is still there.
+	- 64px rows rather than three tall buttons. Tall buttons stop working the
+	  moment the list is longer than a screen, which is the normal case.
+	- Past roughly a dozen this needs a search field. Nine scrolls fine, thirty
+	  does not, and pretending otherwise is where this pattern usually fails.
 -->
 <script lang="ts">
-	import { LANGUAGE_LABEL, type Language } from '$lib/domain/types';
 	import { session } from '$lib/state/session.svelte';
 	import { DICT, t } from '$lib/i18n/floor';
+	import type { Language } from '$lib/domain/types';
 
-	interface Props {
-		onchoose: (lang: Language) => void;
+	interface Option {
+		code: string;
+		label: string;
 	}
 
-	let { onchoose }: Props = $props();
+	interface Props {
+		options: Option[];
+		onchoose: (code: string) => void;
+	}
 
-	const LANGS: Language[] = ['de', 'ro', 'en'];
+	let { options, onchoose }: Props = $props();
 
 	/**
-	 * "Sprache · Limbă · Language", built from the dictionary rather than typed
-	 * out, so adding a language cannot leave this line behind. Deduplicated in
-	 * case two locales share the word.
+	 * The device's preferred language, if the plant offers it.
+	 *
+	 * Matched on the primary subtag, so `ro-RO` finds `ro`. Read once at module
+	 * evaluation because a worker does not change their phone's language between
+	 * scanning a QR code and reading the screen.
 	 */
-	const label = [...new Set(LANGS.map((l) => DICT[l]['status.language']))].join(' · ');
+	const preferred = (() => {
+		if (typeof navigator === 'undefined') return null;
+		const wanted = (navigator.languages ?? [navigator.language ?? '']).map(
+			(tag) => tag.split('-')[0]
+		);
+		for (const tag of wanted) {
+			const hit = options.find((o) => o.code === tag);
+			if (hit) return hit.code;
+		}
+		return null;
+	})();
+
+	const ordered = $derived(
+		preferred
+			? [...options].sort((a, b) => Number(b.code === preferred) - Number(a.code === preferred))
+			: options
+	);
+
+	/**
+	 * "Sprache · Limbă · Language", one word per offered language, built from the
+	 * dictionary rather than typed out. Languages with no translation of the word
+	 * fall back to their own name, which is still unambiguous in context.
+	 * Deduplicated in case two locales share it.
+	 */
+	const label = $derived(
+		[...new Set(options.map((o) => DICT[o.code as Language]?.['status.language'] ?? o.label))].join(
+			' · '
+		)
+	);
 </script>
 
-<div class="flex flex-1 flex-col justify-center gap-8 p-5">
-	<div class="text-center">
+<div class="flex min-h-0 flex-1 flex-col gap-6 p-5">
+	<div class="shrink-0 text-center">
 		<h1 class="sr-only">{t('status.language')}</h1>
 		<p class="text-small font-bold text-fg-muted">{session.machine.line}</p>
 		<p class="text-display font-bold">{session.machine.machine}</p>
 		<p class="text-meta text-fg-muted">{session.machine.assetId}</p>
 	</div>
 
-	<div>
-		<p class="mb-3 text-center text-small font-bold text-fg-muted">{label}</p>
-		<div class="flex flex-col gap-3">
-			{#each LANGS as lang (lang)}
-				<button
-					type="button"
-					onclick={() => onchoose(lang)}
-					class="min-h-tap-primary w-full rounded-lg border-2 border-hairline bg-surface-raised
-					       px-5 text-title font-bold transition-colors active:brightness-95"
-				>
-					{LANGUAGE_LABEL[lang]}
-				</button>
+	<div class="flex min-h-0 flex-1 flex-col">
+		<p class="mb-3 shrink-0 text-center text-small font-bold text-fg-muted">{label}</p>
+
+		<!--
+			Sizes to its content and scrolls only when it runs out of room, rather
+			than stretching. Three languages in a box built for nine reads as a
+			loading state; `max-h-full` without `flex-1` gives both cases the right
+			shape.
+		-->
+		<ul
+			class="max-h-full min-h-0 divide-y-2 divide-hairline overflow-y-auto rounded-lg
+			       border-2 border-hairline bg-surface-raised"
+		>
+			{#each ordered as option (option.code)}
+				<li>
+					<button
+						type="button"
+						onclick={() => onchoose(option.code)}
+						lang={option.code}
+						class="flex min-h-tap w-full items-center px-5 text-lead font-bold transition-colors
+						       active:brightness-95"
+					>
+						{option.label}
+					</button>
+				</li>
 			{/each}
-		</div>
+		</ul>
 	</div>
 </div>

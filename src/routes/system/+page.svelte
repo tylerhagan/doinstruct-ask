@@ -83,6 +83,23 @@
 
 	let galleryShift = $state('all');
 
+	/**
+	 * What one German food plant's configured language set plausibly looks like.
+	 * Endonyms throughout: a worker scanning for their language is not reading
+	 * the interface language.
+	 */
+	const SITE_LANGUAGES = [
+		{ code: 'de', label: 'Deutsch' },
+		{ code: 'ro', label: 'Română' },
+		{ code: 'pl', label: 'Polski' },
+		{ code: 'bg', label: 'Български' },
+		{ code: 'tr', label: 'Türkçe' },
+		{ code: 'uk', label: 'Українська' },
+		{ code: 'hu', label: 'Magyar' },
+		{ code: 'ar', label: 'العربية' },
+		{ code: 'en', label: 'English' }
+	];
+
 	const SECTIONS = [
 		['foundations', 'Foundations'],
 		['statusbar', 'StatusBar'],
@@ -400,11 +417,22 @@
 			<p class="mt-2 mb-5 max-w-prose text-small text-fg-muted">
 				The first screen after the QR code, and the fix for the worst assumption in the first build,
 				which defaulted silently to Romanian. Nothing here depends on already knowing the worker's
-				language: the machine context is identifiers, and the one word of chrome is rendered in all
-				three languages at once, read out of the dictionary so it cannot drift.
+				language: the machine context is identifiers, and the one word of chrome renders in every
+				offered language at once, read out of the dictionary so it cannot drift.
 			</p>
-			<div class="overflow-hidden rounded-lg border-2 border-ink">
-				<LanguagePicker onchoose={() => {}} />
+			<p class="mb-5 max-w-prose text-small text-fg-muted">
+				Shown here at nine, which is the shape a real site has. A worker never picks from
+				doinstruct's 35+; they pick from the languages the content in front of them exists in, and
+				the employer configures that set. The product passes three because three is what these
+				scenarios are translated into. Past roughly a dozen this needs a search field, and saying so
+				is better than pretending nine and thirty are the same problem. Arabic is in the list on
+				purpose: it is right to left, and this system's RTL gap is real and named in
+				<code class="text-meta">docs/rules/accessibility.md</code>.
+			</p>
+			<div class="h-frame overflow-hidden rounded-lg border-2 border-ink sm:h-auto">
+				<div class="flex h-125 flex-col">
+					<LanguagePicker options={SITE_LANGUAGES} onchoose={() => {}} />
+				</div>
 			</div>
 		</section>
 

@@ -22,7 +22,10 @@
 	import { t } from '$lib/i18n/floor';
 	import { recognition, speak, stopSpeaking } from '$lib/voice/recognition.svelte';
 	import { scenarioById, type ScenarioId } from '$lib/data/floor';
-	import type { Answer, Escalation } from '$lib/domain/types';
+	import { LANGUAGE_LABEL, type Answer, type Escalation, type Language } from '$lib/domain/types';
+
+	/** The languages this prototype's content exists in. */
+	const LANGUAGES: Language[] = ['de', 'ro', 'en'];
 
 	type Phase =
 		| 'language'
@@ -172,9 +175,16 @@
 
 		<main class="flex flex-1 flex-col gap-6 p-5 sm:min-h-0 sm:overflow-y-auto">
 			{#if phase === 'language'}
+				<!--
+					The offered list is the languages the CONTENT exists in, which here is
+					the three the scenarios are translated into. In the real product a
+					site configures its own set, typically six to ten. The picker takes a
+					list rather than hard-coding buttons, so that number is data.
+				-->
 				<LanguagePicker
-					onchoose={(lang) => {
-						session.setLanguage(lang);
+					options={LANGUAGES.map((code) => ({ code, label: LANGUAGE_LABEL[code] }))}
+					onchoose={(code) => {
+						if (LANGUAGES.includes(code as Language)) session.setLanguage(code as Language);
 						phase = 'standby';
 					}}
 				/>
