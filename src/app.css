@@ -31,3 +31,45 @@
 @source './**/*.{svelte,ts}';
 
 @import './lib/design/tokens.css';
+
+/* ---------------------------------------------------------------------------
+   Manrope, self-hosted, subset, variable.
+
+   This reverses an earlier decision to ship no webfont at all. That decision
+   was made for the right reason, a five-year-old Android on plant wifi, and it
+   cost the product its voice: the system stack renders as Segoe UI on Windows,
+   which is competent and characterless, and it is the single biggest reason
+   this looked like a wireframe rather than a product.
+
+   `font-display: optional` is what makes the reversal safe. The browser gives
+   the font a short window; if it misses, the page renders in the fallback and
+   NEVER swaps, so there is no reflow at any point. Combined with the preload in
+   app.html, a reviewer on a decent connection gets Manrope on first paint and a
+   worker in a cold store gets the system stack with zero layout shift. Nobody
+   waits for text.
+
+   One family across both registers. The office does not get its own typeface,
+   because a two-register system with two typefaces is two systems.
+--------------------------------------------------------------------------- */
+@font-face {
+	font-family: 'Manrope';
+	font-style: normal;
+	font-weight: 400 800;
+	font-display: optional;
+	src: url('/fonts/manrope-latin.woff2') format('woff2');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Manrope';
+	font-style: normal;
+	font-weight: 400 800;
+	font-display: optional;
+	src: url('/fonts/manrope-latin-ext.woff2') format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}

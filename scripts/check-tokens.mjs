@@ -33,7 +33,6 @@ const hexes = (source) =>
  * quietly narrowed to pass.
  */
 const UNUSED_BRAND_SWATCHES = {
-	'#153327': '--swatch--green, documented as deliberately unused',
 	'#162010': '--swatch--medium-green, documented as deliberately unused'
 };
 

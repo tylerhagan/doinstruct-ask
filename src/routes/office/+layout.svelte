@@ -28,6 +28,17 @@
 		{ href: '/office/knowledge', key: 'nav.knowledge' }
 	] as const;
 
+	/**
+	 * No yellow anywhere in this register, including the "you are here" marker.
+	 *
+	 * A first pass used it for the active nav item and the active language, which
+	 * broke the one-yellow-per-screen rule twice on the same rail and, worse,
+	 * contradicted this register's own Button contract: yellow means "this is the
+	 * voice action" and there is no voice action at a desk. Cream on the dark
+	 * ground marks the current page instead, which reads just as loudly and
+	 * spends nothing reserved.
+	 */
+
 	/** `/office` must match exactly, or it stays highlighted on every child. */
 	const isCurrent = (href: string) =>
 		href === '/office' ? page.url.pathname === '/office' : page.url.pathname.startsWith(href);
@@ -39,21 +50,23 @@
 	<div class="mx-auto flex min-h-dvh max-w-office flex-col md:flex-row">
 		<!-- Rail on a desk, bottom bar on a phone. -->
 		<header
-			class="sticky top-0 z-10 order-1 border-b border-hairline bg-surface md:order-none
-			       md:flex md:w-56 md:shrink-0 md:flex-col md:border-e md:border-b-0"
+			class="sticky top-0 z-10 order-1 border-b border-hairline-inverse bg-surface-inverse
+			       text-fg-inverse md:order-none md:flex md:w-56 md:shrink-0 md:flex-col
+			       md:border-e md:border-b-0"
 		>
 			<div class="flex items-center justify-between gap-3 px-4 py-3 md:block">
 				<div class="min-w-0">
 					<p class="truncate text-small font-bold">{tOffice('office.title')}</p>
-					<p class="truncate text-meta text-fg-muted">{tOffice('office.plant')}</p>
+					<p class="truncate text-meta text-fg-inverse-muted">{tOffice('office.plant')}</p>
 				</div>
 
 				<button
 					type="button"
 					onclick={() => session.toggleContrast()}
 					aria-pressed={session.highContrast}
-					class="flex min-h-control shrink-0 items-center gap-2 rounded-md border border-hairline
-					       bg-surface px-3 transition-colors md:mt-3 md:w-full"
+					class="flex min-h-control shrink-0 items-center gap-2 rounded-md border
+					       border-hairline-inverse bg-surface-inverse-raised px-3 transition-colors
+					       md:mt-3 md:w-full"
 				>
 					<svg class="size-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
 						<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" />
@@ -73,8 +86,8 @@
 								class="flex min-h-control items-center justify-between gap-2 rounded-md px-3
 								       text-small font-bold transition-colors
 								       {isCurrent(link.href)
-									? 'bg-ink text-fg-inverse'
-									: 'text-fg-muted hover:bg-surface-raised hover:text-fg'}"
+									? 'bg-surface text-ink'
+									: 'text-fg-inverse-muted hover:bg-surface-inverse-raised hover:text-fg-inverse'}"
 							>
 								<span class="truncate">{tOffice(link.key)}</span>
 								{#if link.href === '/office' && office.open.length > 0}
@@ -89,7 +102,9 @@
 			<!-- Language sits with the rest of the chrome, and switching it changes
 			     the questions themselves, not only the labels. -->
 			<div class="hidden px-2 pb-2 md:block">
-				<p class="px-3 pb-1 text-meta font-bold text-fg-muted">{tOffice('status.language')}</p>
+				<p class="px-3 pb-1 text-meta font-bold text-fg-inverse-muted">
+					{tOffice('status.language')}
+				</p>
 				<div class="flex gap-1">
 					{#each LANGS as lang (lang)}
 						<button
@@ -98,8 +113,8 @@
 							aria-pressed={session.language === lang}
 							class="min-h-control flex-1 rounded-md border px-2 text-meta font-bold transition-colors
 							       {session.language === lang
-								? 'border-ink bg-ink text-fg-inverse'
-								: 'border-hairline bg-surface text-fg-muted hover:text-fg'}"
+								? 'border-surface bg-surface text-ink'
+								: 'border-hairline-inverse bg-surface-inverse-raised text-fg-inverse-muted hover:text-fg-inverse'}"
 						>
 							{LANGUAGE_LABEL[lang].slice(0, 2)}
 						</button>
@@ -111,7 +126,8 @@
 				<a
 					href="/"
 					class="flex min-h-control items-center rounded-md px-3 text-meta font-bold
-					       text-fg-muted transition-colors hover:bg-surface-raised hover:text-fg"
+					       text-fg-inverse-muted transition-colors hover:bg-surface-inverse-raised
+					       hover:text-fg-inverse"
 				>
 					{tOffice('nav.toFloor')}
 				</a>

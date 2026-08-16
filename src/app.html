@@ -4,6 +4,25 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
+
+		<!--
+			Preload the Latin subset, paired with `font-display: optional` in
+			app.css. The two together are the whole argument: `optional` guarantees
+			the font never blocks paint and never causes a shift, and the preload
+			makes it likely to arrive inside the browser's short swap window anyway.
+			A reviewer on a decent connection sees Manrope on first paint. A worker
+			on plant wifi sees the system stack, immediately, and nothing moves.
+			Latin Extended is deliberately not preloaded: it only matters for
+			Romanian, and speculatively fetching 15 KB for everyone to save one
+			language a swap is the wrong trade.
+		-->
+		<link
+			rel="preload"
+			href="%sveltekit.assets%/fonts/manrope-latin.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

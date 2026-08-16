@@ -111,15 +111,15 @@
 	);
 </script>
 
-<div class="flex min-h-0 flex-1 flex-col gap-6 p-5">
+<div class="flex min-h-0 flex-1 flex-col gap-6 bg-surface-inverse p-5 text-fg-inverse">
 	<div class="flex shrink-0 justify-end">
 		<button
 			type="button"
 			onclick={() => session.toggleContrast()}
 			aria-pressed={session.highContrast}
 			aria-label={t('status.contrast')}
-			class="flex size-tap items-center justify-center rounded-md border-2 border-hairline
-			       bg-surface-raised transition-colors"
+			class="flex size-tap items-center justify-center rounded-md border-2 border-hairline-inverse
+			       bg-surface-inverse-raised transition-colors"
 		>
 			<svg class="size-7" viewBox="0 0 24 24" aria-hidden="true">
 				<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" />
@@ -128,46 +128,54 @@
 		</button>
 	</div>
 
-	<div class="shrink-0 text-center">
-		<h1 class="sr-only">{t('status.language')}</h1>
-		{#if session.machine}
-			<p class="text-small font-bold text-fg-muted">{session.machine.line}</p>
-			<p class="text-display font-bold">{session.machine.machine}</p>
-			<p class="text-meta text-fg-muted">{session.machine.assetId}</p>
-		{:else if session.scannedAsset}
-			<!-- The sticker resolved to nothing. Show the code so it can be read out
+	<!-- The machine and the list travel together and sit optically centred. Top
+	     aligned they left a third of the screen empty under the last language,
+	     which reads as a list still loading. -->
+	<div class="flex min-h-0 flex-1 flex-col justify-center gap-6">
+		<div class="shrink-0 text-center">
+			<h1 class="sr-only">{t('status.language')}</h1>
+			{#if session.machine}
+				<p class="text-small font-bold text-fg-inverse-muted">{session.machine.line}</p>
+				<p class="text-display font-bold">{session.machine.machine}</p>
+				<p class="text-meta text-fg-inverse-muted">{session.machine.assetId}</p>
+			{:else if session.scannedAsset}
+				<!-- The sticker resolved to nothing. Show the code so it can be read out
 			     to whoever prints the stickers; the flow carries on regardless. -->
-			<p class="text-lead font-bold">{t('machine.unknown')}</p>
-			<p class="text-meta text-fg-muted">{session.scannedAsset}</p>
-		{/if}
-	</div>
+				<p class="text-lead font-bold">{t('machine.unknown')}</p>
+				<p class="text-meta text-fg-inverse-muted">{session.scannedAsset}</p>
+			{/if}
+		</div>
 
-	<div class="flex min-h-0 flex-1 flex-col">
-		<p class="mb-3 shrink-0 text-center text-small font-bold text-fg-muted">{label}</p>
+		<!-- Not flex-1. The centring wrapper owns the spare height; if this block
+		     claims it too, it grows to fill and the content pins to the top, which
+		     is what happened on the first attempt. -->
+		<div class="flex min-h-0 flex-col">
+			<p class="mb-3 shrink-0 text-center text-small font-bold text-fg-inverse-muted">{label}</p>
 
-		<!--
+			<!--
 			Sizes to its content and scrolls only when it runs out of room, rather
 			than stretching. Three languages in a box built for nine reads as a
 			loading state; `max-h-full` without `flex-1` gives both cases the right
 			shape.
 		-->
-		<ul
-			class="max-h-full min-h-0 divide-y-2 divide-hairline overflow-y-auto rounded-lg
-			       border-2 border-hairline bg-surface-raised"
-		>
-			{#each ordered as option (option.code)}
-				<li>
-					<button
-						type="button"
-						onclick={() => onchoose(option.code)}
-						lang={option.code}
-						class="flex min-h-tap w-full items-center px-5 text-lead font-bold transition-colors
+			<ul
+				class="max-h-full min-h-0 divide-y-2 divide-hairline-inverse overflow-y-auto rounded-lg
+			       border-2 border-hairline-inverse bg-surface-inverse-raised"
+			>
+				{#each ordered as option (option.code)}
+					<li>
+						<button
+							type="button"
+							onclick={() => onchoose(option.code)}
+							lang={option.code}
+							class="flex min-h-tap w-full items-center px-5 text-lead font-bold transition-colors
 						       active:brightness-95"
-					>
-						{option.label}
-					</button>
-				</li>
-			{/each}
-		</ul>
+						>
+							{option.label}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		</div>
 	</div>
 </div>

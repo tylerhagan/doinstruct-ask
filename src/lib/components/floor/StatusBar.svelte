@@ -45,17 +45,24 @@
 	let { onchangelanguage }: Props = $props();
 </script>
 
-<header class="border-b-2 border-hairline bg-surface-raised">
+<!--
+	Dark ground. The rule across the product is that dark is where you ARE and
+	cream is where you READ: chrome, context and waiting states sit on the brand
+	green, and anything with sentences in it sits on cream. Before this the
+	product used doinstruct's colours as ink and never as ground, which is why it
+	looked like a neutral admin tool rather than their product.
+-->
+<header class="border-b-2 border-hairline-inverse bg-surface-inverse text-fg-inverse">
 	<div class="flex items-center justify-between gap-3 px-4 py-3">
 		<div class="min-w-0">
 			{#if session.machine}
 				<p class="truncate text-small font-bold">{session.machine.line}</p>
-				<p class="truncate text-meta text-fg-muted">
+				<p class="truncate text-meta text-fg-inverse-muted">
 					{session.machine.machine} · {session.machine.assetId}
 				</p>
 			{:else}
-				<p class="truncate text-small font-bold text-fg-muted">{t('machine.none')}</p>
-				<p class="truncate text-meta text-fg-muted">{session.scannedAsset ?? ''}</p>
+				<p class="truncate text-small font-bold text-fg-inverse-muted">{t('machine.none')}</p>
+				<p class="truncate text-meta text-fg-inverse-muted">{session.scannedAsset ?? ''}</p>
 			{/if}
 		</div>
 
@@ -76,8 +83,8 @@
 				onclick={onchangelanguage}
 				aria-label={t('status.changeLanguage')}
 				lang={session.language}
-				class="flex min-h-tap items-center rounded-md border-2 border-hairline bg-surface px-3
-				       text-meta font-bold transition-colors"
+				class="flex min-h-tap items-center rounded-md border-2 border-hairline-inverse
+				       bg-surface-inverse-raised px-3 text-meta font-bold transition-colors"
 			>
 				{LANGUAGE_LABEL[session.language]}
 			</button>
@@ -87,7 +94,7 @@
 				onclick={() => session.toggleContrast()}
 				aria-pressed={session.highContrast}
 				aria-label={t('status.contrast')}
-				class="flex min-h-tap items-center gap-2 rounded-md border-2 border-hairline bg-surface px-3 transition-colors"
+				class="flex min-h-tap items-center gap-2 rounded-md border-2 border-hairline-inverse bg-surface-inverse-raised px-3 transition-colors"
 			>
 				<svg class="size-6 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
 					<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" />

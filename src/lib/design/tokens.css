@@ -18,6 +18,7 @@
 	--color-surface-raised: #f2efec; /* --swatch--gray */
 	--color-surface-sunken: #e4e0da; /* derived, they have no equivalent */
 	--color-surface-inverse: #11190c; /* --swatch--dark-green */
+	--color-surface-inverse-raised: #153327; /* --swatch--green, unused until now */
 
 	/* -- Text (nothing below 7:1, enforced by scripts/check-contrast.mjs) - */
 	--color-fg: #11190c;
@@ -25,6 +26,9 @@
 	   marketing; below the floor for a plant floor. Darkened, hue preserved. */
 	--color-fg-muted: #454c3e;
 	--color-fg-inverse: #fcfbf8;
+	/* 9.6:1 on the dark ground and 7.3:1 on the raised one. The same job as
+	   fg-muted, held to the same floor, on the other side of the system. */
+	--color-fg-inverse-muted: #b6c1ae;
 
 	/* -- Status (stop is reserved for safety) ------------------------------ */
 	/* Darkened from a first pass that failed check-contrast.mjs at 5.4 to 6.1:1.
@@ -52,11 +56,20 @@
 	   product and a wireframe. Outlined boxes on a flat ground read as unresolved
 	   no matter how correct the spacing is. */
 	--color-hairline: #e7e2d9;
+	/* The dark ground's decorative edge. Exempt from 3:1 for the same reason as
+	   its light twin: fill carries the boundary, and at high contrast this flips
+	   to pure white and takes over. */
+	--color-hairline-inverse: #2b381f;
 	--color-border: #8a9480;
 	--color-border-strong: #6e7664; /* --swatch--mid-green, unchanged */
 
 	/* -- Type: system stack only, zero webfont bytes ----------------------- */
-	--font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	/* Manrope is doinstruct's own face, self-hosted and subset. It is declared
+	   `font-display: optional` in app.css, so the stack behind it is not a
+	   fallback of last resort: on a first visit over plant wifi it IS the
+	   typeface, and nothing shifts when Manrope arrives later. */
+	--font-sans:
+		'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
 	--text-meta: 14px;
 	--text-meta--line-height: 20px;
@@ -214,6 +227,12 @@
 	--color-surface-sunken: #f0f0f0;
 	--color-fg: #000000;
 	--color-fg-muted: #1a1a1a;
+	/* The dark ground collapses to black and its type to white. A brand green is
+	   a brand decision; forced contrast is not the place for one. */
+	--color-surface-inverse: #000000;
+	--color-surface-inverse-raised: #000000;
+	--color-fg-inverse-muted: #ffffff;
+	--color-hairline-inverse: #ffffff;
 	--color-hairline: #000000;
 	--color-border: #000000;
 	--color-border-strong: #000000;

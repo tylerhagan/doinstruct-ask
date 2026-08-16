@@ -198,6 +198,9 @@
 		{/if}
 
 		<main class="flex flex-1 flex-col gap-6 p-5 sm:min-h-0 sm:overflow-y-auto">
+			<!-- Dark is where you are, cream is where you read. Standby and the
+			     language screen are context, so they take the brand ground; answers
+			     and procedures are reading, so they stay on cream. -->
 			{#if phase === 'language'}
 				<!--
 					The offered list is the languages the CONTENT exists in, which here is
@@ -214,29 +217,32 @@
 					}}
 				/>
 			{:else if phase === 'standby'}
-				<div class="flex flex-1 flex-col items-center justify-center gap-5 text-center">
+				<div
+					class="-m-5 flex flex-1 flex-col items-center justify-center gap-5 bg-surface-inverse
+					       p-5 text-center text-fg-inverse"
+				>
 					{#if session.machine}
 						<p class="text-display font-bold">{session.machine.machine}</p>
 					{:else}
 						<p class="text-lead font-bold">{t('machine.unknown')}</p>
-						<p class="max-w-xs text-small text-fg-muted">
+						<p class="max-w-xs text-small text-fg-inverse-muted">
 							{t('machine.unknownBody', { id: session.scannedAsset ?? '' })}
 						</p>
 					{/if}
 
 					{#if session.machine?.faultCode}
 						<p
-							class="inline-flex items-center gap-3 rounded-full border-2 border-hairline
-							       bg-surface-sunken py-2 pr-5 pl-4"
+							class="inline-flex items-center gap-3 rounded-full border-2 border-hairline-inverse
+							       bg-surface-inverse-raised py-2 pr-5 pl-4"
 						>
-							<span class="text-meta font-bold tracking-wide text-fg-muted uppercase">
+							<span class="text-meta font-bold tracking-wide text-fg-inverse-muted uppercase">
 								{t('standby.fault')}
 							</span>
 							<span class="text-lead font-bold tabular-nums">{session.machine.faultCode}</span>
 						</p>
 					{/if}
 
-					<p class="mt-1 max-w-xs text-small text-fg-muted">{t('standby.hint')}</p>
+					<p class="mt-1 max-w-xs text-small text-fg-inverse-muted">{t('standby.hint')}</p>
 				</div>
 			{:else if phase === 'listening'}
 				<div class="flex flex-1 flex-col justify-center">
