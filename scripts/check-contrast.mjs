@@ -17,7 +17,7 @@ const css = readFileSync(new URL('../src/lib/design/tokens.css', import.meta.url
 
 const readTokens = (block) =>
 	Object.fromEntries(
-		[...block.matchAll(/--color-([a-z-]+):\s*(#[0-9a-fA-F]{6})/g)].map((m) => [m[1], m[2]])
+		[...block.matchAll(/--color-([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})/g)].map((m) => [m[1], m[2]])
 	);
 
 const highStart = css.indexOf("[data-contrast='high']");
@@ -31,7 +31,10 @@ const highStart = css.indexOf("[data-contrast='high']");
 const base = readTokens(css.slice(css.indexOf('@theme'), highStart));
 
 /** High contrast only overrides some names; the rest fall through to base. */
-const high = { ...base, ...readTokens(css.slice(highStart, css.indexOf('[data-contrast', highStart + 1))) };
+const high = {
+	...base,
+	...readTokens(css.slice(highStart, css.indexOf('[data-contrast', highStart + 1)))
+};
 
 const channel = (v) => {
 	const c = v / 255;
@@ -67,8 +70,30 @@ const PAIRS = [
 	// light, and in high contrast the token flips to pure black. Exempting it is
 	// a statement about what it is for, not a threshold quietly lowered.
 	['border', 'surface', 3, 'default border against page'],
-	['border-strong', 'surface', 3, 'strong border against page']
+	['border-strong', 'surface', 3, 'strong border against page'],
+	// Chart marks are non-text UI, so 3:1 is the correct floor rather than 7:1.
+	// These also pass the dataviz skill's CVD checks; that validator is not
+	// vendored here, so the palette carries its results in tokens.css and this
+	// check guards the part that silently breaks when someone tweaks a hex.
+	['series-1', 'surface', 3, 'chart series 1 (teal)'],
+	['series-2', 'surface', 3, 'chart series 2 (rust)'],
+	['series-3', 'surface', 3, 'chart series 3 (violet)'],
+	['series-4', 'surface', 3, 'chart series 4 (olive)'],
+	['series-5', 'surface', 3, 'chart series 5 (magenta)']
 ];
+
+/**
+ * The sequential scale is checked differently, and deliberately so. A ramp's
+ * light end is *meant* to recede toward the surface, so holding every step to
+ * 3:1 would be the wrong test and would force a ramp with no light end. The
+ * right test for a ramp is that it is ordered: each step must be strictly more
+ * contrasting than the one before it, the lightest must still be visible at
+ * 2:1, and the darkest must clear the 3:1 mark floor.
+ *
+ * This is a stricter check than the pairs above, not a relaxed one. A ramp can
+ * pass 3:1 at every step and still be unreadable if two steps sit level.
+ */
+const RAMP = { name: 'scale', steps: 5, minLight: 2, minDark: 3 };
 
 let failed = 0;
 
@@ -87,6 +112,39 @@ function run(name, tokens) {
 			`${ok ? 'pass' : 'FAIL'}  ${r.toFixed(2).padStart(6)}:1  (min ${min})  ${fg} on ${bg}  ${label}`
 		);
 	}
+	runRamp(tokens);
+}
+
+function runRamp(tokens) {
+	const keys = Array.from({ length: RAMP.steps }, (_, i) => `${RAMP.name}-${i + 1}`);
+	const missing = keys.filter((k) => !tokens[k]);
+	if (missing.length || !tokens.surface) {
+		console.error(`MISSING  ${missing.join(', ') || '--color-surface'}`);
+		failed++;
+		return;
+	}
+
+	const ratios = keys.map((k) => ratio(tokens[k], tokens.surface));
+
+	for (let i = 1; i < ratios.length; i++) {
+		const ok = ratios[i] > ratios[i - 1];
+		if (!ok) failed++;
+		console.log(
+			`${ok ? 'pass' : 'FAIL'}  ${ratios[i].toFixed(2).padStart(6)}:1  (> ${ratios[i - 1].toFixed(2)})  ${keys[i]} darker than ${keys[i - 1]}`
+		);
+	}
+
+	const lightOk = ratios[0] >= RAMP.minLight;
+	if (!lightOk) failed++;
+	console.log(
+		`${lightOk ? 'pass' : 'FAIL'}  ${ratios[0].toFixed(2).padStart(6)}:1  (min ${RAMP.minLight})  ${keys[0]} visible against surface`
+	);
+
+	const darkOk = ratios[ratios.length - 1] >= RAMP.minDark;
+	if (!darkOk) failed++;
+	console.log(
+		`${darkOk ? 'pass' : 'FAIL'}  ${ratios[ratios.length - 1].toFixed(2).padStart(6)}:1  (min ${RAMP.minDark})  ${keys[keys.length - 1]} clears the mark floor`
+	);
 }
 
 run('Default palette', base);

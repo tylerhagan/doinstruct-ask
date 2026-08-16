@@ -586,3 +586,109 @@ with a check, and then breaks. Type size cannot be linted easily and neither can
 "has a visible label", so both live in prose and both drifted. Every one of these
 was found by a person looking at the running product: three by me, one by a cold
 agent, and this one by the person the work was made for.
+
+---
+
+## D19. Two registers, one system
+
+**Learned:** the first version's constraints were all defensible individually and
+collectively produced something that could only ever be one screen. Every rule in
+it was written for a gloved hand under washdown glare, and there was nowhere for
+a supervisor at a desk to exist.
+
+**Decision:** the design system gets a second register rather than a second
+design system. The floor keeps 64px targets, an 18px floor and no shadows. The
+office gets 36px controls, 56px rows, a 16px floor, two levels of elevation and a
+chart palette.
+
+What forks is density, elevation and colour depth, because those are decisions
+about an environment. What does not fork is the 7:1 text floor, focus, `t()`,
+"never colour alone" and "never truncate", because those are decisions about
+people. The office does not get a thinner focus ring for looking tidier, and it
+does not get its own typeface or its own type tokens. One scale, two floors: the
+register changes which end of the type scale you may use, not the values in it.
+
+**The asymmetry is the whole rule.** The office may use anything the floor uses,
+because the floor's constraints are stricter and a stricter component still works
+at a desk. The floor may never use an office token. That is one direction, it is
+mechanically checkable, and `scripts/check-register.mjs` now fails the build on
+it. I tested that it fires before believing it, because a check that has never
+failed is a check nobody has tested.
+
+**Cost, measured rather than waved away.** Tailwind emits the shadow and desk
+spacing custom properties into the shared stylesheet even though no floor
+component uses them: 202 bytes, 0.92% of the CSS. The colour tokens tree-shake
+away entirely. Route-scoped `@theme` would remove the rest and is worth trying
+once the office route exists, which is phase three. Recording the number now
+because "I will tidy that later" is how the drift in D20 happened.
+
+---
+
+## D20. tokens.json had been lying for weeks
+
+**Learned:** `tokens.json` describes itself as the source of truth and says
+`tokens.css` is generated from it. Neither claim was true. Eleven of its eighteen
+colours were stale, still carrying the first-draft palette from before the brand
+values were read off doinstruct's own stylesheet and before four status colours
+were darkened to clear 7:1. It also still specified Inter Tight, which we had
+dropped for the system stack, 1px borders, which are 2px everywhere, and a
+wall-mounted device, which phase one had already established was the wrong
+deployment model.
+
+An agent told to read that file for intent would have been handed a palette the
+product had not used in weeks, and would have been right to trust it.
+
+**Why it happened:** the same failure as D18 and the four before it. "Source of
+truth" was a sentence rather than a condition anything tested, so it decayed the
+moment the two files were edited separately, which is immediately.
+
+**Decision:** rewrite `tokens.json` against the real values, drop the claim that
+either file generates the other, and add `scripts/check-tokens.mjs`, which fails
+the build if a colour appears in one file and not the other, in both directions.
+The two deliberately unused brand swatches are exempted by name with the reason
+beside them, which is not the same thing as narrowing a check to make it pass.
+
+The reverse direction matters more than it looks. It means adding a token to
+`tokens.css` without writing down why it exists is now a build failure, so the
+intent layer cannot fall behind again without someone noticing.
+
+**Sixth instance of the pattern.** This one was found by writing the check, which
+is the first time in this project that something other than a human looking at
+the running product caught it. That is the argument for the checks, made by the
+checks.
+
+---
+
+## D21. The chart palette could not come from the brand
+
+**Learned:** doinstruct's yellow is 1.1:1 against cream and their greens are
+near-black. Neither sits anywhere near the OKLCH lightness band a chart fill
+needs, so there was no version of "use the brand colours" that produced a
+readable chart.
+
+**Decision:** build the palette beside the brand rather than out of it, sharing
+its temperature and its warm ground. Five categorical series in a fixed order,
+teal, rust, violet, olive and magenta, plus a five-step teal scale for magnitude
+taking the first series' hue.
+
+**Computed, not chosen.** The palette was run through a validator for the OKLCH
+lightness band, a chroma floor, protanopia and deuteranopia separation, a
+normal-vision floor and 3:1 contrast, against both the cream surface and the
+high-contrast white. Three candidate teals failed the chroma floor before one
+passed. The first violet sat 13.8 from the reserved `pending` blue in OKLab, and
+was re-stepped to 15.2 to clear the floor for the one status collision the system
+has. This is the part of design that is arithmetic, and eyeballing it is how
+products end up with charts a twelfth of their readers cannot read.
+
+**Two things I would rather state than hide.** The all-pairs cap is three: in
+scatter and small-multiple forms, where any two marks can touch, series 4 and
+series 2 collapse to a difference of 1.0 under deuteranopia. Bars and lines,
+where only neighbours touch, take all five. And the scale's middle step is a
+near-neighbour of series 1 without being identical, because unifying them fails
+the categorical chroma floor at 0.098 against 0.10. The spacing a readable ramp
+needs and the saturation a series identity needs do not land on the same value.
+
+**At high contrast the palette does not change**, because both sets were
+validated against white too. The chart changes instead: every mark prints its
+value as text, colour drops to decoration, and the numbers carry the meaning. A
+chart stops being a picture and becomes a table you can still read at a glance.

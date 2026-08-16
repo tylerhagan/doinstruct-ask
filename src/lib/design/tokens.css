@@ -89,6 +89,10 @@
 	--spacing-frame: 860px;
 
 	/* -- Radii ------------------------------------------------------------- */
+	/* xs exists for one job: the data end of a chart bar, which is rounded at
+	   4px and square against the baseline. A bar rounded at both ends lies
+	   about where it starts. Do not reach for it as a smaller `sm`. */
+	--radius-xs: 4px;
 	--radius-sm: 8px;
 	--radius-md: 12px;
 	--radius-lg: 16px;
@@ -97,7 +101,86 @@
 	/* -- Motion: short, and never positional ------------------------------- */
 	--ease-out-soft: cubic-bezier(0.2, 0, 0, 1);
 
-	/* -- No elevation scale. Shadows are invisible under washdown lighting. - */
+	/* =====================================================================
+	   OFFICE REGISTER
+	   Everything above this line is the floor: a gloved hand, washdown glare,
+	   a five-year-old Android held at arm's length. Everything below it is the
+	   office: a supervisor at a desk, on a monitor, with a mouse, in normal
+	   light. None of the floor's constraints apply there, and pretending they
+	   do produces a dashboard you cannot read forty rows of.
+
+	   One system, two registers. What forks is density, elevation and colour
+	   depth. What never forks is the 7:1 text floor, focus, `t()`, and the
+	   rule that colour is never the only carrier of meaning.
+
+	   Floor components must not use these tokens. Enforced by
+	   scripts/check-register.mjs.
+	   ===================================================================== */
+
+	/* -- Density ----------------------------------------------------------- */
+	/* 64px assumes a glove. A mouse cursor is one pixel and a trackpad has
+	   proprioceptive feedback, so the desk floor is 36px, comfortably above
+	   WCAG 2.2 AA's 24px. Rows are taller than controls because a queue row
+	   holds two lines and is itself the click target. */
+	--spacing-control: 36px;
+	--spacing-row: 56px;
+
+	/* -- Elevation --------------------------------------------------------- */
+	/* Tinted with brand ink rather than black, so a shadow stays inside the
+	   palette instead of greying it. Two levels only: `raised` is chrome that
+	   content scrolls under, `overlay` is something genuinely detached.
+	   A shadow says "this floats". It never says anything else, and it never
+	   carries information, because it disappears at forced contrast. */
+	--shadow-raised: 0 1px 2px rgb(17 25 12 / 0.06), 0 2px 8px rgb(17 25 12 / 0.06);
+	--shadow-overlay: 0 2px 4px rgb(17 25 12 / 0.06), 0 12px 32px rgb(17 25 12 / 0.14);
+
+	/* -- Data visualisation: series (categorical) -------------------------- */
+	/* Fixed order. Assigned in sequence and never cycled: a sixth series folds
+	   into "Other" or the chart becomes small multiples.
+
+	   These are not brand colours and could not be. doinstruct's yellow is
+	   1.1:1 on cream and their greens are near-black, so neither sits in the
+	   OKLCH lightness band a chart fill needs. The palette is built beside the
+	   brand, sharing its temperature, rather than extracted from it.
+
+	   Validated with the dataviz skill's checker on both surfaces (#fcfbf8 and
+	   the high-contrast #ffffff): lightness band, chroma floor, protan/deutan
+	   separation, normal-vision floor and 3:1 contrast all pass. Worst adjacent
+	   pair ΔE 12.5 CVD / 23.1 normal.
+
+	   The all-pairs cap is three. Scatter, bubble and small-multiple forms,
+	   where any two marks can end up side by side, may use series 1 to 3 only.
+	   Series 4 (olive) and 2 (rust) collapse to ΔE 1.0 under deuteranopia when
+	   they are not adjacent in a stack. */
+	--color-series-1: #008f83; /* teal */
+	--color-series-2: #c2551f; /* rust */
+	--color-series-3: #6a45c0; /* violet */
+	--color-series-4: #8a7a0d; /* olive */
+	--color-series-5: #b8407e; /* magenta */
+
+	/* -- Data visualisation: scale (sequential and ordinal) ----------------- */
+	/* One hue, light to dark, for magnitude. The hue is series-1's, per the
+	   convention that the sequential ramp takes the first categorical slot.
+
+	   Step 3 (#06877b) is a near-neighbour of series-1 (#008f83) without being
+	   identical, and that is not sloppiness. Unifying them fails the
+	   categorical chroma floor at 0.098 against 0.10: the spacing a readable
+	   ramp needs and the saturation a series identity needs do not land on the
+	   same value. Two tokens, one hue.
+
+	   Monotone lightness, adjacent ΔL >= 0.06, light end clears 2:1 on both
+	   surfaces. Enforced by scripts/check-contrast.mjs. */
+	--color-scale-1: #08c1b1;
+	--color-scale-2: #0ea396;
+	--color-scale-3: #06877b;
+	--color-scale-4: #016b62;
+	--color-scale-5: #015149;
+
+	/* No diverging pair. Nothing in this product encodes polarity: the office
+	   screens count things and rank things. When one arrives it is series-1
+	   against series-2, teal to rust, with a neutral grey midpoint, because
+	   those are the only two poles here that read as opposite. Adding it now
+	   would be a token nobody uses. */
 }
 
 /* ---------------------------------------------------------------------------
@@ -117,6 +200,20 @@
 	--color-caution-surface: #ffffff;
 	--color-ok-surface: #ffffff;
 	--color-pending-surface: #ffffff;
+
+	/* A shadow at forced contrast is either invisible or dirt. Every surface
+	   that floats already carries a hairline, and that hairline is black here,
+	   so removing the shadow costs no boundary. */
+	--shadow-raised: none;
+	--shadow-overlay: none;
+
+	/* The series and scale colours are deliberately NOT overridden. Both sets
+	   were validated against #ffffff as well as #fcfbf8, so they still clear
+	   their floors. What changes at high contrast is not the palette, it is the
+	   chart: every mark shows its value as text, so colour drops to decoration
+	   and the numbers carry the meaning. A chart stops being a picture and
+	   becomes a table you can still read at a glance. See
+	   docs/rules/dataviz.md. */
 }
 
 /* No blanket border rule here. Tailwind's preflight sets `border: 0 solid` on
