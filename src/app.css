@@ -95,3 +95,22 @@
 	background-size: 14px 14px;
 	background-position: center;
 }
+
+/* ---------------------------------------------------------------------------
+   Dark ground.
+
+   Applied alongside `bg-surface-inverse` on any container that paints the brand
+   green. It carries one job: flip the focus ring to cream, because a 4px ink
+   outline on a near-black surface is invisible, and a keyboard user on the
+   language screen would have had nothing at all.
+
+   Not folded into the colour utility itself, because Tailwind owns those and a
+   surface is not always a focus context.
+--------------------------------------------------------------------------- */
+.ground-dark {
+	--focus-ring: var(--color-cream);
+}
+
+[data-contrast='high'] .ground-dark {
+	--focus-ring: #ffffff;
+}

@@ -68,7 +68,23 @@
 	 * frame leaking through its own padding. A negative margin to undo a parent's
 	 * padding is a sign the padding is in the wrong place, so it moved.
 	 */
-	const fullBleed = $derived(phase === 'language' || phase === 'standby');
+	/**
+	 * The device is dark until it has something for you to read.
+	 *
+	 * Language, standby, listening and thinking are all the same thing from the
+	 * worker's side: the machine has your attention but not your answer yet. They
+	 * take the brand ground. The moment there is a sentence to read, the surface
+	 * turns cream and stays there.
+	 *
+	 * It carries practical weight as well as brand. A worker who glances up from
+	 * a part in their hands can tell dark from light across a line without
+	 * reading a word, so the screen says "still listening" or "ready for you" in
+	 * peripheral vision. `tokens.json` has described the inverse surface as the
+	 * listening state since the first version; it had simply never been built.
+	 */
+	const darkGround = $derived(
+		phase === 'language' || phase === 'standby' || phase === 'listening' || phase === 'thinking'
+	);
 	let scenarioId = $state<ScenarioId>('sourced');
 	let answer = $state<Answer | null>(null);
 	let escalation = $state<Escalation | null>(null);
@@ -208,7 +224,12 @@
 			/>
 		{/if}
 
-		<main class="flex flex-1 flex-col sm:min-h-0 sm:overflow-y-auto {fullBleed ? '' : 'gap-6 p-5'}">
+		<!-- transition-colors, so dark to cream reads as the screen changing its mind
+		     rather than as a cut. Colour only: nothing here moves. -->
+		<main
+			class="flex flex-1 flex-col transition-colors duration-200 sm:min-h-0 sm:overflow-y-auto
+			       {darkGround ? 'ground-dark bg-surface-inverse text-fg-inverse' : 'gap-6 p-5'}"
+		>
 			<!-- Dark is where you are, cream is where you read. Standby and the
 			     language screen are context, so they take the brand ground; answers
 			     and procedures are reading, so they stay on cream. -->
@@ -228,10 +249,7 @@
 					}}
 				/>
 			{:else if phase === 'standby'}
-				<div
-					class="flex flex-1 flex-col items-center justify-center gap-5 bg-surface-inverse
-					       p-5 text-center text-fg-inverse"
-				>
+				<div class="flex flex-1 flex-col items-center justify-center gap-5 p-5 text-center">
 					{#if session.machine}
 						<p class="text-display font-bold">{session.machine.machine}</p>
 					{:else}
@@ -256,7 +274,9 @@
 					<p class="mt-1 max-w-xs text-small text-fg-inverse-muted">{t('standby.hint')}</p>
 				</div>
 			{:else if phase === 'listening'}
-				<div class="flex flex-1 flex-col justify-center">
+				<!-- The loudest moment in the product. Full bleed, cream on green, the
+				     worker's own words at hero size as they arrive. -->
+				<div class="flex flex-1 flex-col justify-center p-5">
 					<p class="text-hero font-bold" aria-live="polite">
 						{recognition.transcript || '…'}
 					</p>
@@ -276,8 +296,8 @@
 					/>
 				</div>
 			{:else if phase === 'thinking'}
-				<div class="flex flex-1 items-center justify-center">
-					<p class="text-title text-fg-muted" aria-live="polite">{t('ptt.thinking')}</p>
+				<div class="flex flex-1 items-center justify-center p-5">
+					<p class="text-title text-fg-inverse-muted" aria-live="polite">{t('ptt.thinking')}</p>
 				</div>
 			{:else if phase === 'answer' && answer}
 				<AnswerCard {answer} {speaking} onread={readAloud} onnothelp={escalate} />
@@ -300,7 +320,12 @@
 		</main>
 
 		{#if phase === 'standby' || phase === 'listening' || phase === 'thinking'}
-			<div class="sticky bottom-0 border-t-2 border-hairline bg-surface p-5">
+			<div
+				class="sticky bottom-0 border-t-2 p-5 transition-colors duration-200
+				       {darkGround
+					? 'ground-dark border-hairline-inverse bg-surface-inverse'
+					: 'border-hairline bg-surface'}"
+			>
 				{#if typing}
 					<form
 						class="flex flex-col gap-3"
@@ -315,7 +340,10 @@
 							bind:value={typed}
 							autofocus
 							rows="2"
-							class="w-full rounded-lg border-2 border-hairline bg-surface-sunken p-4 text-lead"
+							class="w-full rounded-lg border-2 p-4 text-lead
+							       {darkGround
+								? 'border-hairline-inverse bg-surface-inverse-raised text-fg-inverse'
+								: 'border-hairline bg-surface-sunken'}"
 							aria-label={t('confirm.type')}></textarea>
 						<Button variant="primary" full type="submit">{t('confirm.yes')}</Button>
 					</form>
@@ -331,7 +359,8 @@
 					<button
 						type="button"
 						onclick={() => (typing = true)}
-						class="mt-3 min-h-tap w-full text-small font-medium text-fg-muted underline underline-offset-4"
+						class="mt-3 min-h-tap w-full text-small font-medium underline underline-offset-4
+						       {darkGround ? 'text-fg-inverse-muted' : 'text-fg-muted'}"
 					>
 						{t('confirm.type')}
 					</button>

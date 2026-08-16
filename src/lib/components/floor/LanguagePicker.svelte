@@ -111,7 +111,10 @@
 	);
 </script>
 
-<div class="flex min-h-0 flex-1 flex-col gap-6 bg-surface-inverse p-5 text-fg-inverse">
+<!-- Colour comes from the route's ground, not from here. The picker is one of
+     four screens that share it, and four components each painting the same green
+     is four places for it to drift. -->
+<div class="flex min-h-0 flex-1 flex-col gap-6 p-5">
 	<div class="flex shrink-0 justify-end">
 		<button
 			type="button"

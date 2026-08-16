@@ -10,6 +10,11 @@
 	RULES
 	- The whole row is the target, at `min-h-row` (56px). A supervisor scanning
 	  forty rows should not have to aim.
+	- Selection carries a start-edge bar as well as a fill. A fill alone is a very
+	  quiet signal in a list of near-identical rows, and the bar is findable in
+	  peripheral vision when the supervisor's eyes are on the composer. Logical
+	  `border-s`, so it moves to the right edge in Arabic rather than pointing the
+	  wrong way.
 	- The wait is the loudest thing after the question, because the wait is the
 	  problem this product exists to shorten.
 	- `alsoWaiting` is a count and never a list of names. Three people asking the
@@ -45,9 +50,11 @@
 	type="button"
 	onclick={onselect}
 	aria-current={selected ? 'true' : undefined}
-	class="flex min-h-row w-full flex-col items-start gap-2 px-4 py-3
+	class="flex min-h-row w-full flex-col items-start gap-2 border-s-4 px-4 py-3
 	       text-start transition-colors
-	       {selected ? 'bg-surface-raised' : 'bg-surface hover:bg-surface-raised'}"
+	       {selected
+		? 'border-s-ink bg-surface-raised'
+		: 'border-s-transparent bg-surface hover:bg-surface-raised'}"
 >
 	<div class="flex w-full flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
 		<span class="text-meta font-bold">{item.machine}</span>

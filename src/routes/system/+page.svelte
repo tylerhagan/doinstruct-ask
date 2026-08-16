@@ -448,7 +448,9 @@
 				<code class="text-meta">docs/rules/accessibility.md</code>.
 			</p>
 			<div class="h-frame overflow-hidden rounded-lg border-2 border-ink sm:h-auto">
-				<div class="flex h-125 flex-col">
+				<!-- The picker takes its ground from the route it lives in, so the
+				     catalogue has to supply one. -->
+				<div class="ground-dark flex h-125 flex-col bg-surface-inverse text-fg-inverse">
 					<LanguagePicker options={SITE_LANGUAGES} onchoose={() => {}} />
 				</div>
 			</div>
