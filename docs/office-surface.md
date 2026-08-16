@@ -78,32 +78,78 @@ not a dashboard.
 
 ---
 
-## The hard principle: this cannot become a surveillance tool
+## The line: delivery, not judgement
 
-The first version argued that asking for help carries a social cost, and that the
-copy works hard to make asking survivable. All of that dies the moment a
-supervisor can see who asked what.
+The first version argued that asking for help carries a social cost, and the copy
+works hard to make asking survivable. That dies the moment a supervisor can see
+who asked what, and how often.
 
-So the boundary is absolute and it shapes the entire information architecture:
+An absolute ban is product-naive, though. The system has to know who asked in
+order to tell them the answer. So the line is not visibility, it is
+**accumulation**:
 
-**Aggregate by machine, line, shift and document. Never by person.**
+> **Present-tense identity is operationally necessary. Historical accumulation is
+> performance monitoring.**
 
-A supervisor sees that Filler F2 produced fourteen unanswered questions this
-week. They cannot see that nine came from one technician. When a question is
-escalated, the responder sees the question and the machine, and no name.
+"Ana is waiting on an answer about Filler F2 right now" is a service queue. You
+cannot deliver without it. "Ana has asked 47 questions this quarter" is a
+competence record about a person, and nothing in this product needs it.
 
-Three consequences that fall out of it:
+So the Queue knows who is waiting, because it must. Coverage aggregates and never
+resolves to an individual. Once a question is answered and delivered, the link
+between the person and the question expires.
 
-1. There is no people view, no leaderboard, no per-worker history. Not hidden
-   behind a permission, absent from the data model.
-2. The audit trail records that an answer was given and verified, not who needed
-   it.
-3. A German works council can be shown this in one screen, which is a commercial
-   feature and not only an ethical position.
+**There is a legal edge here, not only an ethical one.** In Germany, systems
+capable of monitoring individual employee performance fall under works council
+co-determination, §87(1)(6) BetrVG. That is a negotiation which takes months and
+can fail. Designing the accumulation out means a Betriebsrat conversation that
+takes one screen instead of one quarter, which is a sales-cycle feature.
 
-The one place identity survives is the responder: answers are attributed to the
-person who wrote them, because accountability for a safety instruction has to
-land on a named human.
+Worth noting doinstruct already tracks per-person training completion, and that
+is fine: completion is a compliance record an employer is legally obliged to
+hold. Questions asked are a different class of data entirely.
+
+The one place identity persists is the **responder**. Answers are attributed to
+whoever wrote them, because accountability for a safety instruction has to land
+on a named human.
+
+---
+
+## What we aggregate by, and what we refuse to
+
+The unit should be **whatever a supervisor can actually fix**. There are only
+three fixable things behind an unanswered question:
+
+| The problem is | The unit is | The action |
+| --- | --- | --- |
+| The documentation is unclear or absent | Document and section | Rewrite the section |
+| The machine keeps producing the same fault | Asset and fault code | Engineering, not documentation |
+| People have not been trained | Role and topic | Hand to Genius, their existing product |
+
+Coverage triages into those three rather than assuming one hierarchy, because
+each hands the supervisor a different next action.
+
+**Secondary dimensions**, for filtering rather than grouping: area or zone, shift,
+and time period. Area is the useful location unit; site is too coarse to act on
+and a single machine is already covered above.
+
+**Dimensions we refuse**, and the reason is subtler than privacy squeamishness:
+
+Aggregation only protects anonymity above a threshold. Slice by role and shift in
+a plant with one night-shift electrician and you have named them. The same is
+true of any small team. So role, team and group are not offered as grouping
+dimensions, and every bucket in Coverage is subject to a **minimum-count
+suppression**: fewer than five events and the cell reads "too few to show"
+instead of a number.
+
+That is standard practice in analytics products handling employee data, it costs
+nothing, and it is the difference between a system that is private by design and
+one that is private by policy.
+
+**Open question, and I would rather flag it than assert it.** I have no evidence
+that document, asset and role are the right triage. It is reasoned from what is
+fixable, not observed from a real supervisor's week. It is the first thing I would
+put in front of a shift lead.
 
 ---
 
