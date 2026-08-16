@@ -202,13 +202,15 @@
 
 	.links {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 		gap: 0.75rem;
 		margin-top: 2.75rem;
 	}
 
-	.links a,
-	.links span {
+	/* Direct children only. Unscoped, this also painted the label and value
+	   spans inside each card, which drew a box inside every box. */
+	.links > a,
+	.links > span {
 		display: block;
 		background: var(--dark-2);
 		border: 1.5px solid #2c3a24;
@@ -700,6 +702,26 @@
 			border-left-color: var(--dark);
 		}
 
+		/* The nav is fixed and the masthead is near-black, so the current item,
+		   which is ink, was invisible against it: on load the reader saw the
+		   contents start at 02. It is a reading aid for the body, so it keeps out
+		   of the masthead entirely. Default is visible, and the script hides it,
+		   so with no JavaScript the nav still works as anchor links. */
+		.toc {
+			transition: opacity 200ms ease;
+		}
+
+		.toc.is-over-masthead {
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.toc {
+				transition: none;
+			}
+		}
+
 		.toc a b {
 			font-variant-numeric: tabular-nums;
 			font-weight: 700;
@@ -777,12 +799,18 @@
 			<span></span><span></span><span></span><span></span><span></span><span></span>
 		</div>
 
-		<span class="pill">Design Engineer · Case study · August 2026</span>
+		<span class="pill">Design Engineer · Case study · Second edition, August 2026</span>
 		<h1>Knowledge dead-ends are a <em>routing problem</em>, not a chatbot problem.</h1>
 		<p class="standfirst">
-			A voice-first way for a maintenance technician to get an answer mid-shift, and, when there is
-			no answer, to reach the person who has it. Built in <strong>your stack</strong>, with the
-			rules an AI agent needs in order to keep building it.
+			A worker scans the machine and asks. When no manual has the answer, it reaches the person who
+			does, and their reply becomes something the assistant can answer forever after. Two surfaces,
+			the floor and the office, in <strong>your stack</strong>, with the rules an AI agent needs in
+			order to keep building it.
+		</p>
+		<p class="standfirst" style="margin-top: 1rem; font-size: 0.95em; opacity: 0.85">
+			This is the second edition. The first one had a flaw I could not see until it was too late,
+			and section 01 is about that rather than about the work. I kept building because the problem
+			stuck with me.
 		</p>
 
 		<div class="links">
@@ -794,9 +822,13 @@
 				<span class="label">Repository</span>
 				<span class="value">github.com/tylerhagan/doinstruct-ask</span>
 			</a>
+			<a href="https://doinstruct-ask.vercel.app/office">
+				<span class="label">Office surface</span>
+				<span class="value">Queue, coverage, knowledge</span>
+			</a>
 			<a href="https://doinstruct-ask.vercel.app/system">
 				<span class="label">Design system</span>
-				<span class="value">Every component, every state</span>
+				<span class="value">Both registers, every state</span>
 			</a>
 		</div>
 	</header>
@@ -804,19 +836,25 @@
 	<nav class="toc" aria-label="Contents">
 		<ol>
 			<li>
-				<a href="#slice"><b>01</b> The slice</a>
+				<a href="#wrong"><b>01</b> What I got wrong</a>
 			</li>
 			<li>
-				<a href="#product"><b>02</b> The product</a>
+				<a href="#slice"><b>02</b> The slice</a>
 			</li>
 			<li>
-				<a href="#reality"><b>03</b> Frontline reality</a>
+				<a href="#product"><b>03</b> The product</a>
 			</li>
 			<li>
-				<a href="#system"><b>04</b> The system</a>
+				<a href="#office"><b>04</b> The office</a>
 			</li>
 			<li>
-				<a href="#honestly"><b>05</b> Honestly</a>
+				<a href="#reality"><b>05</b> Frontline reality</a>
+			</li>
+			<li>
+				<a href="#system"><b>06</b> The system</a>
+			</li>
+			<li>
+				<a href="#honestly"><b>07</b> Honestly</a>
 			</li>
 		</ol>
 	</nav>
@@ -828,17 +866,29 @@
 				<div>
 					<dt>What I built</dt>
 					<dd>
-						A voice-first way to get an operational answer at a stopped machine, on a shared
-						wall-mounted device with no login. Three scenarios: an answer from the manual, a safety
-						refusal, and a question no manual covers.
+						Two surfaces of one product. A worker scans the QR on a machine, picks a language and
+						asks out loud; when no manual covers it, a named shift lead answers once and the reply
+						becomes a knowledge entry the assistant serves instantly, in whatever language the next
+						person asks in. The office side is the queue, the composer, a coverage view of where the
+						documentation runs out, and the audit record.
+					</dd>
+				</div>
+				<div>
+					<dt>What I got wrong the first time</dt>
+					<dd>
+						I inferred a shared wall-mounted terminal from hygiene-zone phone restrictions. Your own
+						product pages say personal phone, QR code, no login, and every subsequent cut hung off
+						my wrong premise. I also cut the supervisor's side on the grounds that half of it would
+						demonstrate nothing, which left a product serving one worker at one machine with no view
+						of the system around them. Section 01.
 					</dd>
 				</div>
 				<div>
 					<dt>What I cut, and why it wasn't a preference</dt>
 					<dd>
-						HR, because it's private. On a shared device with no login it would need per-worker
-						authentication, which breaks your own no-password principle. The environment picked the
-						domain.
+						HR, because no login means no identity, and payroll questions cannot be answered safely
+						without one. Operational knowledge needs no identity at all, so it survives. Same
+						destination as the first edition, reached from your published model instead of my guess.
 					</dd>
 				</div>
 				<div>
@@ -850,30 +900,164 @@
 					</dd>
 				</div>
 				<div>
+					<dt>The boundary I would defend hardest</dt>
+					<dd>
+						Coverage never resolves to a person. Present-tense identity is operationally necessary,
+						because you cannot deliver an answer to someone you cannot name; historical accumulation
+						is performance monitoring, and in Germany it is also a works council negotiation under
+						§87(1)(6) BetrVG. Designing it out turns that conversation from a quarter into a screen.
+					</dd>
+				</div>
+				<div>
 					<dt>The part I think is the actual job</dt>
 					<dd>
 						Agents write confident, wrong code in your stack, because Svelte 5 and Tailwind v4 both
-						post-date their training data. <code>AGENTS.md</code> is the fix. I turned two of its
-						rules into build checks, which caught nine defects, most of them mine. Then I had a cold
-						agent run one of the documented prompts with no context at all: the mechanical layer was
-						perfect, and it broke three things only a person who knows the domain would notice. That
-						branch is in the repo.
+						post-date their training data. <code>AGENTS.md</code> is the fix. Four of its rules are
+						build checks now, plus 43 tests, and between them they have caught defects I would
+						otherwise have shipped. A cold agent ran one documented prompt with no context: the
+						mechanical layer was perfect and it broke three things only someone who knows the domain
+						would notice. That branch is in the repo.
 					</dd>
 				</div>
 				<div>
 					<dt>What I'd change</dt>
 					<dd>
-						Voice is public, and on an open floor that carries a social cost I've mitigated rather
-						than solved. Right-to-left isn't supported and your language list says it should be.
-						Neither is hidden below.
+						Voice is public, and on an open floor that carries a social cost I have mitigated rather
+						than solved. Retrieval is still fixtures. Right-to-left is now built but not exercised,
+						because none of the three languages here needs it. None of that is hidden below.
 					</dd>
 				</div>
 			</dl>
 		</div>
 	</div>
 
+	<section id="wrong">
+		<div class="ref"><b>01</b><span class="pill">What I got wrong</span></div>
+		<div class="body">
+			<h2>One wrong premise, and everything downstream inherited it</h2>
+
+			<p>
+				The first edition of this was built in a day and a half against a five-day brief, and it had
+				a flaw I could not see from inside it. Rather than quietly fix it and hope nobody remembers,
+				here is the flaw, because how someone handles being wrong is more useful information than
+				how they handle being right.
+			</p>
+
+			<h3>The deployment model was mine, not yours</h3>
+
+			<p>
+				I reasoned that personal phones are often restricted in hygiene zones, therefore the
+				realistic device is shared and wall-mounted, therefore there is no login, therefore no
+				identity, therefore HR is out. That chain is coherent and its first link was wrong.
+			</p>
+
+			<p>
+				Your Learner page says <em>"No app. No login. No barriers."</em> Access is a QR code or a
+				link in WhatsApp, SMS, Beekeeper or Flip. The Echterhoff study describes 670 construction
+				workers completing briefings <em>on personal smartphones</em>. I had the answer available
+				and inferred one instead.
+			</p>
+
+			<blockquote>
+				<p>
+					The conclusion survived and the reasoning did not. No login still means no identity, and
+					no identity still means HR is impossible to answer safely. It just rests on your published
+					model now instead of on my guess, which matters because every cut I made hung off that
+					premise, and a reader who knew your product would have spotted it in a sentence.
+				</p>
+			</blockquote>
+
+			<p>
+				What it cost was not the conclusion, it was the texture. A wall-mounted terminal produced a
+				gloved-hand, washdown-glare, one-device-for-everyone design that was really a design for one
+				factory. It read as bespoke, because it was.
+			</p>
+
+			<h3>The second surface was not a cut, it was the missing half</h3>
+
+			<p>
+				I wrote, in the first edition:
+				<em
+					>"The supervisor's side of the app. It's the obvious second surface, and building half of
+					it would have demonstrated nothing."</em
+				>
+				That was a defensible thing to say about scope and a wrong thing to believe about the
+				product.
+			</p>
+
+			<p>
+				Without it, the thing serves one worker at one machine and shows nothing of the system
+				around them. The whole argument is that a question becomes an asset, and the surface where
+				that conversion actually happens was the one I did not build. It also left no room to show
+				information architecture, data density or the judgement involved in refusing to build a
+				feature, which is most of what a design engineer does.
+			</p>
+
+			<h3>Six smaller ones, in the order I found them</h3>
+
+			<ul class="plain">
+				<li>
+					<b>Language defaulted silently to Romanian.</b> Your own flow is scan, pick a language,
+					begin, and it is already familiar to every worker who has used the training product. The
+					prototype now opens on the choice, and the picker takes a list rather than three fixed
+					buttons, because three buttons quietly claim the product speaks three languages.
+				</li>
+				<li>
+					<b>The device claimed to know the fault code.</b> A sticker is static and cannot know
+					today's fault, so showing E-212 as ambient context implied a live integration that does
+					not exist. It now appears only when the URL carries it, which models a deep link from
+					something that does know, and a plain scan shows the machine alone.
+				</li>
+				<li>
+					<b>"No shadows" had quietly become "no depth".</b> The floor's constraints are real and I
+					applied them to a supervisor at a desk in an office, where none of them hold. That is what
+					the second register in section 06 is for.
+				</li>
+				<li>
+					<b>The brand was ink and never ground.</b> Your identity is dark green fields with acid
+					yellow on them. Mine was a cream document with black type and one yellow button, so it
+					could not look like your product because it never made your most distinctive move.
+				</li>
+				<li>
+					<b><code>tokens.json</code> had been lying for weeks.</b> Eleven of its eighteen colours
+					were stale while its own header called it the source of truth. An agent reading it for
+					intent would have been handed a palette the product had not used since the first day.
+				</li>
+				<li>
+					<b>Two accessibility gaps I named rather than fixed.</b> Focus never moved when the screen
+					did, and the system used physical CSS properties while your language list includes Arabic
+					and Dari. Naming a gap is better than hiding one and worse than closing it. Both are
+					closed now, and the RTL migration turned out to be five properties.
+				</li>
+			</ul>
+
+			<h3>The pattern underneath all of it</h3>
+
+			<p>
+				Every one of those was a rule this project had already written down. No shadows applies to
+				the floor. Identifiers are never localised. Every icon is paired with text. The rules were
+				right and they were prose, and prose decays.
+			</p>
+
+			<blockquote>
+				<p>
+					Seven times now, a rule stated in a document has been broken by the person who wrote it.
+					Every single one was caught by a human looking at the running product, until I started
+					turning them into checks, and then a check caught one first. That is the argument of this
+					whole case study in one sentence:
+					<strong>a rule nothing tests is a rule with a half life.</strong>
+				</p>
+			</blockquote>
+
+			<p>
+				There are four build checks and a test suite now, up from two. Each one is a sentence that
+				used to be a promise.
+			</p>
+		</div>
+	</section>
+
 	<section id="slice">
-		<div class="ref"><b>01</b><span class="pill">The slice</span></div>
+		<div class="ref"><b>02</b><span class="pill">The slice</span></div>
 		<div class="body">
 			<h2>The environment picked the domain</h2>
 
@@ -884,18 +1068,28 @@
 			</p>
 
 			<p>
-				In a hygiene zone, personal phones are often restricted. Hands are wet and gloved. The
-				realistic device is shared and wall-mounted. And your own product principle, no app download
-				and no passwords, means that device has no login.
+				A worker arrives by scanning the QR code on the machine, on their own phone, or on a shared
+				terminal in a hygiene zone where personal phones are restricted. Both are the same URL and
+				the same product. Hands are wet and gloved either way, and your own principle, no app
+				download and no passwords, means there is no login at either.
+			</p>
+
+			<p>
+				That is the entire access mechanism, and it is worth saying plainly because it is what makes
+				the rest work: <strong>the QR identifies the machine, not the person.</strong> There is
+				nothing to log in to because an asset ID is not a secret. It is painted on the nameplate and
+				printed in the manual, so putting it in a URL gives away nothing the machine does not
+				already show you.
 			</p>
 
 			<p>Those constraints settled the scope for me, so I didn't have to have a preference:</p>
 
 			<blockquote>
 				<p>
-					<strong>I cut HR because it's private.</strong> On a shared device with no login, payroll
-					and holiday questions need per-worker authentication, and that breaks the no-password
-					principle. Operational knowledge isn't private, so it survives on a shared device.
+					<strong>I cut HR because it's private.</strong> No login means no identity. Payroll and
+					holiday questions cannot be answered safely without one, and adding one breaks the
+					no-password principle that gets this product adopted in the first place. Operational
+					knowledge needs no identity at all, so it survives.
 				</p>
 				<p style="margin-top: 0.9rem">
 					<strong>Voice is primary because wet, gloved hands can't type.</strong> Text stays as a
@@ -915,12 +1109,15 @@
 					not a dialogue. A follow-up is a new question.
 				</li>
 				<li>
-					<b>The supervisor's side of the app.</b> It's the obvious second surface, and building
-					half of it would have demonstrated nothing.
+					<b>The supervisor's side of the app.</b> I cut this the first time and I was wrong; it is
+					section 04 now. Building half of it would have demonstrated nothing, but not building it
+					demonstrated less.
 				</li>
 				<li>
-					<b>Onboarding and settings.</b> A shared device has nobody to own preferences. Two
-					controls survive: language and contrast.
+					<b>Onboarding and settings.</b> A device reached by scanning a sticker has nobody to own
+					preferences. Two controls survive: language and contrast. Language collapsed to a single
+					chip once the picker moved to the front, because three buttons spend a 64px row of a 440px
+					screen on a choice the worker made ten seconds ago.
 				</li>
 				<li>
 					<b>Offline answering.</b> The shell is cacheable but retrieval isn't. I'd rather name the
@@ -931,7 +1128,7 @@
 	</section>
 
 	<section id="product">
-		<div class="ref"><b>02</b><span class="pill">The product</span></div>
+		<div class="ref"><b>03</b><span class="pill">The product</span></div>
 		<div class="body">
 			<h2>An assistant that shrugs has rebuilt the dead-end</h2>
 
@@ -952,10 +1149,11 @@
 				<div class="flow-stages">
 					<div class="stage">
 						<span class="num"><b>1</b>Stage</span>
-						<h4>Arrive</h4>
+						<h4>Scan and choose</h4>
 						<p>
-							A wall-mounted device already scoped to Line 3, Filler F2, fault E-212. No login, no
-							download, and nothing typed by a gloved hand.
+							The QR on the machine resolves to Line 3, Filler F2, on a personal phone or a shared
+							terminal. Language first, in its own script. No login, no download, and nothing typed
+							by a gloved hand.
 						</p>
 					</div>
 					<div class="stage">
@@ -1083,8 +1281,140 @@
 		</div>
 	</section>
 
+	<section id="office">
+		<div class="ref"><b>04</b><span class="pill">The office</span></div>
+		<div class="body">
+			<h2>The supervisor's scarce resource is their attention</h2>
+
+			<p>
+				Your own Echterhoff study says foremen spend excessive time on repetition instead of
+				leading. That is the value proposition, and it is not a dashboard.
+			</p>
+
+			<blockquote>
+				<p>
+					Today a shift lead answers the same question eleven times, because the answer lives in
+					their head. This surface means they answer it once.
+				</p>
+			</blockquote>
+
+			<p>
+				Four destinations, in order of urgency. <strong>Queue</strong> is unanswered questions,
+				oldest first, and it is the only thing with a badge. <strong>Answer</strong> is where a
+				reply becomes knowledge. <strong>Coverage</strong> is where the documentation runs out.
+				<strong>Knowledge</strong> is the record, with provenance, for the compliance business you
+				already sell.
+			</p>
+
+			<h3>Every row is someone waiting, and the queue says so</h3>
+
+			<p>
+				Each item carries what the assistant already tried, before the composer, never behind a
+				disclosure. A supervisor answering blind will re-serve the fix the worker has already been
+				given and rejected, which is worse than not answering. Where the assistant withheld an
+				answer on safety grounds, the queue presents that as a success, because it is one: it had
+				the answer and refused to give it. Framing that as a failure teaches supervisors to loosen
+				the thing that is working.
+			</p>
+
+			<p>
+				If three people asked the same thing it appears once, with a count. That is a signal about
+				the documentation and not about the three people, which is the distinction the whole surface
+				turns on.
+			</p>
+
+			<h3>Coverage groups by what you can actually fix</h3>
+
+			<p>
+				There are only three fixable things behind an unanswered question, and each hands the
+				supervisor a different next action: the documentation is unclear, so rewrite the section;
+				the machine keeps producing the same fault, so it goes to engineering and no amount of
+				rewriting will help; or nobody was trained, which is Genius and not this product. Grouping
+				by asset or by document alone would have flattened three different problems into one list.
+			</p>
+
+			<p>
+				One shared bar scale across all three groups, so a group of small numbers cannot look like a
+				crisis. Six weekly points is the floor for drawing a trend line at all: below that the
+				component says there is too little data instead of drawing a confident line through noise,
+				which would be the visual equivalent of the hallucination this product exists to avoid.
+			</p>
+
+			<h3>The line I would defend hardest, and it is a refusal</h3>
+
+			<p>
+				The first edition argued that asking for help carries a social cost, and worked hard to make
+				asking survivable. All of that dies the moment a supervisor can see who asked what, and how
+				often. But an absolute ban is product-naive: the system has to know who asked in order to
+				tell them the answer.
+			</p>
+
+			<blockquote>
+				<p>
+					<strong
+						>Present-tense identity is operationally necessary. Historical accumulation is
+						performance monitoring.</strong
+					>
+				</p>
+				<p style="margin-top: 0.9rem">
+					"Ana is waiting on an answer about Filler F2 right now" is a service queue and you cannot
+					deliver without it. "Ana has asked 47 questions this quarter" is a competence record about
+					a person, and nothing in this product needs one.
+				</p>
+			</blockquote>
+
+			<p>
+				So the queue knows who is waiting, because it must. Coverage aggregates and never resolves
+				to an individual. Once an answer is delivered, the link between the person and the question
+				expires. Role, team and group are not offered as grouping dimensions at all, because they
+				re-identify at small counts: slice by role and shift in a plant with one night-shift
+				electrician and you have named them. Every bucket is suppressed below five events.
+			</p>
+
+			<p>
+				There is a legal edge here as well as an ethical one. In Germany, systems capable of
+				monitoring individual employee performance fall under works council co-determination,
+				§87(1)(6) BetrVG. That is a negotiation which takes months and can fail. Designing the
+				accumulation out means a Betriebsrat conversation that takes one screen instead of one
+				quarter, which is a sales-cycle feature rather than a compliance cost.
+			</p>
+
+			<p>
+				Two details make that argument visible rather than asserted. The Coverage screen states the
+				refusal in words, on the page, so a supervisor who wonders why they cannot break this down
+				by person finds the answer instead of concluding the feature is missing. And one bucket in
+				the demo sits below the threshold and reads "too few to show", because a privacy rule nobody
+				can see working is a privacy rule nobody believes.
+			</p>
+
+			<p>
+				It is also enforced. The queue fixtures are asserted in the test suite to carry no field on
+				the asker beyond a name and a role. Add <code>questionsThisMonth</code> and the build fails.
+			</p>
+
+			<h3>What I deliberately did not build here</h3>
+			<ul class="plain">
+				<li>
+					<b>Any per-person view.</b> Covered above. Its absence is the argument, not an omission.
+				</li>
+				<li>
+					<b>Authoring of training courses.</b> That is Genius. Competing with your own product
+					inside a case study for your company would be a misread.
+				</li>
+				<li>
+					<b>Org chart and role management.</b> The Manager product already mirrors the org chart.
+					This surface consumes that; it does not rebuild it.
+				</li>
+				<li>
+					<b>Real retrieval.</b> Still fixtures. Faking a RAG pipeline would teach you nothing, and
+					the honest gap is more useful than a convincing mock.
+				</li>
+			</ul>
+		</div>
+	</section>
+
 	<section id="reality">
-		<div class="ref"><b>03</b><span class="pill">Frontline reality</span></div>
+		<div class="ref"><b>05</b><span class="pill">Frontline reality</span></div>
 		<div class="body">
 			<h2>Measured, not asserted</h2>
 			<p>You can reproduce any of these with <code>npm run build</code>.</p>
@@ -1100,23 +1430,28 @@
 					<tbody>
 						<tr>
 							<td>JavaScript, gzipped</td>
-							<td class="num">46 KB</td>
+							<td class="num">49 KB</td>
 							<td>
-								What the device actually fetches: 41 KB shared runtime plus the route. The
-								design-system gallery is a separate 4 KB chunk a worker never loads.
+								What the device actually fetches for the floor route. The office surface and the
+								design-system gallery are separate chunks a worker never loads, and the supervisor's
+								entire vocabulary is a 9 KB chunk that shares nothing with the floor's.
 							</td>
 						</tr>
 						<tr>
 							<td>CSS, gzipped</td>
-							<td class="num">4 KB</td>
-							<td>Token-driven, with no unused framework surface.</td>
+							<td class="num">7 KB</td>
+							<td>
+								Token-driven, with no unused framework surface. Both registers, because they are one
+								stylesheet and one system.
+							</td>
 						</tr>
 						<tr>
-							<td>Web font bytes</td>
+							<td>Web font bytes, blocking</td>
 							<td class="num">0</td>
 							<td>
-								Covered below. Losing a typeface I control is a real cost, but a technician staring
-								at invisible text while a line is down is a larger one.
+								Manrope is preloaded but declared <code>optional</code>, so it never blocks paint
+								and never swaps. A technician staring at invisible text while a line is down is a
+								cost this product does not pay. Covered below.
 							</td>
 						</tr>
 						<tr>
@@ -1225,10 +1560,10 @@
 
 			<h3>The part of this I'm least comfortable with</h3>
 			<p>
-				Voice is public. On a shared device on an open floor, asking a question out loud broadcasts
-				what you don't know to whoever is standing nearby, and that can include the supervisor whose
-				opinion sets your shifts. Everything above about the social cost of asking applies double
-				when the asking is audible, and it cuts against the modality I chose as primary.
+				Voice is public. On an open floor, asking a question out loud broadcasts what you don't know
+				to whoever is standing nearby, and that can include the supervisor whose opinion sets your
+				shifts. Everything above about the social cost of asking applies double when the asking is
+				audible, and it cuts against the modality I chose as primary.
 			</p>
 			<p>
 				The text path is the honest answer, which is why it's never buried and why the interface
@@ -1272,7 +1607,7 @@
 	</section>
 
 	<section id="system">
-		<div class="ref"><b>04</b><span class="pill">The system</span></div>
+		<div class="ref"><b>06</b><span class="pill">The system</span></div>
 		<div class="body">
 			<h2>Why agents are bad at your stack specifically</h2>
 
@@ -1473,8 +1808,42 @@ All contrast checks passed.</code></pre>
 
 			<p>
 				Every rule in <code>AGENTS.md</code> that can become a check should become one. Prose rules
-				degrade as an agent's context fills up. A failing build doesn't. Two are done and
-				<code>npm run check</code> now runs both.
+				degrade as an agent's context fills up. A failing build doesn't.
+			</p>
+
+			<p>
+				There are four now, and the third one is the one that changed my mind about the whole
+				approach. <code>check-tokens.mjs</code> asserts that every colour in
+				<code>tokens.json</code> exists in <code>tokens.css</code> and the reverse, and the first
+				time it ran it found that eleven of the eighteen colours in the file calling itself the
+				source of truth were stale: a first-draft palette the product had not used in weeks. Nothing
+				had caught it because "source of truth" was a sentence rather than a condition.
+			</p>
+
+			<p>
+				That was the first defect in this project found by something other than a person looking at
+				the running product. Every previous one, including all of mine, was found by eye.
+				<code>check-register.mjs</code> is the fourth, and it enforces the boundary between the two
+				registers in section 06: the office may use anything the floor uses, the floor may never use
+				an office token. One direction, mechanically checkable. I injected a violation and watched
+				it fail before I believed it, because a check that has never failed is a check nobody has
+				tested.
+			</p>
+
+			<p>
+				There are 43 tests as well, which meant narrowing a rule rather than breaking it. The
+				dependency rule said <code>package.json</code> is closed, full stop, and it existed to
+				protect 46 KB of JavaScript on a five-year-old Android. It was also banning the tooling that
+				keeps every other rule honest, and a <code>devDependency</code> never reaches the device. So
+				it now reads: no new <em>runtime</em> dependency. A date library is still banned and a
+				charting library emphatically still is.
+			</p>
+
+			<p>
+				The test I would defend hardest is structural rather than behavioural. The queue fixtures
+				are asserted to carry no field on the asker beyond a name and a role. Add
+				<code>questionsThisMonth</code> and the suite fails. That moves the surveillance boundary
+				out of a paragraph in a document and into the build.
 			</p>
 
 			<h3>Where that argument stops, which matters just as much</h3>
@@ -1517,17 +1886,36 @@ All contrast checks passed.</code></pre>
 			</p>
 
 			<p>
-				The one place I've knowingly walked away from your brand is the typeface. You use Manrope;
-				this uses a system font stack and ships zero font bytes. On a five-year-old Android over
-				plant wifi, a web font is a request that can fail and a layout shift that lands in front of
-				someone whose line is stopped. The system stack is guaranteed to be present and costs
-				nothing. I'd rather be off-brand on purpose than have your typeface fail to arrive.
+				The typeface is the one decision I made, defended, and then reversed. The first edition
+				shipped a system font stack and zero font bytes, on the reasoning that a web font is a
+				request that can fail and a layout shift landing in front of someone whose line is stopped.
+				That reasoning was sound and the result was characterless: on Windows the system stack
+				resolves to Segoe UI, and it was the single biggest reason this looked like a wireframe
+				rather than like your product.
+			</p>
+
+			<p>
+				It ships Manrope now, self-hosted, subset and variable, and the thing that makes the
+				reversal safe is <code>font-display: optional</code>. The browser gets a short window; if it
+				misses, the page renders in the fallback and <em>never swaps</em>, so there is no reflow at
+				any point in the load. Paired with a preload, a reviewer on a decent connection gets Manrope
+				on first paint and a worker on plant wifi gets the system stack immediately. Nobody waits
+				for text and nothing moves.
+			</p>
+
+			<p>
+				24.3 KB for Latin, and 14.8 KB more only if the reader is Romanian, Polish, Turkish or
+				Hungarian. Self-hosted rather than linked from Google, because a third-party font request is
+				a third-party DNS lookup, a second TLS handshake and a privacy question in a German B2B
+				sale, none of which is worth it for two files served from the same origin as everything
+				else. One family across both registers: the office does not get its own typeface, because a
+				two-register system with two typefaces is two systems.
 			</p>
 		</div>
 	</section>
 
 	<section id="honestly">
-		<div class="ref"><b>05</b><span class="pill">Honestly</span></div>
+		<div class="ref"><b>07</b><span class="pill">Honestly</span></div>
 		<div class="body">
 			<h2>What I'd want to pressure-test with you</h2>
 			<ul class="plain">
@@ -1544,9 +1932,10 @@ All contrast checks passed.</code></pre>
 					rather show you the seam than hide it.
 				</li>
 				<li>
-					<b>I've assumed a shared, wall-mounted device.</b> It follows from hygiene-zone phone
-					restrictions, but you have the customer contact and I don't. If that assumption is wrong,
-					the HR cut reverses and a good deal follows from it.
+					<b>The triage in Coverage is reasoned, not observed.</b> Documentation, machine and people
+					are the three fixable things I could argue for from first principles, and I have no
+					evidence they are the three a shift lead would name. It is the first thing I would put in
+					front of one, and if it is wrong the whole Coverage screen is wrong with it.
 				</li>
 				<li>
 					<b>Capture needs a verification policy I haven't designed.</b> One shift lead's answer
@@ -1554,18 +1943,14 @@ All contrast checks passed.</code></pre>
 					you'd propagate a confidently wrong fix to everyone at once.
 				</li>
 				<li>
-					<b>This isn't right-to-left ready, and your language list says it should be.</b> You
-					advertise 35+ languages, and that list includes Arabic and Dari. My components use
-					physical CSS properties instead of logical ones, so the layout would not mirror. The rule
-					is now in <code>docs/rules/accessibility.md</code> so new work doesn't deepen it, but the
-					existing migration is outstanding. I found this late and chose to name it instead of
-					rushing it the day before sending.
-				</li>
-				<li>
-					<b>Focus isn't managed across phase changes.</b> Moving between screens leaves a keyboard
-					or screen reader user on a control that no longer exists, which is a dead end inside a
-					product about removing dead ends. Also worth flagging that the European Accessibility Act
-					has applied since June 2025, so for a German B2B seller this is a procurement question
+					<b>Right-to-left is built but never exercised.</b> You advertise 35+ languages and that
+					list includes Arabic and Dari. Both of the things I named as gaps last time are closed:
+					logical properties throughout, <code>lang</code> and <code>dir</code> following the
+					worker's choice, directional icons mirrored, and focus moving with the screen on both
+					registers. But none of the three languages here is right to left, so I have reasoned it
+					rather than seen it. Arabic sits in the <code>/system</code> picker specifically so the
+					case is visible rather than theoretical. Worth flagging that the European Accessibility
+					Act has applied since June 2025, so for a German B2B seller this is a procurement question
 					rather than only an ethical one.
 				</li>
 			</ul>
@@ -1632,5 +2017,16 @@ All contrast checks passed.</code></pre>
 
 		sections.forEach((el) => observer.observe(el));
 		setCurrent(sections[0].id);
+
+		// Keep the contents out of the masthead, where its ink-on-near-black
+		// current item is unreadable.
+		const toc = document.querySelector('.toc');
+		const masthead = document.querySelector('.masthead');
+		if (!toc || !masthead) return;
+
+		new IntersectionObserver(
+			([entry]) => toc.classList.toggle('is-over-masthead', entry.isIntersecting),
+			{ threshold: 0 }
+		).observe(masthead);
 	})();
 </script>
