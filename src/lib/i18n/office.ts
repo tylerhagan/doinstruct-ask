@@ -92,7 +92,8 @@ export const OFFICE = {
 			'{name} bekommt die Antwort jetzt. Als Wissenseintrag {ref} gespeichert und geprüft von dir.',
 		'composer.next': 'Nächste Frage',
 		'composer.empty': 'Wähle links eine Frage aus.',
-		'composer.emptyBody': 'Die Antwort, die du schreibst, wird einmal geschrieben und danach geteilt.',
+		'composer.emptyBody':
+			'Die Antwort, die du schreibst, wird einmal geschrieben und danach geteilt.',
 		'composer.handoff.machine':
 			'Das ist ein Technikproblem. Eine Antwort hilft der fragenden Person heute, behebt aber die Ursache nicht.',
 		'composer.handoff.people':
@@ -278,7 +279,7 @@ export const OFFICE = {
 		'queue.waitingFor': 'waiting',
 		'queue.alsoWaiting': '{n} more people waiting on the same answer',
 		'queue.alsoWaitingOne': '1 more person waiting on the same answer',
-		'queue.tried': "What I already tried",
+		'queue.tried': 'What I already tried',
 		'queue.searched': 'Searched',
 		'queue.askedIn': 'Asked in {lang}',
 		'queue.answer': 'Answer',
@@ -386,7 +387,10 @@ export type OfficeKey = keyof (typeof OFFICE)['de'];
  * Reads `session.language`, so any template expression calling it re-runs when
  * the language changes. Same contract as `t()`, no store subscription.
  */
-export function tOffice(key: OfficeKey | StringKey, vars?: Record<string, string | number>): string {
+export function tOffice(
+	key: OfficeKey | StringKey,
+	vars?: Record<string, string | number>
+): string {
 	const dict: Record<string, string> = OFFICE[session.language];
 	if (!(key in dict)) return t(key as StringKey, vars);
 

@@ -132,7 +132,7 @@
 	     this is full-bleed. -->
 	<!-- sm:overflow-hidden clips the children to the frame's radius. Without it
 	     the StatusBar's square top corners and its bottom border sit outside the
-	     rounded edge. It is scoped to sm because below that there is no radius to
+	     frame radius. It is scoped to sm because below that there is no radius to
 	     clip to, and an overflow container would break the sticky footer, which
 	     relies on the body being the scrollport on a phone. -->
 	<div

@@ -42,7 +42,10 @@ export const QUEUE: QueueItem[] = [
 		faultCode: 'E-212',
 		shift: 'early',
 		waitingSince: ago(41),
-		askedBy: { name: 'Ana Popescu', role: { de: 'Anlagenführerin', ro: 'Operator linie', en: 'Line operator' } },
+		askedBy: {
+			name: 'Ana Popescu',
+			role: { de: 'Anlagenführerin', ro: 'Operator linie', en: 'Line operator' }
+		},
 		alsoWaiting: 2,
 		attempt: {
 			outcome: 'partial',
@@ -69,7 +72,10 @@ export const QUEUE: QueueItem[] = [
 		assetId: 'AST-2210',
 		shift: 'early',
 		waitingSince: ago(96),
-		askedBy: { name: 'Jonas Weber', role: { de: 'Instandhalter', ro: 'Tehnician mentenanță', en: 'Maintenance technician' } },
+		askedBy: {
+			name: 'Jonas Weber',
+			role: { de: 'Instandhalter', ro: 'Tehnician mentenanță', en: 'Maintenance technician' }
+		},
 		alsoWaiting: 0,
 		attempt: {
 			outcome: 'partial',
@@ -97,7 +103,10 @@ export const QUEUE: QueueItem[] = [
 		faultCode: 'E-212',
 		shift: 'early',
 		waitingSince: ago(18),
-		askedBy: { name: 'Ana Popescu', role: { de: 'Anlagenführerin', ro: 'Operator linie', en: 'Line operator' } },
+		askedBy: {
+			name: 'Ana Popescu',
+			role: { de: 'Anlagenführerin', ro: 'Operator linie', en: 'Line operator' }
+		},
 		alsoWaiting: 1,
 		attempt: {
 			outcome: 'partial',
@@ -124,7 +133,10 @@ export const QUEUE: QueueItem[] = [
 		assetId: 'AST-1180',
 		shift: 'late',
 		waitingSince: ago(150),
-		askedBy: { name: 'Marius Ilie', role: { de: 'Anlagenführer', ro: 'Operator linie', en: 'Line operator' } },
+		askedBy: {
+			name: 'Marius Ilie',
+			role: { de: 'Anlagenführer', ro: 'Operator linie', en: 'Line operator' }
+		},
 		alsoWaiting: 4,
 		attempt: {
 			outcome: 'refused-safety',
@@ -151,7 +163,10 @@ export const QUEUE: QueueItem[] = [
 		assetId: 'AST-0030',
 		shift: 'night',
 		waitingSince: ago(320),
-		askedBy: { name: 'Elena Dumitru', role: { de: 'Reinigungskraft', ro: 'Operator curățenie', en: 'Cleaning operative' } },
+		askedBy: {
+			name: 'Elena Dumitru',
+			role: { de: 'Reinigungskraft', ro: 'Operator curățenie', en: 'Cleaning operative' }
+		},
 		alsoWaiting: 3,
 		attempt: {
 			outcome: 'no-source',
@@ -179,7 +194,10 @@ export const QUEUE: QueueItem[] = [
 		faultCode: 'S-045',
 		shift: 'late',
 		waitingSince: ago(205),
-		askedBy: { name: 'Sofia Braun', role: { de: 'Instandhalterin', ro: 'Tehnician mentenanță', en: 'Maintenance technician' } },
+		askedBy: {
+			name: 'Sofia Braun',
+			role: { de: 'Instandhalterin', ro: 'Tehnician mentenanță', en: 'Maintenance technician' }
+		},
 		alsoWaiting: 0,
 		attempt: {
 			outcome: 'no-source',
@@ -372,7 +390,11 @@ export const KNOWLEDGE: KnowledgeEntry[] = [
 		assetId: 'AST-2210',
 		safety: 'none',
 		verifiedBy: 'Katrin Lehmann',
-		verifiedRole: { de: 'Instandhaltungsleiterin', ro: 'Șefă mentenanță', en: 'Maintenance manager' },
+		verifiedRole: {
+			de: 'Instandhaltungsleiterin',
+			ro: 'Șefă mentenanță',
+			en: 'Maintenance manager'
+		},
 		publishedAt: '2026-06-02',
 		languages: ['de', 'ro', 'en'],
 		served: 44,
@@ -396,7 +418,11 @@ export const KNOWLEDGE: KnowledgeEntry[] = [
 		assetId: 'AST-1180',
 		safety: 'stop',
 		verifiedBy: 'Katrin Lehmann',
-		verifiedRole: { de: 'Instandhaltungsleiterin', ro: 'Șefă mentenanță', en: 'Maintenance manager' },
+		verifiedRole: {
+			de: 'Instandhaltungsleiterin',
+			ro: 'Șefă mentenanță',
+			en: 'Maintenance manager'
+		},
 		publishedAt: '2026-05-20',
 		languages: ['de', 'ro', 'en'],
 		served: 58,
@@ -419,7 +445,11 @@ export const KNOWLEDGE: KnowledgeEntry[] = [
 		assetId: 'AST-0030',
 		safety: 'caution',
 		verifiedBy: 'Katrin Lehmann',
-		verifiedRole: { de: 'Instandhaltungsleiterin', ro: 'Șefă mentenanță', en: 'Maintenance manager' },
+		verifiedRole: {
+			de: 'Instandhaltungsleiterin',
+			ro: 'Șefă mentenanță',
+			en: 'Maintenance manager'
+		},
 		publishedAt: '2025-11-04',
 		languages: ['de', 'ro'],
 		served: 9,

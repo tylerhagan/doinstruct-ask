@@ -71,7 +71,9 @@ for (const file of files) {
 }
 
 if (findings.length) {
-	console.error('Literal user-facing text found. Move it to src/lib/i18n/floor.ts (floor) or src/lib/i18n/office.ts:\n');
+	console.error(
+		'Literal user-facing text found. Move it to src/lib/i18n/floor.ts (floor) or src/lib/i18n/office.ts:\n'
+	);
 	for (const f of findings) {
 		console.error(`  ${f.file}:${f.line}  ${f.text.slice(0, 72)}`);
 	}

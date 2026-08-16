@@ -1,9 +1,33 @@
-@import 'tailwindcss';
-@import '../lib/design/tokens.css';
+/* Automatic source detection is OFF. The scan root is named explicitly, and so
+   are the file types that can legitimately contain a class name.
 
-/* Tailwind v4 auto-detects sources across the project, which means it scans the
-   markdown docs too. AGENTS.md names forbidden utilities like `rounded-t` in its
-   rules, and Tailwind dutifully generated them into the bundle. Documentation
-   should not ship CSS, so the docs are excluded from source detection. */
-@source not '../../**/*.md';
-@source not '../../*.html';
+   Tailwind v4 otherwise walks the whole project, which includes the markdown
+   docs. AGENTS.md lists the bare radius utilities it forbids, by name, inside
+   its own rules, and Tailwind dutifully generated every one of them into the
+   bundle: documentation shipping CSS.
+
+   That has now happened three times, and each fix taught the next one:
+
+   1. Excluded the docs with `@source not`. Worked, until this file moved from
+      `src/routes/` to `src/` and the relative globs silently stopped matching.
+   2. Replaced the exclusions with an explicit scan root. Better, because a root
+      is a fact where an exclusion list is a promise you have to keep on every
+      move. Still leaked, because `tokens.json` states the same rule and spells
+      out the same utility names, and Tailwind reads JSON.
+   3. Named the file types. A class name can only come from a template or from
+      code that builds one, so `.svelte` and `.ts` are the whole surface.
+      Markdown, JSON and CSS are documentation and data, and neither can put a
+      class into the bundle now no matter what it quotes.
+
+   The lesson is the project's own, for the third time: a rule stated in prose
+   decays, and a rule expressed as a fact about the system does not.
+
+   Worth knowing while you work here: Tailwind's extractor is textual, not an
+   AST. Any word in a scanned file that happens to look like a utility becomes
+   one, so the English word "rounded" sitting in a code comment shipped a real
+   `.rounded` rule. Not worth policing vocabulary over, but it is the reason a
+   class you never wrote can turn up in the bundle. */
+@import 'tailwindcss' source(none);
+@source './**/*.{svelte,ts}';
+
+@import './lib/design/tokens.css';
