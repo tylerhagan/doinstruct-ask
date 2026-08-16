@@ -138,6 +138,12 @@ export const OFFICE = {
 			'Gefiltert, mit Zeitstempel, herunterladbar. Im Prototyp nicht angeschlossen.',
 		'knowledge.filterReview': 'Stand',
 
+		'knowledge.empty': 'Kein Eintrag mit diesem Stand.',
+		'office.offline': 'Keine Verbindung',
+		'office.offlineBody':
+			'Du kannst weiterlesen. Was du schreibst, bleibt stehen und geht raus, sobald die Verbindung wieder da ist.',
+		'composer.offline': 'Ohne Verbindung nicht veröffentlichen. Dein Text bleibt stehen.',
+
 		'time.minutes': '{n} Min',
 		'time.hours': '{n} Std',
 		'time.hoursMinutes': '{h} Std {m} Min',
@@ -255,6 +261,12 @@ export const OFFICE = {
 		'knowledge.exportNote': 'Filtrat, cu marcaj de timp, descărcabil. Neconectat în prototip.',
 		'knowledge.filterReview': 'Stare',
 
+		'knowledge.empty': 'Nicio înregistrare cu această stare.',
+		'office.offline': 'Fără conexiune',
+		'office.offlineBody':
+			'Poți citi mai departe. Ce scrii rămâne aici și pleacă imediat ce revine conexiunea.',
+		'composer.offline': 'Fără conexiune nu poți publica. Textul tău rămâne.',
+
 		'time.minutes': '{n} min',
 		'time.hours': '{n} h',
 		'time.hoursMinutes': '{h} h {m} min',
@@ -371,6 +383,12 @@ export const OFFICE = {
 		'knowledge.export': 'Export for audit',
 		'knowledge.exportNote': 'Filtered, timestamped, downloadable. Not wired up in the prototype.',
 		'knowledge.filterReview': 'State',
+
+		'knowledge.empty': 'No entry in this state.',
+		'office.offline': 'No connection',
+		'office.offlineBody':
+			'You can keep reading. What you write stays here and goes out as soon as the connection is back.',
+		'composer.offline': 'Cannot publish without a connection. Your text stays put.',
 
 		'time.minutes': '{n} min',
 		'time.hours': '{n} h',

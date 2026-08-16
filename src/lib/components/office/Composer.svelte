@@ -63,7 +63,13 @@
 	/** How many people this reply reaches: the asker plus everyone duplicated. */
 	const reach = $derived(item ? 1 + item.alsoWaiting : 0);
 
-	const canPublish = $derived(draft.trim().length > 0);
+	/**
+	 * Publishing reaches people, so it is the one action here that needs a
+	 * connection. Everything else on this screen keeps working offline, and the
+	 * draft is never cleared by losing one: a supervisor typing an answer between
+	 * two jobs must not be punished for walking into a cold store.
+	 */
+	const canPublish = $derived(draft.trim().length > 0 && session.online);
 </script>
 
 {#if published}
@@ -165,6 +171,12 @@
 			<p class="mt-1 max-w-prose text-meta text-fg-muted">
 				{tOffice('composer.becomesKnowledge')}
 			</p>
+
+			{#if !session.online}
+				<p class="mt-3 max-w-prose text-meta font-bold text-caution">
+					{tOffice('composer.offline')}
+				</p>
+			{/if}
 
 			<div class="mt-5 flex flex-wrap gap-2">
 				<Button variant="primary" onclick={onpublish} disabled={!canPublish}>

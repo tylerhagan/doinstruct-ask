@@ -36,6 +36,7 @@
 	import RankedBars from '$lib/components/office/RankedBars.svelte';
 	import Trend from '$lib/components/office/Trend.svelte';
 	import KnowledgeCard from '$lib/components/office/KnowledgeCard.svelte';
+	import OfflineNotice from '$lib/components/office/OfflineNotice.svelte';
 
 	import { base } from '$app/paths';
 	import { session } from '$lib/state/session.svelte';
@@ -693,6 +694,14 @@
 							{/each}
 						</div>
 					</div>
+				</div>
+
+				<div>
+					<p class="mb-2 text-meta font-bold text-fg-muted">
+						OfflineNotice · the office's one honestly degraded state. Toggle Connection in the
+						header; it renders nothing while online.
+					</p>
+					<OfflineNotice />
 				</div>
 
 				<div>

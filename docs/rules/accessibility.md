@@ -109,7 +109,19 @@ Happy path is one of four. A surface is not complete until it handles:
 3. **Error.** What went wrong and what to do, in the worker's language, without
    blame.
 4. **Offline.** This product is used in cold stores and basements. Say what still
-   works rather than failing silently.
+   works rather than failing silently, and in that order: a supervisor who can
+   still read the queue has not lost their afternoon.
+
+**Where this stands today, stated rather than implied.** Empty is handled on
+every office screen and on the floor's queue. Offline is handled on both
+registers, driven by the same session flag: the floor shows a badge, the office
+shows `OfflineNotice` and disables publishing while keeping the draft.
+
+Loading and error are **absent, on purpose**. The prototype is fully prerendered
+against fixture data, so there is no request to be pending and none to fail.
+Adding a spinner would be inventing a state to satisfy a checklist, which is the
+same dishonesty as faking retrieval, and it would teach a reviewer nothing. When
+this gets a backend they become real and they are the first thing to build.
 
 ## 10. Motion
 

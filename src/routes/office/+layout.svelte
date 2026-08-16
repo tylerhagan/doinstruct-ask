@@ -16,6 +16,7 @@
 	import { session } from '$lib/state/session.svelte';
 	import { office } from '$lib/state/office.svelte';
 	import { tOffice } from '$lib/i18n/office';
+	import OfflineNotice from '$lib/components/office/OfflineNotice.svelte';
 	import { LANGUAGE_LABEL, type Language } from '$lib/domain/types';
 
 	let { children }: { children: Snippet } = $props();
@@ -138,6 +139,7 @@
 		</header>
 
 		<main class="order-2 min-w-0 flex-1 p-4 md:order-none md:p-6">
+			<div class="mb-4 empty:mb-0"><OfflineNotice /></div>
 			{@render children()}
 		</main>
 	</div>

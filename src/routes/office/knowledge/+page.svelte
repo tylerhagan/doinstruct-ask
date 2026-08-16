@@ -62,8 +62,14 @@
 	<!-- No panel title. It repeated the h1 word for word, which is a heading that
 	     tells a screen-reader user nothing and a sighted one even less. -->
 	<Panel class="overflow-hidden">
-		{#each entries as entry (entry.id)}
-			<KnowledgeCard {entry} />
-		{/each}
+		{#if entries.length === 0}
+			<!-- A filter that matches nothing must say so. An empty panel reads as a
+			     failure to load, and the reader cannot tell which it is. -->
+			<p class="px-5 py-8 text-small text-fg-muted">{tOffice('knowledge.empty')}</p>
+		{:else}
+			{#each entries as entry (entry.id)}
+				<KnowledgeCard {entry} />
+			{/each}
+		{/if}
 	</Panel>
 </div>
