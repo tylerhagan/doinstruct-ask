@@ -40,9 +40,22 @@
 
 	let { answer, speaking = false, onread, onopensource, onnothelp }: Props = $props();
 
-	const CONFIDENCE_CLASS: Record<'sourced' | 'partial', string> = {
-		sourced: 'border-ok bg-ok-surface text-ok',
-		partial: 'border-caution bg-caution-surface text-caution'
+	/**
+	 * Confidence is attached to the answer rather than floating above it.
+	 *
+	 * It used to be a pill above the summary, which meant the first thing a
+	 * worker read was metadata about the answer instead of the answer. The
+	 * start-edge rule ties the two together and gives the screen an anchor, and
+	 * the word stays, so colour is never carrying it alone.
+	 */
+	const CONFIDENCE_EDGE: Record<'sourced' | 'partial', string> = {
+		sourced: 'border-s-ok',
+		partial: 'border-s-caution'
+	};
+
+	const CONFIDENCE_TEXT: Record<'sourced' | 'partial', string> = {
+		sourced: 'text-ok',
+		partial: 'text-caution'
 	};
 
 	const CONFIDENCE_KEY = {
@@ -51,21 +64,35 @@
 	} as const;
 </script>
 
-<article class="flex flex-col gap-5" aria-label={t('a11y.answer')}>
-	{#if answer.confidence !== 'none'}
-		<span
-			class="self-start rounded-full border-2 px-4 py-1 text-small font-bold
-			       {CONFIDENCE_CLASS[answer.confidence]}"
-		>
-			{t(CONFIDENCE_KEY[answer.confidence])}
-		</span>
-	{/if}
-
+<article class="flex flex-col gap-6" aria-label={t('a11y.answer')}>
+	<!-- Safety first and unconditionally. It interrupts, which is the point. -->
 	{#if answer.safety !== 'none' && answer.safetyNote}
 		<SafetyBanner level={answer.safety}>{answer.safetyNote}</SafetyBanner>
 	{/if}
 
-	<p class="text-title font-bold">{answer.summary}</p>
+	<!--
+		The answer itself, and the largest thing on the screen.
+
+		It was `text-title`, one step above the procedure steps below it, which
+		left the payoff of the whole interaction competing with its own footnotes.
+		This is the sentence that gets read aloud first and the one a worker acts
+		on, so it takes the display size and the anchor.
+	-->
+	<div
+		class="border-s-4 ps-4 {answer.confidence !== 'none'
+			? CONFIDENCE_EDGE[answer.confidence]
+			: 'border-s-border'}"
+	>
+		{#if answer.confidence !== 'none'}
+			<p
+				class="mb-2 text-meta font-bold tracking-wide uppercase
+				       {CONFIDENCE_TEXT[answer.confidence]}"
+			>
+				{t(CONFIDENCE_KEY[answer.confidence])}
+			</p>
+		{/if}
+		<p class="text-display font-bold">{answer.summary}</p>
+	</div>
 
 	{#if answer.steps.length}
 		<StepList steps={answer.steps} />
@@ -73,7 +100,9 @@
 
 	{#if answer.sources.length}
 		<section aria-label={t('a11y.sources')} class="flex flex-col gap-2">
-			<h3 class="text-small font-bold text-fg-muted">{t('answer.source')}</h3>
+			<h3 class="text-meta font-bold tracking-wide text-fg-muted uppercase">
+				{t('answer.source')}
+			</h3>
 			{#each answer.sources as source (source.id)}
 				<SourceChip {source} onopen={() => onopensource?.(source.id)} />
 			{/each}

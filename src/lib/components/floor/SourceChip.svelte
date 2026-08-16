@@ -29,11 +29,29 @@
 
 	const translated = $derived(source.language !== session.language);
 
-	const age = $derived.by(() => {
-		const days = Math.round((Date.now() - new Date(source.updatedAt).getTime()) / 86_400_000);
-		if (days < 60) return `${days} ${t('source.daysOld')}`;
-		return `${Math.round(days / 30)} ${t('source.monthsOld')}`;
-	});
+	const ageDays = $derived(
+		Math.round((Date.now() - new Date(source.updatedAt).getTime()) / 86_400_000)
+	);
+
+	const age = $derived(
+		ageDays < 60
+			? `${ageDays} ${t('source.daysOld')}`
+			: `${Math.round(ageDays / 30)} ${t('source.monthsOld')}`
+	);
+
+	/**
+	 * Old enough to be the reason the answer is wrong.
+	 *
+	 * A year is where a maintenance document stops being current in a plant that
+	 * changes cleaning agents, retrofits guards and swaps suppliers. The age was
+	 * already shown, buried in a middle-dot list between the page number and the
+	 * source language, where nobody would ever read it. It is the single most
+	 * decision-relevant fact about a source, so it gets weight when it matters.
+	 *
+	 * Emphasis on words that are already there, never colour alone: the label
+	 * still reads "19 Monate alt" whether or not anyone can see the colour.
+	 */
+	const stale = $derived(ageDays > 365);
 </script>
 
 <button
@@ -42,14 +60,22 @@
 	class="flex min-h-tap w-full touch-manipulation items-center justify-between gap-4
 	       rounded-md border-2 border-hairline bg-surface-raised px-4 py-3 text-left transition-colors"
 >
+	<!--
+		Laid out as a citation rather than as a navigation row. Every answer in this
+		product carries provenance, and provenance that looks like a list item is
+		provenance nobody reads.
+	-->
 	<span class="min-w-0">
-		<span class="block text-small font-medium text-fg">{source.document}</span>
+		<span class="block text-small font-bold text-fg">{source.document}</span>
 		<span class="block text-meta text-fg-muted">
 			{source.section} · {t('source.page')}
-			{source.page} · {age}
+			{source.page}
 			{#if translated}
 				· {t('source.from')} {LANGUAGE_LABEL[source.language]}
 			{/if}
+		</span>
+		<span class="mt-1 block text-meta {stale ? 'font-bold text-caution' : 'text-fg-muted'}">
+			{age}
 		</span>
 	</span>
 

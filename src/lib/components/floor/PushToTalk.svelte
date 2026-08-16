@@ -62,10 +62,25 @@
 		if (event.type === 'keyup') release();
 	}
 
+	/**
+	 * These three states only ever render on the dark ground.
+	 *
+	 * The footer follows the screen, and the screen is dark for standby,
+	 * listening and thinking, so this control is never on cream while it is in
+	 * any of them. `listening` used to be `bg-surface-inverse`, which was correct
+	 * when the footer was cream and became dark-on-dark the moment the ground
+	 * changed: the button disappeared at the exact moment the worker was holding
+	 * it down. Held now means recessed fill with a live yellow edge, so the level
+	 * meter is the brightest thing on the screen, which is what the worker is
+	 * actually checking.
+	 *
+	 * `speaking` and `error` stay light. Neither occurs in the current flow and
+	 * both would render on an answer screen if they did, which is cream.
+	 */
 	const SURFACE: Record<PttState, string> = {
-		idle: 'bg-yellow border-ink text-ink',
-		listening: 'bg-surface-inverse border-ink text-fg-inverse',
-		thinking: 'bg-surface-raised border-border-strong text-fg-muted',
+		idle: 'bg-yellow border-yellow text-ink',
+		listening: 'bg-surface-inverse-raised border-yellow text-fg-inverse',
+		thinking: 'bg-surface-inverse-raised border-hairline-inverse text-fg-inverse-muted',
 		speaking: 'bg-surface-raised border-ink text-fg',
 		error: 'bg-stop-surface border-stop text-stop'
 	};

@@ -253,6 +253,9 @@
 		</section>
 
 		<!-- ── PushToTalk ─────────────────────────────────────────────────── -->
+		<!-- Shown on the dark ground because that is the only ground it has. Its
+		     three live states render in a footer that follows the screen, and the
+		     screen is dark for standby, listening and thinking. -->
 		<section id="pushtotalk" class="mb-14 scroll-mt-4">
 			<h2 class="text-title font-bold">PushToTalk</h2>
 			<p class="mt-2 mb-5 max-w-prose text-small text-fg-muted">
@@ -260,20 +263,20 @@
 				the control. Five states.
 			</p>
 			<div class="flex flex-col gap-4">
-				<div>
-					<p class="mb-2 text-meta font-bold text-fg-muted">idle</p>
+				<div class="ground-dark rounded-lg bg-surface-inverse p-4">
+					<p class="mb-2 text-meta font-bold text-fg-inverse-muted">idle</p>
 					<PushToTalk state="idle" label={t('ptt.idle')} />
 				</div>
-				<div>
-					<p class="mb-2 text-meta font-bold text-fg-muted">listening</p>
+				<div class="ground-dark rounded-lg bg-surface-inverse p-4">
+					<p class="mb-2 text-meta font-bold text-fg-inverse-muted">listening</p>
 					<PushToTalk state="listening" label={t('ptt.listening')} level={0.7} />
 				</div>
 				<div>
 					<p class="mb-2 text-meta font-bold text-fg-muted">listening · loud room</p>
 					<PushToTalk state="listening" label={t('ptt.listening')} level={0.5} noisy />
 				</div>
-				<div>
-					<p class="mb-2 text-meta font-bold text-fg-muted">thinking</p>
+				<div class="ground-dark rounded-lg bg-surface-inverse p-4">
+					<p class="mb-2 text-meta font-bold text-fg-inverse-muted">thinking</p>
 					<PushToTalk state="thinking" label={t('ptt.thinking')} />
 				</div>
 				<div>
