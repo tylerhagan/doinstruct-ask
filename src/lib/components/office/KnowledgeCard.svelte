@@ -38,7 +38,7 @@
 
 <article class="border-b border-hairline px-5 py-4 last:border-b-0">
 	<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-		<h3 class="text-small font-bold">{entry.question[session.language]}</h3>
+		<h2 class="text-small font-bold">{entry.question[session.language]}</h2>
 		<span class="text-meta text-fg-muted tabular-nums">{entry.ref}</span>
 	</div>
 

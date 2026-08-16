@@ -15,7 +15,7 @@
 	- One nominal series, so every bar takes the same slot. Colouring bars by
 	  their own value spends the identity channel re-encoding what length already
 	  shows.
-	- Rounded at the data end, square against the baseline. A bar rounded at both
+	- A 4px radius on the data end, square against the baseline. A bar curved at both
 	  ends lies about where it starts.
 	- 2px of surface between bars, so neighbouring fills cannot merge.
 	- Every bar is directly labelled, so identity and value never depend on

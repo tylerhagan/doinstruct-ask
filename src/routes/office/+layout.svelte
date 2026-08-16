@@ -40,7 +40,7 @@
 		<!-- Rail on a desk, bottom bar on a phone. -->
 		<header
 			class="sticky top-0 z-10 order-1 border-b border-hairline bg-surface md:order-none
-			       md:flex md:w-56 md:shrink-0 md:flex-col md:border-r md:border-b-0"
+			       md:flex md:w-56 md:shrink-0 md:flex-col md:border-e md:border-b-0"
 		>
 			<div class="flex items-center justify-between gap-3 px-4 py-3 md:block">
 				<div class="min-w-0">

@@ -57,12 +57,35 @@ signage already on the floor. A red border with no words is not a warning.
 The microphone is the one control that must never be guessed at. Decorative
 icons take `aria-hidden="true"` so they are not announced twice.
 
-## 6. Every interactive element has an accessible name
+## 6. Headings descend one level at a time
+
+One `h1` per page, and never a jump from `h2` to `h4`. Someone navigating by
+headings uses the levels as the page's table of contents, and a skipped level
+reads as a missing section rather than as a styling choice.
+
+Two traps that both appeared in the office screens:
+
+- **A badge is not a heading.** The Coverage groups are introduced by a coloured
+  triage badge, which is a heading to a sighted reader and nothing at all to a
+  screen reader. They carry an `sr-only` `h2` as well.
+- **Name the section, not the content type.** Three sections all headed
+  "Unanswered questions" are indistinguishable in a headings list. Each is named
+  after its triage class instead.
+
+`Panel` takes a `level` prop rather than guessing, because a component cannot
+know where it sits in the document.
+
+**Not enforced by a check yet.** It needs the built HTML rather than the source,
+so it belongs in a post-build step. Listed here so the gap is known rather than
+implied: this rule is currently prose, which this project has learned is a rule
+with a half life.
+
+## 7. Every interactive element has an accessible name
 
 Buttons get real text. Icon-only controls get a translated `aria-label`, which
 means a `t()` key, never a literal.
 
-## 7. Use logical properties, not physical ones
+## 8. Use logical properties, not physical ones
 
 doinstruct advertises 35+ languages, and that list includes **Arabic and Dari**,
 both of which are right to left.
@@ -76,7 +99,7 @@ not RTL-ready today. The rule is here so that new work does not deepen the hole,
 and the gap is named in the writeup rather than hidden. Migrating is mechanical;
 retrofitting a layout that assumed direction is not.
 
-## 8. Every new surface handles four states
+## 9. Every new surface handles four states
 
 Happy path is one of four. A surface is not complete until it handles:
 
@@ -88,7 +111,7 @@ Happy path is one of four. A surface is not complete until it handles:
 4. **Offline.** This product is used in cold stores and basements. Say what still
    works rather than failing silently.
 
-## 9. Motion
+## 10. Motion
 
 Nothing animates position, and nothing runs longer than 200ms. A worker who
 glances away for two seconds must find the screen where they left it. All motion

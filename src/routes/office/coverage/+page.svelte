@@ -112,8 +112,16 @@
 	{:else}
 		<div class="grid gap-4 xl:grid-cols-3">
 			{#each grouped as group (group.triage)}
-				<Panel level={3} class="flex flex-col">
+				<Panel class="flex flex-col">
 					<div class="border-b border-hairline px-4 py-3">
+						<!--
+							The triage badge is the visible heading, but a badge is not a
+							heading to anyone navigating by them, and without this the page
+							went h1 straight to h3. Named after the class rather than
+							repeating "unanswered questions" three times, so the three
+							sections are distinguishable in a headings list.
+						-->
+						<h2 class="sr-only">{tOffice(`triage.${group.triage}`)}</h2>
 						<TriageBadge triage={group.triage} showAction />
 						<p class="mt-1 max-w-prose text-meta text-fg-muted">
 							{tOffice(`triage.${group.triage}.why`)}
@@ -155,7 +163,7 @@
 		screen a Betriebsrat will be shown, and that conversation goes better when
 		the boundary is written on the product instead of asserted about it.
 	-->
-	<Panel title={tOffice('coverage.noPeople')} level={3}>
+	<Panel title={tOffice('coverage.noPeople')}>
 		<div class="px-4 py-3">
 			<p class="max-w-prose text-small">{tOffice('coverage.noPeopleWhy')}</p>
 			<p class="mt-2 max-w-prose text-meta text-fg-muted">
