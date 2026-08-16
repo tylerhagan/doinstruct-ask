@@ -64,8 +64,8 @@
 
 <div class="flex flex-col gap-4">
 	<header>
-		<h1 class="text-title font-bold">{tOffice('coverage.title')}</h1>
-		<p class="mt-1 max-w-prose text-small text-fg-muted">{tOffice('coverage.lede')}</p>
+		<h1 class="text-display font-bold">{tOffice('coverage.title')}</h1>
+		<p class="mt-2 max-w-prose text-small text-fg-muted">{tOffice('coverage.lede')}</p>
 	</header>
 
 	<div class="flex flex-wrap items-center gap-3">

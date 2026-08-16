@@ -58,6 +58,17 @@
 	 * someone fixed a mis-tap would be a punishment for our own bad default.
 	 */
 	let returnTo = $state<Phase | null>(null);
+
+	/**
+	 * Which phases paint their own ground to the edge of the device.
+	 *
+	 * `main` used to pad every phase and the two dark screens cancelled it with a
+	 * negative margin. That worked for standby, was never applied to the language
+	 * picker, and showed up as a cream inset border around the dark screen: the
+	 * frame leaking through its own padding. A negative margin to undo a parent's
+	 * padding is a sign the padding is in the wrong place, so it moved.
+	 */
+	const fullBleed = $derived(phase === 'language' || phase === 'standby');
 	let scenarioId = $state<ScenarioId>('sourced');
 	let answer = $state<Answer | null>(null);
 	let escalation = $state<Escalation | null>(null);
@@ -197,7 +208,7 @@
 			/>
 		{/if}
 
-		<main class="flex flex-1 flex-col gap-6 p-5 sm:min-h-0 sm:overflow-y-auto">
+		<main class="flex flex-1 flex-col sm:min-h-0 sm:overflow-y-auto {fullBleed ? '' : 'gap-6 p-5'}">
 			<!-- Dark is where you are, cream is where you read. Standby and the
 			     language screen are context, so they take the brand ground; answers
 			     and procedures are reading, so they stay on cream. -->
@@ -218,7 +229,7 @@
 				/>
 			{:else if phase === 'standby'}
 				<div
-					class="-m-5 flex flex-1 flex-col items-center justify-center gap-5 bg-surface-inverse
+					class="flex flex-1 flex-col items-center justify-center gap-5 bg-surface-inverse
 					       p-5 text-center text-fg-inverse"
 				>
 					{#if session.machine}

@@ -77,9 +77,20 @@
 		</div>
 	</Panel>
 {:else if !item}
-	<Panel class="p-5">
-		<p class="text-small font-bold">{tOffice('composer.empty')}</p>
-		<p class="mt-2 max-w-prose text-meta text-fg-muted">{tOffice('composer.emptyBody')}</p>
+	<!--
+		The empty state is not a gap in the screen, it is the screen, and it is what
+		a reviewer sees first. It was a short paragraph in a small box floating in a
+		column the length of the queue, which reads as something that failed to
+		load. Given height, centred, and carrying the halftone so the product and
+		the case study look like the same company's work.
+	-->
+	<Panel class="halftone flex min-h-80 items-center justify-center p-8 text-center">
+		<div>
+			<p class="text-lead font-bold">{tOffice('composer.empty')}</p>
+			<p class="mx-auto mt-2 max-w-prose text-small text-fg-muted">
+				{tOffice('composer.emptyBody')}
+			</p>
+		</div>
 	</Panel>
 {:else}
 	<Panel elevation="raised">

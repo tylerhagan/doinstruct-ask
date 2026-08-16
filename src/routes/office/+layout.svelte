@@ -46,6 +46,9 @@
 
 <svelte:head><title>Ask | {tOffice('office.title')}</title></svelte:head>
 
+<!-- The ground is the sunken step, so panels read as sitting on the page rather
+     than as boxes drawn beside it. Two surfaces plus a shadow is the whole
+     hierarchy; a third would be decoration. -->
 <div class="min-h-dvh bg-surface-sunken">
 	<div class="mx-auto flex min-h-dvh max-w-office flex-col md:flex-row">
 		<!-- Rail on a desk, bottom bar on a phone. -->

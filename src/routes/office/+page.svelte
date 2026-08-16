@@ -33,8 +33,8 @@
 
 <div class="flex flex-col gap-4">
 	<header>
-		<h1 class="text-title font-bold">{tOffice('queue.title')}</h1>
-		<p class="mt-1 max-w-prose text-small text-fg-muted">{tOffice('queue.lede')}</p>
+		<h1 class="text-display font-bold">{tOffice('queue.title')}</h1>
+		<p class="mt-2 max-w-prose text-small text-fg-muted">{tOffice('queue.lede')}</p>
 	</header>
 
 	<div class="flex flex-wrap gap-x-6 gap-y-3">

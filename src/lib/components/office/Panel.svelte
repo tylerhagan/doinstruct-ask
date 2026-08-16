@@ -44,8 +44,17 @@
 		class: className = ''
 	}: Props = $props();
 
+	/**
+	 * `flat` is not "no elevation", it is "on the page".
+	 *
+	 * Every panel was flat to begin with, which left white cards drawn on a grey
+	 * ground with a hairline and no separation, and that flatness was most of what
+	 * read as unfinished. A content panel sits ON the page; it is not printed on
+	 * it. The floor gets none of this, because a shadow is invisible under
+	 * washdown lighting and gone when a screen is printed to a laminated card.
+	 */
 	const SHADOW = {
-		flat: '',
+		flat: 'shadow-raised',
 		raised: 'shadow-raised',
 		overlay: 'shadow-overlay'
 	} as const;

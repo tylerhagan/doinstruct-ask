@@ -73,3 +73,25 @@
 		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
 		U+A720-A7FF;
 }
+
+/* ---------------------------------------------------------------------------
+   The halftone.
+
+   doinstruct's own photography is dot-matrix, and the case study writeup uses a
+   six-band halftone in its masthead. The product had none of it, which left the
+   two reading as different companies' work.
+
+   A named class rather than an arbitrary Tailwind value, because this is a brand
+   motif with a reason to exist and not a one-off background someone reached for.
+   Built from a token so it follows the palette, including at high contrast where
+   the hairline flips to black and the field reads as an intentional texture
+   rather than as dirt.
+
+   Decorative only. It never carries meaning, so it needs no accessible name and
+   is safe to lose entirely.
+--------------------------------------------------------------------------- */
+.halftone {
+	background-image: radial-gradient(var(--color-hairline) 1.5px, transparent 1.6px);
+	background-size: 14px 14px;
+	background-position: center;
+}
