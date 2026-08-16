@@ -26,6 +26,7 @@
 	import EscalationCard from '$lib/components/floor/EscalationCard.svelte';
 	import StatusBar from '$lib/components/floor/StatusBar.svelte';
 	import LanguagePicker from '$lib/components/floor/LanguagePicker.svelte';
+	import AssetLabel from '$lib/components/floor/AssetLabel.svelte';
 
 	import OfficeButton from '$lib/components/office/Button.svelte';
 	import Panel from '$lib/components/office/Panel.svelte';
@@ -36,10 +37,12 @@
 	import Trend from '$lib/components/office/Trend.svelte';
 	import KnowledgeCard from '$lib/components/office/KnowledgeCard.svelte';
 
+	import { base } from '$app/paths';
 	import { session } from '$lib/state/session.svelte';
 	import { t } from '$lib/i18n/floor';
 	import { scenarioById } from '$lib/data/floor';
 	import { COVERAGE, COVERAGE_WEEKS, KNOWLEDGE, QUEUE } from '$lib/data/office';
+	import { ASSETS } from '$lib/data/assets';
 	import { LANGUAGE_LABEL, type Source } from '$lib/domain/types';
 
 	// Real scenario content, so the gallery cannot drift from the product.
@@ -113,6 +116,7 @@
 		['safetybanner', 'SafetyBanner'],
 		['escalation', 'EscalationCard'],
 		['language', 'LanguagePicker'],
+		['label', 'AssetLabel'],
 		['register', 'Office register']
 	] as const;
 </script>
@@ -448,6 +452,46 @@
 					<LanguagePicker options={SITE_LANGUAGES} onchoose={() => {}} />
 				</div>
 			</div>
+		</section>
+
+		<!-- ── AssetLabel ─────────────────────────────────────────────────── -->
+		<section id="label" class="mb-14 scroll-mt-4">
+			<h2 class="text-title font-bold">AssetLabel</h2>
+			<p class="mt-2 mb-5 max-w-prose text-small text-fg-muted">
+				The product's front door, and the one part of it that is not a screen. Every claim about no
+				app, no login and no barriers rests on a worker scanning a piece of adhesive vinyl on a wet
+				machine, and until now nobody had designed it.
+			</p>
+			<p class="mb-5 max-w-prose text-small text-fg-muted">
+				The codes below are real. Point a phone at one and it opens this prototype already knowing
+				which machine you are standing at, because that is the entire mechanism: the QR carries the
+				identity, so the person does not have to. Generated at build time by
+				<code class="text-meta">scripts/generate-labels.mjs</code>, committed as SVG, so the device
+				pays nothing for them.
+			</p>
+			<p class="mb-5 max-w-prose text-small text-fg-muted">
+				The asset ID is set as large as it is because it is the fallback, not a caption. Cameras
+				fail: cracked lens, greasy screen, permission never granted, phone in a locker. That number
+				is what a worker reads out over the line noise. Two printed languages rather than nine,
+				because a site can run nine on screen and still not fit nine on 80mm of vinyl.
+			</p>
+			<div class="flex flex-wrap gap-6">
+				{#each ['AST-3121', 'AST-1180'] as id (id)}
+					<AssetLabel
+						asset={ASSETS[id]}
+						instruction={['Frage stellen. Kein Login.', 'Ask a question. No login.']}
+						href="{base}/labels/{id}.svg"
+					/>
+				{/each}
+			</div>
+			<p class="mt-5 max-w-prose text-meta text-fg-muted">
+				Laminated or on washdown-safe vinyl; paper lasts one shift in a wet zone. Eye height, on a
+				fixed panel and never on a guard door, both because a moving target is hard to scan and
+				because the label has to stay readable while the machine is locked out. Out of the spray
+				path of a CIP nozzle. Replaced when the machine is, which is the failure this product
+				handles rather than prevents: an outlived sticker resolves to nothing and the app says so
+				instead of guessing.
+			</p>
 		</section>
 
 		<!-- ── Office register ────────────────────────────────────────────── -->

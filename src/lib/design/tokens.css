@@ -80,6 +80,19 @@
 	--spacing-tap: 64px;
 	--spacing-tap-primary: 96px;
 
+	/* -- Print: the machine label ------------------------------------------ */
+	/* Millimetres, because this one is not a screen. The label is the product's
+	   front door and it is a physical object: it gets printed, laminated and
+	   stuck to a machine that is hosed down every shift.
+
+	   40mm is the smallest QR a mid-range phone reads reliably at arm's length
+	   in a badly lit plant. Below about 25mm you are relying on the worker
+	   getting close, and getting close to a filler is the thing the label exists
+	   to avoid. 80mm wide leaves room for the asset ID at a size someone can
+	   read out over the noise when the camera will not focus. */
+	--spacing-label: 80mm;
+	--spacing-label-qr: 40mm;
+
 	/* -- Demo frame only, for desktop review. Not a product surface. On the
 	   real device the app is full-bleed and neither of these applies. ------- */
 	/* Names must not collide: Tailwind resolves max-w-* against --container-*
