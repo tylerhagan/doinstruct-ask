@@ -69,7 +69,6 @@
 
 	const SECTIONS = [
 		['foundations', 'Foundations'],
-		['register', 'Office register'],
 		['statusbar', 'StatusBar'],
 		['button', 'Button'],
 		['pushtotalk', 'PushToTalk'],
@@ -79,7 +78,8 @@
 		['steplist', 'StepList'],
 		['sourcechip', 'SourceChip'],
 		['safetybanner', 'SafetyBanner'],
-		['escalation', 'EscalationCard']
+		['escalation', 'EscalationCard'],
+		['register', 'Office register']
 	] as const;
 </script>
 
@@ -162,116 +162,6 @@
 						class="size-tap-primary rounded-md border-2 border-dashed border-border-strong"
 					></div>
 					<p class="mt-2 text-meta text-fg-muted">96px push-to-talk</p>
-				</div>
-			</div>
-		</section>
-
-		<!-- ── Office register ────────────────────────────────────────────── -->
-		<section id="register" class="mb-14 scroll-mt-4">
-			<h2 class="text-title font-bold">Office register</h2>
-			<p class="mt-2 mb-6 max-w-prose text-small text-fg-muted">
-				Everything above this point is the floor. Everything here is the office: a shift lead at a
-				desk, on a monitor, with a mouse, in normal light. None of the floor's constraints apply
-				there, and pretending they do produces a queue you cannot read forty rows of. What forks is
-				density, elevation and colour depth. What never forks is the 7:1 text floor, focus,
-				<code class="text-meta">t()</code>, and never conveying meaning by colour alone.
-			</p>
-			<p class="mb-6 max-w-prose text-small text-fg-muted">
-				The floor may not use any of these tokens, which is checked rather than trusted:
-				<code class="text-meta">scripts/check-register.mjs</code>. This page is exempt because a
-				catalogue is not a product surface.
-			</p>
-
-			<h3 class="mb-3 text-lead font-bold">Density</h3>
-			<div class="mb-8 flex flex-wrap items-end gap-4">
-				<div>
-					<div class="size-tap rounded-md border-2 border-dashed border-border-strong"></div>
-					<p class="mt-2 text-meta text-fg-muted">64px floor · a glove</p>
-				</div>
-				<div>
-					<div class="size-control rounded-md border-2 border-dashed border-border-strong"></div>
-					<p class="mt-2 text-meta text-fg-muted">36px office · a cursor</p>
-				</div>
-				<div>
-					<div class="h-row w-40 rounded-md border-2 border-dashed border-border-strong"></div>
-					<p class="mt-2 text-meta text-fg-muted">56px row · holds two lines</p>
-				</div>
-			</div>
-
-			<h3 class="mb-3 text-lead font-bold">Elevation</h3>
-			<p class="mb-4 max-w-prose text-small text-fg-muted">
-				Two levels, tinted with brand ink rather than black. A shadow says "this floats" and never
-				anything else, because it is removed entirely at high contrast. Toggle high contrast in the
-				header: both cards keep their boundary, because both carry a hairline as well.
-			</p>
-			<div class="mb-8 flex flex-wrap gap-4">
-				<div class="rounded-md border border-hairline bg-surface p-4 shadow-raised">
-					<p class="text-small font-bold">raised</p>
-					<p class="text-meta text-fg-muted">chrome content scrolls under</p>
-				</div>
-				<div class="rounded-md border border-hairline bg-surface p-4 shadow-overlay">
-					<p class="text-small font-bold">overlay</p>
-					<p class="text-meta text-fg-muted">popovers, tooltips, dialogs</p>
-				</div>
-			</div>
-
-			<h3 class="mb-3 text-lead font-bold">Chart series</h3>
-			<p class="mb-4 max-w-prose text-small text-fg-muted">
-				Not brand colours, and they could not be: doinstruct's yellow is 1.1:1 on cream and their
-				greens are near-black, so neither sits in the lightness band a chart fill needs. Built
-				beside the brand instead. Fixed order, assigned in sequence, never cycled. Validated for
-				protanopia and deuteranopia separation against both surfaces.
-			</p>
-			<div class="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
-				{#each [['bg-series-1', '1 teal'], ['bg-series-2', '2 rust'], ['bg-series-3', '3 violet'], ['bg-series-4', '4 olive'], ['bg-series-5', '5 magenta']] as [cls, name] (name)}
-					<div class="overflow-hidden rounded-md border border-hairline">
-						<div class="h-12 {cls}"></div>
-						<p class="p-2 text-meta font-bold">{name}</p>
-					</div>
-				{/each}
-			</div>
-			<p class="mb-8 max-w-prose text-meta text-fg-muted">
-				The all-pairs cap is three. In scatter and small-multiple forms, where any two marks can end
-				up touching, series 4 and series 2 collapse under deuteranopia. Bars and lines, where only
-				neighbours touch, take all five.
-			</p>
-
-			<h3 class="mb-3 text-lead font-bold">Magnitude scale</h3>
-			<div class="mb-8 flex overflow-hidden rounded-md border border-hairline">
-				{#each ['bg-scale-1', 'bg-scale-2', 'bg-scale-3', 'bg-scale-4', 'bg-scale-5'] as cls (cls)}
-					<div class="h-12 flex-1 {cls}"></div>
-				{/each}
-			</div>
-
-			<h3 class="mb-3 text-lead font-bold">Marks, in place</h3>
-			<p class="mb-4 max-w-prose text-small text-fg-muted">
-				A palette judged from swatches is a palette nobody has read. These bars are one nominal
-				series, so every bar takes slot one: colouring them by their own value would spend the
-				identity channel re-encoding what length already shows. Rounded at the data end, square
-				against the baseline, 2px of surface between them, values in text tokens rather than in the
-				series colour.
-			</p>
-			<div class="rounded-md border border-hairline bg-surface-raised p-4">
-				<p class="mb-1 text-small font-bold">Unanswered questions by asset</p>
-				<p class="mb-4 text-meta text-fg-muted">Last 30 days · buckets below five suppressed</p>
-				<div class="flex flex-col gap-0.5">
-					{#each COVERAGE as row (row.asset)}
-						<div class="flex items-center gap-3">
-							<p class="w-20 shrink-0 text-meta font-bold tabular-nums">{row.asset}</p>
-							<div class="flex min-w-0 flex-1 items-center gap-2">
-								<!--
-									A data-driven width is geometry, not a design decision, so it is
-									the one place an inline style is correct rather than a token
-									violation. Nothing about the mark's colour or radius is inline.
-								-->
-								<div
-									class="h-4 rounded-e-xs bg-series-1"
-									style="width: {(row.unanswered / coverageMax) * 100}%"
-								></div>
-								<p class="shrink-0 text-meta text-fg-muted tabular-nums">{row.unanswered}</p>
-							</div>
-						</div>
-					{/each}
 				</div>
 			</div>
 		</section>
@@ -484,6 +374,124 @@
 			<div>
 				<p class="mb-2 text-meta font-bold text-fg-muted">answered · the capture moment</p>
 				<EscalationCard escalation={answered} />
+			</div>
+		</section>
+
+		<!-- ── Office register ────────────────────────────────────────────── -->
+		<!--
+			Deliberately last. The copy below says "everything above this point is
+			the floor", which is only true once every floor component has been
+			passed. It sat directly under Foundations first, where the sentence was
+			a lie, and the divider is here because this is a peer of Foundations
+			rather than another component in the list.
+		-->
+		<hr class="mt-4 mb-10 border-t-2 border-hairline" />
+		<section id="register" class="mb-14 scroll-mt-4">
+			<h2 class="text-title font-bold">Office register</h2>
+			<p class="mt-2 mb-6 max-w-prose text-small text-fg-muted">
+				Everything above this point is the floor. Everything here is the office: a shift lead at a
+				desk, on a monitor, with a mouse, in normal light. None of the floor's constraints apply
+				there, and pretending they do produces a queue you cannot read forty rows of. What forks is
+				density, elevation and colour depth. What never forks is the 7:1 text floor, focus,
+				<code class="text-meta">t()</code>, and never conveying meaning by colour alone.
+			</p>
+			<p class="mb-6 max-w-prose text-small text-fg-muted">
+				The floor may not use any of these tokens, which is checked rather than trusted:
+				<code class="text-meta">scripts/check-register.mjs</code>. This page is exempt because a
+				catalogue is not a product surface.
+			</p>
+
+			<h3 class="mb-3 text-lead font-bold">Density</h3>
+			<div class="mb-8 flex flex-wrap items-end gap-4">
+				<div>
+					<div class="size-tap rounded-md border-2 border-dashed border-border-strong"></div>
+					<p class="mt-2 text-meta text-fg-muted">64px floor · a glove</p>
+				</div>
+				<div>
+					<div class="size-control rounded-md border-2 border-dashed border-border-strong"></div>
+					<p class="mt-2 text-meta text-fg-muted">36px office · a cursor</p>
+				</div>
+				<div>
+					<div class="h-row w-40 rounded-md border-2 border-dashed border-border-strong"></div>
+					<p class="mt-2 text-meta text-fg-muted">56px row · holds two lines</p>
+				</div>
+			</div>
+
+			<h3 class="mb-3 text-lead font-bold">Elevation</h3>
+			<p class="mb-4 max-w-prose text-small text-fg-muted">
+				Two levels, tinted with brand ink rather than black. A shadow says "this floats" and never
+				anything else, because it is removed entirely at high contrast. Toggle high contrast in the
+				header: both cards keep their boundary, because both carry a hairline as well.
+			</p>
+			<div class="mb-8 flex flex-wrap gap-4">
+				<div class="rounded-md border border-hairline bg-surface p-4 shadow-raised">
+					<p class="text-small font-bold">raised</p>
+					<p class="text-meta text-fg-muted">chrome content scrolls under</p>
+				</div>
+				<div class="rounded-md border border-hairline bg-surface p-4 shadow-overlay">
+					<p class="text-small font-bold">overlay</p>
+					<p class="text-meta text-fg-muted">popovers, tooltips, dialogs</p>
+				</div>
+			</div>
+
+			<h3 class="mb-3 text-lead font-bold">Chart series</h3>
+			<p class="mb-4 max-w-prose text-small text-fg-muted">
+				Not brand colours, and they could not be: doinstruct's yellow is 1.1:1 on cream and their
+				greens are near-black, so neither sits in the lightness band a chart fill needs. Built
+				beside the brand instead. Fixed order, assigned in sequence, never cycled. Validated for
+				protanopia and deuteranopia separation against both surfaces.
+			</p>
+			<div class="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
+				{#each [['bg-series-1', '1 teal'], ['bg-series-2', '2 rust'], ['bg-series-3', '3 violet'], ['bg-series-4', '4 olive'], ['bg-series-5', '5 magenta']] as [cls, name] (name)}
+					<div class="overflow-hidden rounded-md border border-hairline">
+						<div class="h-12 {cls}"></div>
+						<p class="p-2 text-meta font-bold">{name}</p>
+					</div>
+				{/each}
+			</div>
+			<p class="mb-8 max-w-prose text-meta text-fg-muted">
+				The all-pairs cap is three. In scatter and small-multiple forms, where any two marks can end
+				up touching, series 4 and series 2 collapse under deuteranopia. Bars and lines, where only
+				neighbours touch, take all five.
+			</p>
+
+			<h3 class="mb-3 text-lead font-bold">Magnitude scale</h3>
+			<div class="mb-8 flex overflow-hidden rounded-md border border-hairline">
+				{#each ['bg-scale-1', 'bg-scale-2', 'bg-scale-3', 'bg-scale-4', 'bg-scale-5'] as cls (cls)}
+					<div class="h-12 flex-1 {cls}"></div>
+				{/each}
+			</div>
+
+			<h3 class="mb-3 text-lead font-bold">Marks, in place</h3>
+			<p class="mb-4 max-w-prose text-small text-fg-muted">
+				A palette judged from swatches is a palette nobody has read. These bars are one nominal
+				series, so every bar takes slot one: colouring them by their own value would spend the
+				identity channel re-encoding what length already shows. Rounded at the data end, square
+				against the baseline, 2px of surface between them, values in text tokens rather than in the
+				series colour.
+			</p>
+			<div class="rounded-md border border-hairline bg-surface-raised p-4">
+				<p class="mb-1 text-small font-bold">Unanswered questions by asset</p>
+				<p class="mb-4 text-meta text-fg-muted">Last 30 days · buckets below five suppressed</p>
+				<div class="flex flex-col gap-0.5">
+					{#each COVERAGE as row (row.asset)}
+						<div class="flex items-center gap-3">
+							<p class="w-20 shrink-0 text-meta font-bold tabular-nums">{row.asset}</p>
+							<div class="flex min-w-0 flex-1 items-center gap-2">
+								<!--
+									A data-driven width is geometry, not a design decision, so it is
+									the one place an inline style is correct rather than a token
+									violation. Nothing about the mark's colour or radius is inline.
+								-->
+								<div
+									class="h-4 rounded-e-xs bg-series-1"
+									style="width: {(row.unanswered / coverageMax) * 100}%"
+								></div>
+								<p class="shrink-0 text-meta text-fg-muted tabular-nums">{row.unanswered}</p>
+							</div>
+						</div>
+					{/each}
+				</div>
 			</div>
 		</section>
 
