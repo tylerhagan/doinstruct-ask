@@ -48,10 +48,15 @@
 <header class="border-b-2 border-hairline bg-surface-raised">
 	<div class="flex items-center justify-between gap-3 px-4 py-3">
 		<div class="min-w-0">
-			<p class="truncate text-small font-bold">{session.machine.line}</p>
-			<p class="truncate text-meta text-fg-muted">
-				{session.machine.machine} · {session.machine.assetId}
-			</p>
+			{#if session.machine}
+				<p class="truncate text-small font-bold">{session.machine.line}</p>
+				<p class="truncate text-meta text-fg-muted">
+					{session.machine.machine} · {session.machine.assetId}
+				</p>
+			{:else}
+				<p class="truncate text-small font-bold text-fg-muted">{t('machine.none')}</p>
+				<p class="truncate text-meta text-fg-muted">{session.scannedAsset ?? ''}</p>
+			{/if}
 		</div>
 
 		<div class="flex shrink-0 items-center gap-2">

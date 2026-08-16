@@ -50,6 +50,10 @@ export const DICT = {
 			'Deine Frage hat das Handbuch verbessert. Wer das nächste Mal fragt, bekommt die Antwort sofort, in seiner Sprache.',
 		'esc.entry': 'Wissenseintrag {ref} · geprüft von {name}',
 		'esc.ok': 'Verstanden',
+		'machine.unknown': 'Keine Maschine erkannt',
+		'machine.unknownBody':
+			'Der Code {id} steht in keinem Register. Frag trotzdem, ich weiß dann nur nicht, an welcher Maschine du stehst.',
+		'machine.none': 'Ohne Maschine',
 		'status.offline': 'Offline',
 		'status.contrast': 'Hoher Kontrast',
 		'status.contrastShort': 'Kontrast',
@@ -100,6 +104,10 @@ export const DICT = {
 			'Întrebarea ta a îmbunătățit manualul. Următorul care întreabă primește răspunsul imediat, în limba lui.',
 		'esc.entry': 'Înregistrare {ref} · verificat de {name}',
 		'esc.ok': 'Am înțeles',
+		'machine.unknown': 'Nicio mașină recunoscută',
+		'machine.unknownBody':
+			'Codul {id} nu apare în niciun registru. Întreabă oricum, doar că nu știu la ce mașină ești.',
+		'machine.none': 'Fără mașină',
 		'status.offline': 'Fără conexiune',
 		'status.contrast': 'Contrast ridicat',
 		'status.contrastShort': 'Contrast',
@@ -150,6 +158,10 @@ export const DICT = {
 			'Your question just improved the manual. The next person who asks gets it instantly, in their language.',
 		'esc.entry': 'Knowledge entry {ref} · verified by {name}',
 		'esc.ok': 'Got it',
+		'machine.unknown': 'No machine recognised',
+		'machine.unknownBody':
+			'The code {id} is not in any register. Ask anyway; I just will not know which machine you are standing at.',
+		'machine.none': 'No machine',
 		'status.offline': 'Offline',
 		'status.contrast': 'High contrast',
 		'status.contrastShort': 'Contrast',

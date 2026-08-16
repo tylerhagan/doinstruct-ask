@@ -130,9 +130,16 @@
 
 	<div class="shrink-0 text-center">
 		<h1 class="sr-only">{t('status.language')}</h1>
-		<p class="text-small font-bold text-fg-muted">{session.machine.line}</p>
-		<p class="text-display font-bold">{session.machine.machine}</p>
-		<p class="text-meta text-fg-muted">{session.machine.assetId}</p>
+		{#if session.machine}
+			<p class="text-small font-bold text-fg-muted">{session.machine.line}</p>
+			<p class="text-display font-bold">{session.machine.machine}</p>
+			<p class="text-meta text-fg-muted">{session.machine.assetId}</p>
+		{:else if session.scannedAsset}
+			<!-- The sticker resolved to nothing. Show the code so it can be read out
+			     to whoever prints the stickers; the flow carries on regardless. -->
+			<p class="text-lead font-bold">{t('machine.unknown')}</p>
+			<p class="text-meta text-fg-muted">{session.scannedAsset}</p>
+		{/if}
 	</div>
 
 	<div class="flex min-h-0 flex-1 flex-col">

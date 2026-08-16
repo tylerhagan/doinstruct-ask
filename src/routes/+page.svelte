@@ -9,6 +9,7 @@
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 	import StatusBar from '$lib/components/floor/StatusBar.svelte';
 	import PushToTalk from '$lib/components/floor/PushToTalk.svelte';
 	import TranscriptConfirm from '$lib/components/floor/TranscriptConfirm.svelte';
@@ -66,7 +67,14 @@
 
 	const scenario = $derived(scenarioById(scenarioId));
 
-	onMount(() => recognition.detect());
+	onMount(() => {
+		// The QR code on the machine is the only thing that says which machine
+		// this is. Read client-side: the app is prerendered, so a query string
+		// cannot be baked in at build time.
+		session.guessLanguage(LANGUAGES);
+		session.resolveMachine(page.url);
+		recognition.detect();
+	});
 
 	const pttState = $derived.by(() => {
 		if (phase === 'listening') return 'listening' as const;
@@ -207,9 +215,16 @@
 				/>
 			{:else if phase === 'standby'}
 				<div class="flex flex-1 flex-col items-center justify-center gap-5 text-center">
-					<p class="text-display font-bold">{session.machine.machine}</p>
+					{#if session.machine}
+						<p class="text-display font-bold">{session.machine.machine}</p>
+					{:else}
+						<p class="text-lead font-bold">{t('machine.unknown')}</p>
+						<p class="max-w-xs text-small text-fg-muted">
+							{t('machine.unknownBody', { id: session.scannedAsset ?? '' })}
+						</p>
+					{/if}
 
-					{#if session.machine.faultCode}
+					{#if session.machine?.faultCode}
 						<p
 							class="inline-flex items-center gap-3 rounded-full border-2 border-hairline
 							       bg-surface-sunken py-2 pr-5 pl-4"
