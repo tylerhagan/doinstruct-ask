@@ -41,19 +41,19 @@ next.
 The German column is the anchor, because that is what is printed on the machine.
 The other columns are the approved renderings, not suggestions.
 
-| German (anchor) | Never write in German | Romanian | English |
-| --- | --- | --- | --- |
-| Not-Aus | Notstopp, Notabschaltung | oprire de urgență | emergency stop |
-| Schutztür | Schutzklappe, Tür | ușa de protecție | guard door |
-| Verriegelung | Sperre, Sicherung | interblocare | interlock |
-| Freischaltung | Abschaltung, Trennung | izolare | isolation |
-| Schichtbuch | Logbuch, Protokoll | registrul de tură | shift book |
+| German (anchor) | Never write in German    | Romanian          | English        |
+| --------------- | ------------------------ | ----------------- | -------------- |
+| Not-Aus         | Notstopp, Notabschaltung | oprire de urgență | emergency stop |
+| Schutztür       | Schutzklappe, Tür        | ușa de protecție  | guard door     |
+| Verriegelung    | Sperre, Sicherung        | interblocare      | interlock      |
+| Freischaltung   | Abschaltung, Trennung    | izolare           | isolation      |
+| Schichtbuch     | Logbuch, Protokoll       | registrul de tură | shift book     |
 
 A worker learns the word printed on the machine and written in the procedure. An
 unfamiliar synonym for an emergency stop is a hazard rather than a style
 variation, and that holds in every language, not only the one on the nameplate.
 
-Note that this is about *copy*, not about identifiers. `Füller F2` is never
+Note that this is about _copy_, not about identifiers. `Füller F2` is never
 translated at all; see rule 4. `Schutztür` is translated, but only ever to the
 one approved rendering above.
 

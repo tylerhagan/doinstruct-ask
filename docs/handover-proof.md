@@ -1,7 +1,7 @@
 # Handover proof
 
-The brief asks for a system where *"an engineer takes it, changes the flow and
-screens with 2 to 3 prompts, and ships. You do the final polish. >95% right."*
+The brief asks for a system where _"an engineer takes it, changes the flow and
+screens with 2 to 3 prompts, and ships. You do the final polish. >95% right."_
 
 That is a testable claim, so this document tests it and reports what actually
 happened, including the part the agent got wrong.
@@ -78,7 +78,7 @@ hardcoded German string:
 + <Button variant="quiet" full onclick={() => (phase = 'answer')}>{t('flow.back')}</Button>
 ```
 
-It had followed the instruction it was *given*, "add all copy to strings.ts", for
+It had followed the instruction it was _given_, "add all copy to strings.ts", for
 the copy the prompt actually named. Then it invented an unnamed control and
 reverted to its default habit for that one.
 
@@ -146,12 +146,12 @@ is only ever timestamps and audit references.
 **What this run is actually evidence of.** Every one of the three findings needs
 a person who knows why the copy was written that way. Two of them are invisible
 to any linter that could reasonably be written. The third is a stated rule that
-no check enforces. Meanwhile the things automation *can* see, tokens, props, aria
+no check enforces. Meanwhile the things automation _can_ see, tokens, props, aria
 and types, were all correct on the first attempt.
 
 That is the shape of the job: the machine reliably handles the mechanical layer,
 and a human is still required for the layer where meaning lives. The number to
-take from this is not 95%. It is *which* 5%.
+take from this is not 95%. It is _which_ 5%.
 
 ---
 
@@ -164,7 +164,7 @@ predictable. "Change the flow" touched `+page.svelte` and nothing else needed to
 move.
 
 **The honest part.** The 95% figure is the wrong way to think about it. Roughly
-95% of the *lines* were right, but the remaining 5% was not randomly distributed.
+95% of the _lines_ were right, but the remaining 5% was not randomly distributed.
 It was exactly the thing that only matters if you know the domain. An
 untranslated button is invisible in review, compiles perfectly, passes every
 automated check, and is a dead end for the half of a German food-production line

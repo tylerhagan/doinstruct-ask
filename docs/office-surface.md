@@ -15,9 +15,9 @@ I had only read doinstruct's marketing copy before. Reading the product pages
 properly overturns an assumption the entire first version rested on.
 
 **Their access model is a personal phone, not a wall mount.** The Learner page is
-explicit: *"No app. No login. No barriers."* Access is by QR code or a link in
+explicit: _"No app. No login. No barriers."_ Access is by QR code or a link in
 WhatsApp, SMS, Beekeeper or Flip. The Echterhoff case study describes 670
-construction workers completing safety briefings *"on personal smartphones"*.
+construction workers completing safety briefings _"on personal smartphones"_.
 
 I had inferred a shared wall-mounted terminal from hygiene-zone phone
 restrictions. That inference was reasonable and it was not their model, and
@@ -30,7 +30,7 @@ language in a status bar. Their pattern is better and it is already familiar to
 every worker who has used the training product.
 
 **They already do gap analysis, but for a different gap.** The Manager product
-offers *"department-level evaluations and gap identification"* for training
+offers _"department-level evaluations and gap identification"_ for training
 completion. That answers "who has not been trained". It cannot answer "what does
 our documentation fail to explain", which is the gap this product finds.
 
@@ -120,11 +120,11 @@ on a named human.
 The unit should be **whatever a supervisor can actually fix**. There are only
 three fixable things behind an unanswered question:
 
-| The problem is | The unit is | The action |
-| --- | --- | --- |
-| The documentation is unclear or absent | Document and section | Rewrite the section |
-| The machine keeps producing the same fault | Asset and fault code | Engineering, not documentation |
-| People have not been trained | Role and topic | Hand to Genius, their existing product |
+| The problem is                             | The unit is          | The action                             |
+| ------------------------------------------ | -------------------- | -------------------------------------- |
+| The documentation is unclear or absent     | Document and section | Rewrite the section                    |
+| The machine keeps producing the same fault | Asset and fault code | Engineering, not documentation         |
+| People have not been trained               | Role and topic       | Hand to Genius, their existing product |
 
 Coverage triages into those three rather than assuming one hierarchy, because
 each hands the supervisor a different next action.
@@ -196,14 +196,14 @@ directly into the compliance business doinstruct already sells.
 
 ## Screen inventory
 
-| Screen | Purpose | Why it earns its place |
-| --- | --- | --- |
-| Queue | Waiting questions by asset | The supervisor's actual job |
-| Answer composer | Reply becomes canonical knowledge | Where time converts to asset |
-| Coverage | Gaps by machine, line, shift, over time | Tells you which document to fix |
-| Asset detail | One machine's question history and documents | Where a maintenance planner lives |
-| Knowledge entry | A captured answer, its provenance and review state | Audit and trust |
-| Audit export | Filtered, timestamped, downloadable | Their existing compliance moat |
+| Screen          | Purpose                                            | Why it earns its place            |
+| --------------- | -------------------------------------------------- | --------------------------------- |
+| Queue           | Waiting questions by asset                         | The supervisor's actual job       |
+| Answer composer | Reply becomes canonical knowledge                  | Where time converts to asset      |
+| Coverage        | Gaps by machine, line, shift, over time            | Tells you which document to fix   |
+| Asset detail    | One machine's question history and documents       | Where a maintenance planner lives |
+| Knowledge entry | A captured answer, its provenance and review state | Audit and trust                   |
+| Audit export    | Filtered, timestamped, downloadable                | Their existing compliance moat    |
 
 ---
 

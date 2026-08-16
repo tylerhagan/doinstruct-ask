@@ -37,7 +37,7 @@ The environment picks the domain. That ordering is the point.
 ## The product argument
 
 This is a routing problem rather than a Q&A problem. The brief's own words:
-*"the answer is a colleague or supervisor away. So they wait."* An assistant
+_"the answer is a colleague or supervisor away. So they wait."_ An assistant
 that answers seven questions in ten and shrugs at the rest has rebuilt the
 dead-end it was meant to remove.
 
@@ -64,20 +64,20 @@ It also toggles live versus scripted microphone, a loud room, and offline.
 
 ## Where to look
 
-| Document | What it covers |
-| --- | --- |
-| [`AGENTS.md`](AGENTS.md) | The main deliverable. Stack traps, the non-negotiables, and an index of when to load the rest. |
-| [`docs/rules/behaviour.md`](docs/rules/behaviour.md) | How an agent should work here. Dependency lock, never weaken a check, don't invent to fill a gap. |
-| [`docs/rules/content.md`](docs/rules/content.md) | Copy, interpolation, locked safety terminology, reading level, locale formatting. |
-| [`docs/rules/accessibility.md`](docs/rules/accessibility.md) | Target spacing, focus, live regions, logical properties, the four required states. |
-| [`docs/handover-proof.md`](docs/handover-proof.md) | Three prompts run, including one **cold**, with a full audit of what the agent got wrong. |
-| [`handover-prompt-3` branch](https://github.com/tylerhagan/doinstruct-ask/compare/master...handover-prompt-3) | Raw, unedited output of the cold run. Committed exactly as produced. |
-| [`docs/frontline-reality.md`](docs/frontline-reality.md) | Low-end devices, noise, gloves, languages, literacy, lighting. |
-| [`docs/decision-log.md`](docs/decision-log.md) | What I learned, what changed, and why. |
-| [`src/lib/design/tokens.json`](src/lib/design/tokens.json) | Tokens, with the reasoning for every divergence from convention. |
-| [`scripts/check-contrast.mjs`](scripts/check-contrast.mjs) | A prose rule turned into a build failure. Found 5 defects. |
-| [`scripts/check-i18n.mjs`](scripts/check-i18n.mjs) | The second one. Found 4 German `aria-label` values in seconds. |
-| `/system` route | Every component in every state. |
+| Document                                                                                                      | What it covers                                                                                    |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [`AGENTS.md`](AGENTS.md)                                                                                      | The main deliverable. Stack traps, the non-negotiables, and an index of when to load the rest.    |
+| [`docs/rules/behaviour.md`](docs/rules/behaviour.md)                                                          | How an agent should work here. Dependency lock, never weaken a check, don't invent to fill a gap. |
+| [`docs/rules/content.md`](docs/rules/content.md)                                                              | Copy, interpolation, locked safety terminology, reading level, locale formatting.                 |
+| [`docs/rules/accessibility.md`](docs/rules/accessibility.md)                                                  | Target spacing, focus, live regions, logical properties, the four required states.                |
+| [`docs/handover-proof.md`](docs/handover-proof.md)                                                            | Three prompts run, including one **cold**, with a full audit of what the agent got wrong.         |
+| [`handover-prompt-3` branch](https://github.com/tylerhagan/doinstruct-ask/compare/master...handover-prompt-3) | Raw, unedited output of the cold run. Committed exactly as produced.                              |
+| [`docs/frontline-reality.md`](docs/frontline-reality.md)                                                      | Low-end devices, noise, gloves, languages, literacy, lighting.                                    |
+| [`docs/decision-log.md`](docs/decision-log.md)                                                                | What I learned, what changed, and why.                                                            |
+| [`src/lib/design/tokens.json`](src/lib/design/tokens.json)                                                    | Tokens, with the reasoning for every divergence from convention.                                  |
+| [`scripts/check-contrast.mjs`](scripts/check-contrast.mjs)                                                    | A prose rule turned into a build failure. Found 5 defects.                                        |
+| [`scripts/check-i18n.mjs`](scripts/check-i18n.mjs)                                                            | The second one. Found 4 German `aria-label` values in seconds.                                    |
+| `/system` route                                                                                               | Every component in every state.                                                                   |
 
 ## On the brand
 

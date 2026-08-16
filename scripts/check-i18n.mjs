@@ -32,9 +32,7 @@ const blank = (src, re) => src.replace(re, (m) => m.replace(/[^\n]/g, ' '));
 
 const lineOf = (src, index) => src.slice(0, index).split('\n').length;
 
-const files = globSync('src/**/*.svelte').filter(
-	(f) => !ALLOWED.includes(f.replace(/\\/g, '/'))
-);
+const files = globSync('src/**/*.svelte').filter((f) => !ALLOWED.includes(f.replace(/\\/g, '/')));
 
 const findings = [];
 

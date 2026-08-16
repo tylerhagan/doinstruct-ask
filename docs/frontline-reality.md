@@ -8,13 +8,13 @@ something in the code rather than an aspiration.
 
 ## Low-end devices and bad connectivity
 
-| Measure | Value |
-| --- | --- |
-| JavaScript, gzipped (product route) | **46 KB** |
-| CSS, gzipped | **4 KB** |
-| HTML, gzipped | **2 KB** |
-| Web fonts | **0 bytes** |
-| Server round trips to first paint | **0**, fully prerendered |
+| Measure                             | Value                    |
+| ----------------------------------- | ------------------------ |
+| JavaScript, gzipped (product route) | **46 KB**                |
+| CSS, gzipped                        | **4 KB**                 |
+| HTML, gzipped                       | **2 KB**                 |
+| Web fonts                           | **0 bytes**              |
+| Server round trips to first paint   | **0**, fully prerendered |
 
 Reproduce with `npm run build`.
 
@@ -38,7 +38,7 @@ Reproduce with `npm run build`.
   no audio feedback, so the meter is the only evidence the device can hear them.
 - **Ambient noise is measured rather than assumed.** `recognition.svelte.ts`
   samples the room's noise floor over the first thirty frames. Above the
-  threshold the UI offers the text path *before* recognition fails rather than
+  threshold the UI offers the text path _before_ recognition fails rather than
   after.
 - **`TranscriptConfirm` is mandatory and never auto-skipped on high confidence.**
   Mis-recognition is normal here, and a technician acting on a misheard fault
