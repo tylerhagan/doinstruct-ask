@@ -40,7 +40,7 @@
 	import { t } from '$lib/i18n/floor';
 	import { scenarioById } from '$lib/data/floor';
 	import { COVERAGE, COVERAGE_WEEKS, KNOWLEDGE, QUEUE } from '$lib/data/office';
-	import type { Source } from '$lib/domain/types';
+	import { LANGUAGE_LABEL, type Source } from '$lib/domain/types';
 
 	// Real scenario content, so the gallery cannot drift from the product.
 	const sourced = $derived(scenarioById('sourced').build(session.language).answer!);
@@ -141,6 +141,12 @@
 				{/each}
 			</nav>
 
+			<!--
+				Language lives here now rather than in StatusBar. StatusBar used to carry
+				three language buttons and this page borrowed them; it now carries one
+				chip that hands the choice back to the flow, which a catalogue has none
+				of. A gallery control is the right home for a gallery affordance.
+			-->
 			<div class="mt-6 flex flex-wrap gap-3">
 				<Button onclick={() => session.toggleContrast()}>
 					High contrast: {session.highContrast ? 'on' : 'off'}
@@ -148,6 +154,14 @@
 				<Button onclick={() => (session.online = !session.online)}>
 					Connection: {session.online ? 'online' : 'offline'}
 				</Button>
+				{#each ['de', 'ro', 'en'] as const as lang (lang)}
+					<Button
+						variant={session.language === lang ? 'primary' : 'secondary'}
+						onclick={() => session.setLanguage(lang)}
+					>
+						{LANGUAGE_LABEL[lang]}
+					</Button>
+				{/each}
 			</div>
 		</header>
 
@@ -209,7 +223,7 @@
 				page: switch language and every component below follows, content included.
 			</p>
 			<div class="overflow-hidden rounded-lg border-2 border-ink">
-				<StatusBar />
+				<StatusBar onchangelanguage={() => {}} />
 			</div>
 			<p class="mt-3 text-meta text-fg-muted">
 				Toggle Connection in the header to see the offline badge appear.

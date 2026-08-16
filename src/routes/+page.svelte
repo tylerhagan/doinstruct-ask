@@ -46,6 +46,17 @@
 	 * single worst assumption in the old build. See docs/office-surface.md.
 	 */
 	let phase = $state<Phase>('language');
+
+	/**
+	 * Where to go back to after a mid-flow language change.
+	 *
+	 * Changing language does NOT reset the flow. Every scenario is localised down
+	 * to its procedure steps, so re-rendering the screen the worker is already on
+	 * is both the correct behaviour and the clearest demonstration of the claim
+	 * doinstruct makes with "35+ languages". Throwing away an answer because
+	 * someone fixed a mis-tap would be a punishment for our own bad default.
+	 */
+	let returnTo = $state<Phase | null>(null);
 	let scenarioId = $state<ScenarioId>('sourced');
 	let answer = $state<Answer | null>(null);
 	let escalation = $state<Escalation | null>(null);
@@ -170,7 +181,12 @@
 		     buttons, and offering the same choice twice on one screen is how a
 		     worker ends up unsure which one counted. -->
 		{#if phase !== 'language'}
-			<StatusBar />
+			<StatusBar
+				onchangelanguage={() => {
+					returnTo = phase;
+					phase = 'language';
+				}}
+			/>
 		{/if}
 
 		<main class="flex flex-1 flex-col gap-6 p-5 sm:min-h-0 sm:overflow-y-auto">
@@ -185,7 +201,8 @@
 					options={LANGUAGES.map((code) => ({ code, label: LANGUAGE_LABEL[code] }))}
 					onchoose={(code) => {
 						if (LANGUAGES.includes(code as Language)) session.setLanguage(code as Language);
-						phase = 'standby';
+						phase = returnTo ?? 'standby';
+						returnTo = null;
 					}}
 				/>
 			{:else if phase === 'standby'}

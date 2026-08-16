@@ -40,6 +40,21 @@
 	  moment the list is longer than a screen, which is the normal case.
 	- Past roughly a dozen this needs a search field. Nine scrolls fine, thirty
 	  does not, and pretending otherwise is where this pattern usually fails.
+
+	THE ONE ICON-ONLY CONTROL IN THE SYSTEM
+	Contrast has to be reachable here. High contrast in this product is a response
+	to a lighting condition, not a preference, and washdown glare does not wait
+	politely until a language has been chosen. A first pass at this screen had no
+	contrast control at all, which stranded exactly the person who most needed
+	one: unable to read the list, with nothing on screen to fix it.
+
+	accessibility.md rule 5 says every icon is paired with text, and here there is
+	no language to write the text in. So this is the documented exception, and it
+	is narrow for three reasons: there is genuinely no locale yet, the control
+	demonstrates its own meaning the instant it is pressed, and it is reversible
+	by pressing it again. It still carries a translated accessible name in the
+	device's best-guess language, which is better than nothing for a screen reader
+	and costs nothing when the guess is wrong.
 -->
 <script lang="ts">
 	import { session } from '$lib/state/session.svelte';
@@ -97,6 +112,22 @@
 </script>
 
 <div class="flex min-h-0 flex-1 flex-col gap-6 p-5">
+	<div class="flex shrink-0 justify-end">
+		<button
+			type="button"
+			onclick={() => session.toggleContrast()}
+			aria-pressed={session.highContrast}
+			aria-label={t('status.contrast')}
+			class="flex size-tap items-center justify-center rounded-md border-2 border-hairline
+			       bg-surface-raised transition-colors"
+		>
+			<svg class="size-7" viewBox="0 0 24 24" aria-hidden="true">
+				<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" />
+				<path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" />
+			</svg>
+		</button>
+	</div>
+
 	<div class="shrink-0 text-center">
 		<h1 class="sr-only">{t('status.language')}</h1>
 		<p class="text-small font-bold text-fg-muted">{session.machine.line}</p>
