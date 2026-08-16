@@ -22,7 +22,7 @@ import { globSync } from 'node:fs';
  * Dev surfaces, deliberately English and deliberately not shipped.
  * DemoPanel is reviewer chrome and /system is the component gallery.
  */
-const ALLOWED = ['src/lib/components/DemoPanel.svelte', 'src/routes/system/+page.svelte'];
+const ALLOWED = ['src/lib/components/floor/DemoPanel.svelte', 'src/routes/system/+page.svelte'];
 
 /** Attributes that reach a user, whether visually or through a screen reader. */
 const TEXT_ATTRS = ['aria-label', 'aria-description', 'placeholder', 'title', 'alt'];
@@ -71,7 +71,7 @@ for (const file of files) {
 }
 
 if (findings.length) {
-	console.error('Literal user-facing text found. Move it to src/lib/i18n/strings.ts:\n');
+	console.error('Literal user-facing text found. Move it to src/lib/i18n/floor.ts (floor) or src/lib/i18n/office.ts:\n');
 	for (const f of findings) {
 		console.error(`  ${f.file}:${f.line}  ${f.text.slice(0, 72)}`);
 	}

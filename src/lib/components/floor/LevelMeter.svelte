@@ -16,7 +16,7 @@
 	  square to it.
 -->
 <script lang="ts">
-	import { t } from '$lib/i18n/strings';
+	import { t } from '$lib/i18n/floor';
 
 	interface Props {
 		level: number;

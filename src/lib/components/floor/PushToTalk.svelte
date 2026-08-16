@@ -25,7 +25,7 @@
 -->
 <script lang="ts">
 	import LevelMeter from './LevelMeter.svelte';
-	import { t } from '$lib/i18n/strings';
+	import { t } from '$lib/i18n/floor';
 
 	type PttState = 'idle' | 'listening' | 'thinking' | 'speaking' | 'error';
 

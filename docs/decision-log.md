@@ -692,3 +692,81 @@ needs and the saturation a series identity needs do not land on the same value.
 validated against white too. The chart changes instead: every mark prints its
 value as text, colour drops to decoration, and the numbers carry the meaning. A
 chart stops being a picture and becomes a table you can still read at a glance.
+
+---
+
+## D22. Layer-first, because that is what SvelteKit teams actually do
+
+**The question:** with two surfaces, the tree had gone wrong. `components/`
+silently meant "floor", and "office" was smeared across `domain/`, `data/` and
+`i18n/`. Someone asked to work on the supervisor screens had to open four folders
+to find the surface.
+
+I proposed feature-first, `lib/floor/` and `lib/office/` each owning their
+components, data and copy. Tyler asked the better question: what would a
+SvelteKit team choose?
+
+**They would choose layer-first, and they would be right.** SvelteKit's own
+convention is a shallow `$lib` with `components/`, `state/`, `data/`, plus route
+colocation for anything used by exactly one screen. Immich, svelte.dev and
+shadcn-svelte all look like that. Feature-first folders are a React monorepo
+habit, and importing one here would mean every SvelteKit hire pays an onboarding
+cost to learn a taxonomy this project invented for itself.
+
+**Decision:** layer first, with the register as a subfolder wherever a layer has
+one. `components/floor/` and `components/office/`, `data/floor.ts` and
+`data/office.ts`, `i18n/floor.ts` and `i18n/office.ts`. The register boundary is
+still explicit in every path, which is what `check-register.mjs` needs, and the
+shape is the one a SvelteKit engineer expects.
+
+**What I kept from the other proposal.** `domain/` rather than `types/`, because
+it holds rules and not only types: `suppress()` lives there, and calling that
+folder `types` would invite someone to put the threshold in a component. And
+`src/routes/layout.css` moved to `src/app.css`, which is what `sv create`
+generates and what everyone looks for.
+
+**Register-specific primitives are duplicated, deliberately.** There is a floor
+`Button` at 64px and there will be an office one at 36px, rather than one
+component with a size prop. A shared prop would let a floor screen opt out of the
+gloved-hand floor silently, and a prop is invisible to `check-register.mjs` in a
+way a class name is not.
+
+---
+
+## D23. Vitest, and a rule that was aimed at the wrong target
+
+**Learned:** there were no tests. Four build checks and a type checker, which is
+more verification than most prototypes carry, but nothing exercising the small
+set of functions where a silent change actually costs something.
+
+The rule in `behaviour.md` said `package.json` is closed. Full stop. That rule
+exists to protect 46 KB of gzipped JavaScript on a five-year-old Android, and it
+was doing that job, but it was also banning the tooling that keeps every other
+rule honest. A `devDependency` never reaches the device.
+
+**Decision:** narrow the rule to runtime dependencies and add Vitest. A date
+library is still banned and a charting library is emphatically still banned. Test
+tooling is allowed on its merits.
+
+**What is tested, and what is not.** Not rendering. Mounting Svelte components
+would cost jsdom plus a testing library to assert things the four checks already
+assert. What is tested is the handful of pure functions that encode a rule:
+suppression, the wait formatter, and the parity of the three dictionaries.
+
+Two of those are worth naming. **Suppression** returns `null` rather than `0`,
+and there is a test asserting the difference, because `0` is a legitimate answer
+meaning "none happened" while `null` means "we are not telling you", and
+collapsing them would let a suppressed bucket read as a reassuring zero.
+**Dictionary parity** is asserted at runtime because TypeScript will not do it:
+`satisfies Record<Language, Record<string, string>>` checks the shape of each
+language and never that the three agree. A missing Romanian key does not throw,
+it renders `undefined` on a screen, in front of exactly the person this product
+is for. The placeholder test came from the same thought: a translation that drops
+`{n}` leaves a hole in a sentence, and the hole is silent.
+
+**The structural test is the one I would defend hardest.** The queue fixtures are
+asserted to carry no field on `askedBy` beyond `name` and `role`. If someone adds
+`questionsThisMonth`, the suite fails. That turns the surveillance boundary from a
+paragraph in `docs/office-surface.md` into something a build can enforce, which
+is the seventh time in this project that a rule has had to be moved out of prose
+before it would hold.

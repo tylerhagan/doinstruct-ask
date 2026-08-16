@@ -21,7 +21,7 @@
 -->
 <script lang="ts">
 	import type { ProcedureStep } from '$lib/domain/types';
-	import { t } from '$lib/i18n/strings';
+	import { t } from '$lib/i18n/floor';
 
 	interface Props {
 		steps: ProcedureStep[];

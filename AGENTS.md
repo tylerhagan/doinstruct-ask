@@ -98,13 +98,13 @@ border-width: 2px }` hands a visible border to every div and paragraph on the
 **First, work out which register you are in.** The system has two, and half the
 rules below change between them.
 
-|            | **Floor**                                          | **Office**                                   |
-| ---------- | -------------------------------------------------- | -------------------------------------------- |
-| Who        | A worker on the line                               | A shift lead or QHSE manager                 |
-| Where      | Own phone, or a shared terminal in a hygiene zone  | A desk, a monitor, a mouse                   |
-| Conditions | Gloves, 85-95 dB, washdown glare to dim cold store | Normal light, seated, both hands             |
-| Lives in   | `src/lib/components/`, `src/routes/+page.svelte`   | `src/lib/office/`, `src/routes/office/`      |
-| Gets       | 64px targets, 18px floor, no shadows, no charts    | 36px controls, 16px floor, elevation, charts |
+|            | **Floor**                                              | **Office**                                         |
+| ---------- | ------------------------------------------------------ | -------------------------------------------------- |
+| Who        | A worker on the line                                   | A shift lead or QHSE manager                       |
+| Where      | Own phone, or a shared terminal in a hygiene zone      | A desk, a monitor, a mouse                         |
+| Conditions | Gloves, 85-95 dB, washdown glare to dim cold store     | Normal light, seated, both hands                   |
+| Lives in   | `src/lib/components/floor/`, `src/routes/+page.svelte` | `src/lib/components/office/`, `src/routes/office/` |
+| Gets       | 64px targets, 18px floor, no shadows, no charts        | 36px controls, 16px floor, elevation, charts       |
 
 The office may use anything the floor uses. **The floor may never use an office
 token**, and that asymmetry is enforced by `scripts/check-register.mjs`, not by
@@ -174,22 +174,47 @@ If you are unsure which applies, load `behaviour.md` and ask.
 
 ## 7. Where things live
 
+Layer first under `$lib`, with the **register as a subfolder** wherever a layer
+has one. This is the ordinary SvelteKit shape rather than anything invented for
+this project, so a SvelteKit engineer can find things on the first try. Screen
+specific components colocate with their route; only shared or reusable ones
+reach `$lib`.
+
 ```
-src/lib/design/tokens.json   Source of truth, plus the REASONING for each divergence
-src/lib/design/tokens.css    @theme, the utility classes you may use
-src/lib/domain/types.ts      Domain model. Add fields here first.
-src/lib/i18n/strings.ts      All user-facing copy, three languages
-src/lib/state/session.svelte.ts       Device state (language, contrast, machine)
-src/lib/voice/recognition.svelte.ts   Mic, level metering, scripted fallback
-src/lib/data/scenarios.ts    Demo content
-src/lib/components/*.svelte  The system. Contracts are in each file's header.
-src/routes/+page.svelte      The whole flow state machine
-src/routes/system/+page.svelte        Component gallery. Read this to see what exists.
-scripts/check-contrast.mjs   Contrast rules and the chart palette, enforced
-scripts/check-i18n.mjs       The no-literal-text rule, enforced
-scripts/check-tokens.mjs     tokens.json and tokens.css must agree, enforced
-scripts/check-register.mjs   No office tokens on the floor, enforced
+src/app.css                       Tailwind entry. Imported once by +layout.svelte.
+src/lib/
+  design/tokens.json              INTENT: the reasoning behind every value
+  design/tokens.css               @theme: the utility classes you may use
+  domain/types.ts                 Shared domain model. Add fields here first.
+  domain/office.ts                Office model, plus the suppression rule
+  data/floor.ts                   Device scenarios
+  data/office.ts                  Queue, coverage and knowledge fixtures
+  i18n/floor.ts                   t()       floor copy, three languages
+  i18n/office.ts                  tOffice() office copy, falls back to floor
+  state/session.svelte.ts         Shared: language, contrast, machine context
+  state/office.svelte.ts          Office: view, filters, selection, draft
+  voice/recognition.svelte.ts     Mic, level metering, scripted fallback
+  components/floor/*.svelte       Device register. 64px, 18px, no shadows.
+  components/office/*.svelte      Desk register. 36px, 16px, elevation, charts.
+src/routes/
+  +page.svelte                    Floor: the whole flow state machine
+  office/+layout.svelte           Office shell and navigation
+  office/+page.svelte             Queue, and the answer composer
+  office/coverage/+page.svelte    Where the documentation runs out
+  office/knowledge/+page.svelte   What the assistant can answer now
+  system/+page.svelte             Design system gallery. Read this first.
+scripts/check-contrast.mjs        Contrast rules and the chart palette, enforced
+scripts/check-i18n.mjs            The no-literal-text rule, enforced
+scripts/check-tokens.mjs          tokens.json and tokens.css must agree, enforced
+scripts/check-register.mjs        No office tokens on the floor, enforced
 ```
+
+**Tests sit beside the code they test**, as `*.test.ts`. They cover the pure
+functions that encode a rule, namely suppression, the wait formatter and
+dictionary parity, because those are the places where a silent change is both
+easy and consequential. Rendering is not tested: four build checks and the type
+checker already cover it, and mounting components would cost three dependencies
+to assert what is already asserted.
 
 **Why there are four check scripts and not a paragraph of prose.** Every rule in
 this project that lived only in a document has eventually been broken, usually by
@@ -241,7 +266,7 @@ follows the same shape but has not been run.
 
 **Add a step to a procedure**
 
-> In `src/lib/data/scenarios.ts`, add a sixth step to the `sourced` scenario:
+> In `src/lib/data/floor.ts`, add a sixth step to the `sourced` scenario:
 > log the seal replacement in the shift book. Translate it into all three
 > languages. Then run `npm run check`.
 
@@ -251,7 +276,7 @@ follows the same shape but has not been run.
 > entered from the answer screen via a new "Für die nächste Schicht notieren"
 > button. It shows the answer summary and a confirm button, then returns to
 > standby. Follow AGENTS.md and docs/rules/content.md: use existing components
-> and tokens, and add all copy to `src/lib/i18n/strings.ts` in three languages.
+> and tokens, and add all copy to `src/lib/i18n/floor.ts` in three languages.
 > Run `npm run check`.
 
 **Restyle a component**
@@ -279,7 +304,12 @@ step is a prompt whose output nobody checked.
 6. Yellow still appears at most once per screen.
 7. A new colour was added to `tokens.css` **and** documented in `tokens.json`,
    with the reason. Both or neither.
-8. No new dependency.
+8. **No new runtime dependency.** The floor bundle is the budget, and a
+   `devDependency` does not ship, so test and build tooling is allowed where a
+   date library or a chart library is not. This rule used to read "no new
+   dependency" full stop, which was the right instinct aimed at the wrong
+   target: it also banned the tooling that keeps the other rules honest.
+9. A new pure function that encodes a rule has a test beside it.
 
 If you cannot satisfy one of these, say so explicitly rather than working around
 it. A silent workaround in a safety-adjacent product is worse than a blocked

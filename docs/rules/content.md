@@ -10,7 +10,7 @@ and a supervisor is waiting. Write for that person.
 
 ## 1. All copy goes through `t()`
 
-Add a key to `src/lib/i18n/strings.ts` with all three languages, then call
+Add a key to `src/lib/i18n/floor.ts` with all three languages, then call
 `t('key')`. This is enforced by `scripts/check-i18n.mjs`.
 
 This includes `aria-label`, `placeholder`, `title` and `alt`. A German

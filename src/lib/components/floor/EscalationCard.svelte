@@ -29,7 +29,7 @@
 	import { LANGUAGE_LABEL } from '$lib/domain/types';
 	import { session } from '$lib/state/session.svelte';
 	import Button from './Button.svelte';
-	import { t } from '$lib/i18n/strings';
+	import { t } from '$lib/i18n/floor';
 
 	interface Props {
 		escalation: Escalation;

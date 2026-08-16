@@ -19,7 +19,7 @@
 <script lang="ts">
 	import { session } from '$lib/state/session.svelte';
 	import { LANGUAGE_LABEL, type Language } from '$lib/domain/types';
-	import { t } from '$lib/i18n/strings';
+	import { t } from '$lib/i18n/floor';
 
 	const LANGS: Language[] = ['de', 'ro', 'en'];
 </script>

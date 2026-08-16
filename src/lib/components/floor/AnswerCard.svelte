@@ -28,7 +28,7 @@
 	import SourceChip from './SourceChip.svelte';
 	import SafetyBanner from './SafetyBanner.svelte';
 	import StepList from './StepList.svelte';
-	import { t } from '$lib/i18n/strings';
+	import { t } from '$lib/i18n/floor';
 
 	interface Props {
 		answer: Answer;

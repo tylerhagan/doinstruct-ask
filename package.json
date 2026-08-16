@@ -8,14 +8,16 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && node scripts/check-contrast.mjs && node scripts/check-i18n.mjs && node scripts/check-tokens.mjs && node scripts/check-register.mjs",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && node scripts/check-contrast.mjs && node scripts/check-i18n.mjs && node scripts/check-tokens.mjs && node scripts/check-register.mjs && vitest run",
 		"check:contrast": "node scripts/check-contrast.mjs",
 		"check:i18n": "node scripts/check-i18n.mjs",
 		"check:tokens": "node scripts/check-tokens.mjs",
 		"check:register": "node scripts/check-register.mjs",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^3.0.10",
@@ -29,6 +31,7 @@
 		"svelte-check": "^4.6.0",
 		"tailwindcss": "^4.3.0",
 		"typescript": "^6.0.3",
-		"vite": "^8.0.16"
+		"vite": "^8.0.16",
+		"vitest": "^4.1.10"
 	}
 }

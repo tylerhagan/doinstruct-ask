@@ -9,18 +9,18 @@
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import StatusBar from '$lib/components/StatusBar.svelte';
-	import PushToTalk from '$lib/components/PushToTalk.svelte';
-	import TranscriptConfirm from '$lib/components/TranscriptConfirm.svelte';
-	import AnswerCard from '$lib/components/AnswerCard.svelte';
-	import EscalationCard from '$lib/components/EscalationCard.svelte';
-	import Button from '$lib/components/Button.svelte';
-	import DemoPanel from '$lib/components/DemoPanel.svelte';
+	import StatusBar from '$lib/components/floor/StatusBar.svelte';
+	import PushToTalk from '$lib/components/floor/PushToTalk.svelte';
+	import TranscriptConfirm from '$lib/components/floor/TranscriptConfirm.svelte';
+	import AnswerCard from '$lib/components/floor/AnswerCard.svelte';
+	import EscalationCard from '$lib/components/floor/EscalationCard.svelte';
+	import Button from '$lib/components/floor/Button.svelte';
+	import DemoPanel from '$lib/components/floor/DemoPanel.svelte';
 
 	import { session } from '$lib/state/session.svelte';
-	import { t } from '$lib/i18n/strings';
+	import { t } from '$lib/i18n/floor';
 	import { recognition, speak, stopSpeaking } from '$lib/voice/recognition.svelte';
-	import { scenarioById, type ScenarioId } from '$lib/data/scenarios';
+	import { scenarioById, type ScenarioId } from '$lib/data/floor';
 	import type { Answer, Escalation } from '$lib/domain/types';
 
 	type Phase =

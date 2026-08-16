@@ -32,7 +32,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 
 /** Paths that render on the device. Anything here is held to the floor. */
-const FLOOR = ['src/lib/components', 'src/routes/+page.svelte'];
+const FLOOR = ['src/lib/components/floor', 'src/lib/voice', 'src/routes/+page.svelte'];
 
 /** Paths exempt because they are review surfaces, not the product. */
 const EXEMPT = ['src/routes/system'];

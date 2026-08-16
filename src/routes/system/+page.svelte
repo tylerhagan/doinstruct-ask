@@ -11,24 +11,24 @@
 	than once. That exemption is the only one, and it is stated rather than
 	silently taken.
 
-	Content comes from src/lib/data/scenarios.ts rather than being invented here,
+	Content comes from src/lib/data/floor.ts rather than being invented here,
 	so switching language in the bar above changes what every component says.
 -->
 <script lang="ts">
-	import Button from '$lib/components/Button.svelte';
-	import PushToTalk from '$lib/components/PushToTalk.svelte';
-	import LevelMeter from '$lib/components/LevelMeter.svelte';
-	import TranscriptConfirm from '$lib/components/TranscriptConfirm.svelte';
-	import AnswerCard from '$lib/components/AnswerCard.svelte';
-	import StepList from '$lib/components/StepList.svelte';
-	import SourceChip from '$lib/components/SourceChip.svelte';
-	import SafetyBanner from '$lib/components/SafetyBanner.svelte';
-	import EscalationCard from '$lib/components/EscalationCard.svelte';
-	import StatusBar from '$lib/components/StatusBar.svelte';
+	import Button from '$lib/components/floor/Button.svelte';
+	import PushToTalk from '$lib/components/floor/PushToTalk.svelte';
+	import LevelMeter from '$lib/components/floor/LevelMeter.svelte';
+	import TranscriptConfirm from '$lib/components/floor/TranscriptConfirm.svelte';
+	import AnswerCard from '$lib/components/floor/AnswerCard.svelte';
+	import StepList from '$lib/components/floor/StepList.svelte';
+	import SourceChip from '$lib/components/floor/SourceChip.svelte';
+	import SafetyBanner from '$lib/components/floor/SafetyBanner.svelte';
+	import EscalationCard from '$lib/components/floor/EscalationCard.svelte';
+	import StatusBar from '$lib/components/floor/StatusBar.svelte';
 
 	import { session } from '$lib/state/session.svelte';
-	import { t } from '$lib/i18n/strings';
-	import { scenarioById } from '$lib/data/scenarios';
+	import { t } from '$lib/i18n/floor';
+	import { scenarioById } from '$lib/data/floor';
 	import type { Source } from '$lib/domain/types';
 
 	// Real scenario content, so the gallery cannot drift from the product.

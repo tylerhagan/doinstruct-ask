@@ -10,7 +10,7 @@
 	Delete this component and its one usage in `+page.svelte` to ship.
 -->
 <script lang="ts">
-	import { SCENARIOS, type ScenarioId } from '$lib/data/scenarios';
+	import { SCENARIOS, type ScenarioId } from '$lib/data/floor';
 	import { session } from '$lib/state/session.svelte';
 	import { recognition } from '$lib/voice/recognition.svelte';
 

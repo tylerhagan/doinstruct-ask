@@ -21,7 +21,7 @@
 -->
 <script lang="ts">
 	import Button from './Button.svelte';
-	import { t } from '$lib/i18n/strings';
+	import { t } from '$lib/i18n/floor';
 
 	interface Props {
 		text: string;

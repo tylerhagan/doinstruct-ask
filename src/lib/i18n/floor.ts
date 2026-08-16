@@ -15,7 +15,7 @@ import type { Language } from '$lib/domain/types';
  * them. Romanian follows with the informal "tu".
  */
 
-const DICT = {
+export const DICT = {
 	de: {
 		'ptt.idle': 'Halt gedrückt und frag',
 		'ptt.listening': 'Ich höre …',

@@ -8,18 +8,25 @@ pass every check, and are invisible in review. Nothing here is stylistic.
 
 ---
 
-## 1. `package.json` is closed
+## 1. `package.json` is closed to runtime dependencies
 
-Do not add a dependency. Not a date library, not an icon set, not a headless UI
-kit, not a utility belt.
+Do not add anything that ships. Not a date library, not an icon set, not a
+headless UI kit, not a utility belt, and above all not a charting library.
 
-The frontline-reality claims in this project rest on 46 KB of gzipped
-JavaScript, which is the budget that makes the product usable on a five-year-old
-Android over plant wifi. A single convenience dependency can double it, and the
-loss will not show up in any test.
+The frontline-reality claims in this project rest on 46 KB of gzipped JavaScript,
+which is the budget that makes the product usable on a five-year-old Android over
+plant wifi. A single convenience dependency can double it, and the loss will not
+show up in any test.
 
-If a task genuinely requires a new dependency, stop and say so, with the reason
-and the transfer cost. That is a human decision.
+**`devDependencies` are a different question**, because they do not reach the
+device. Test runners, linters and build tooling are allowed on their merits. The
+rule used to read "no new dependency" full stop, which was the right instinct
+aimed at the wrong target: it protected the bundle by also banning the tooling
+that keeps every other rule in this file honest. Vitest was added under the
+narrowed rule; the reasoning is D23 in `docs/decision-log.md`.
+
+If a task genuinely requires a new runtime dependency, stop and say so, with the
+reason and the transfer cost. That is a human decision.
 
 ## 2. Never weaken a check to make it pass
 
@@ -27,7 +34,7 @@ This is the most damaging thing you can do in this repository.
 
 If `check-contrast.mjs` reports 6.4:1 against a 7:1 minimum, darken the colour.
 Do not lower the threshold. If `check-i18n.mjs` finds a literal string, move it
-into `strings.ts`. Do not add the file to the allow-list.
+into `i18n/floor.ts` or `i18n/office.ts`. Do not add the file to the allow-list.
 
 The checks encode safety and accessibility commitments. A check edited to pass is
 worse than no check, because it converts a known gap into a false assurance.
