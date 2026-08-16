@@ -117,6 +117,14 @@
 	   scripts/check-register.mjs.
 	   ===================================================================== */
 
+	/* -- Layout ------------------------------------------------------------ */
+	/* The office shell stops here. Past about 1400px a queue row becomes a line
+	   of text with a hundred characters of whitespace after it, and the eye has
+	   to travel the width of a monitor to get from the machine name to the wait.
+	   Named `--container-*` and not `--spacing-*`: those namespaces overlap and
+	   a shared name silently resolves to the wrong one. */
+	--container-office: 1400px;
+
 	/* -- Density ----------------------------------------------------------- */
 	/* 64px assumes a glove. A mouse cursor is one pixel and a trackpad has
 	   proprioceptive feedback, so the desk floor is 36px, comfortably above
