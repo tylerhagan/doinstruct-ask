@@ -52,7 +52,7 @@
 				type="button"
 				onclick={() => toggle(step.n)}
 				aria-pressed={isDone}
-				class="flex min-h-tap w-full touch-manipulation items-start gap-4 rounded-lg border-2 p-4 text-left
+				class="flex min-h-tap w-full touch-manipulation items-start gap-4 rounded-lg border-2 p-4 text-start
 				       transition-colors
 				       {isNext ? 'border-ink bg-surface-raised' : 'border-hairline bg-surface'}
 				       {isDone ? 'opacity-60' : ''}"

@@ -82,6 +82,36 @@
 	 * peripheral vision. `tokens.json` has described the inverse surface as the
 	 * listening state since the first version; it had simply never been built.
 	 */
+	/**
+	 * Focus follows the screen.
+	 *
+	 * This has been a stated known gap since the first version, and it is the
+	 * oldest defect in the project. When the flow moved from standby to an
+	 * answer, a keyboard or screen-reader user stayed on the push-to-talk button
+	 * they had just released, on a screen that no longer contained it, with no
+	 * announcement that anything had happened. A dead end inside a product whose
+	 * whole thesis is removing dead ends.
+	 *
+	 * `main` takes focus rather than a heading, because the phases do not share
+	 * one and inventing eight headings to focus would mean eight more copy keys
+	 * for text nobody reads. Focusing the container puts a screen reader at the
+	 * top of the new content, which is what the user asked for by acting.
+	 *
+	 * Not on first paint: arriving at a page and having focus yanked into the
+	 * body is its own dead end, so the initial phase is skipped.
+	 */
+	let mainEl = $state<HTMLElement | null>(null);
+	let focusReady = false;
+
+	$effect(() => {
+		phase;
+		if (!focusReady) {
+			focusReady = true;
+			return;
+		}
+		mainEl?.focus();
+	});
+
 	const darkGround = $derived(
 		phase === 'language' || phase === 'standby' || phase === 'listening' || phase === 'thinking'
 	);
@@ -227,7 +257,10 @@
 		<!-- transition-colors, so dark to cream reads as the screen changing its mind
 		     rather than as a cut. Colour only: nothing here moves. -->
 		<main
-			class="flex flex-1 flex-col transition-colors duration-200 sm:min-h-0 sm:overflow-y-auto
+			bind:this={mainEl}
+			tabindex="-1"
+			class="flex flex-1 flex-col transition-colors duration-200 outline-none sm:min-h-0
+			       sm:overflow-y-auto
 			       {darkGround ? 'ground-dark bg-surface-inverse text-fg-inverse' : 'gap-6 p-5'}"
 		>
 			<!-- Dark is where you are, cream is where you read. Standby and the
@@ -262,7 +295,7 @@
 					{#if session.machine?.faultCode}
 						<p
 							class="inline-flex items-center gap-3 rounded-full border-2 border-hairline-inverse
-							       bg-surface-inverse-raised py-2 pr-5 pl-4"
+							       bg-surface-inverse-raised py-2 ps-4 pe-5"
 						>
 							<span class="text-meta font-bold tracking-wide text-fg-inverse-muted uppercase">
 								{t('standby.fault')}

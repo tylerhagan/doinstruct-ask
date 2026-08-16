@@ -40,6 +40,24 @@
 	 * spends nothing reserved.
 	 */
 
+	/**
+	 * Focus follows the route, for the same reason it follows the phase on the
+	 * floor. SvelteKit does not move it on client-side navigation, so a keyboard
+	 * user clicking "Lücken" stays in the rail on a page whose content they were
+	 * never taken to. Skipped on first paint.
+	 */
+	let mainEl = $state<HTMLElement | null>(null);
+	let focusReady = false;
+
+	$effect(() => {
+		page.url.pathname;
+		if (!focusReady) {
+			focusReady = true;
+			return;
+		}
+		mainEl?.focus();
+	});
+
 	/** `/office` must match exactly, or it stays highlighted on every child. */
 	const isCurrent = (href: string) =>
 		href === '/office' ? page.url.pathname === '/office' : page.url.pathname.startsWith(href);
@@ -138,7 +156,11 @@
 			</div>
 		</header>
 
-		<main class="order-2 min-w-0 flex-1 p-4 md:order-none md:p-6">
+		<main
+			bind:this={mainEl}
+			tabindex="-1"
+			class="order-2 min-w-0 flex-1 p-4 outline-none md:order-none md:p-6"
+		>
 			<div class="mb-4 empty:mb-0"><OfflineNotice /></div>
 			{@render children()}
 		</main>

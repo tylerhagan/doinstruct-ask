@@ -1,5 +1,11 @@
 <!doctype html>
-<html lang="en">
+<!--
+	lang and dir are the server's best guess and are corrected on mount by
+	+layout.svelte, which knows the worker's actual choice. German is the guess
+	rather than English because this is a German plant and the prerendered HTML
+	is what a screen reader sees for the first paint.
+-->
+<html lang="de" dir="ltr">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -58,7 +58,7 @@
 	type="button"
 	onclick={onopen}
 	class="flex min-h-tap w-full touch-manipulation items-center justify-between gap-4
-	       rounded-md border-2 border-hairline bg-surface-raised px-4 py-3 text-left transition-colors"
+	       rounded-md border-2 border-hairline bg-surface-raised px-4 py-3 text-start transition-colors"
 >
 	<!--
 		Laid out as a citation rather than as a navigation row. Every answer in this
@@ -79,9 +79,11 @@
 		</span>
 	</span>
 
-	<!-- Decorative: the button's own text already names the action. -->
+	<!-- Decorative: the button's own text already names the action. Mirrored in
+	     right-to-left, because a logical property cannot flip an SVG path and a
+	     chevron pointing the wrong way is worse than no chevron. -->
 	<svg
-		class="size-6 shrink-0 text-fg-muted"
+		class="size-6 shrink-0 text-fg-muted rtl:-scale-x-100"
 		viewBox="0 0 24 24"
 		fill="none"
 		stroke="currentColor"

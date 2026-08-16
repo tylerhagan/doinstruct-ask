@@ -32,8 +32,15 @@ end inside a product whose entire thesis is removing dead ends.
 - Never remove a focus outline. The outline here is 4px because the device may
   be driven by a knuckle or a stylus.
 
-**Known gap:** the prototype does not yet do this on phase change. It is listed
-in the writeup rather than quietly omitted.
+**Closed.** This was the oldest defect in the project, carried as a stated gap
+since the first version. Both registers now move focus: the floor on phase
+change, the office on route change, in each case to the `main` element, which
+puts a screen reader at the top of the new content. Not on first paint, because
+arriving at a page and having focus yanked into the body is its own dead end.
+
+`main` takes focus rather than a heading, since the phases do not share one and
+inventing eight headings to focus would mean eight more copy keys for text
+nobody reads.
 
 ## 3. Announce what changed
 
@@ -94,10 +101,21 @@ Write `ps-4` rather than `pl-4`, `text-start` rather than `text-left`, `end-4`
 rather than `right-4`, `ms-auto` rather than `ml-auto`. Tailwind v4 supports all
 of these directly, and they cost nothing in a left-to-right language.
 
-**Known gap:** the existing components use physical properties, so this system is
-not RTL-ready today. The rule is here so that new work does not deepen the hole,
-and the gap is named in the writeup rather than hidden. Migrating is mechanical;
-retrofitting a layout that assumed direction is not.
+**Closed, with one honest caveat.** The migration turned out to be five
+properties, because everything written after the rule was added already used
+logical ones. The hole was named early enough that it never got deep.
+
+Beyond the properties themselves, two things were missing and are now present.
+`app.html` hard-coded `lang="en"`, so a screen reader was announcing German copy
+in an English voice and resolving hyphenation against the wrong locale; the
+document's `lang` and `dir` now follow the worker's choice. And directional
+icons are mirrored with `rtl:` variants, because a logical property cannot flip
+an SVG path and a chevron pointing the wrong way is worse than no chevron.
+
+**The caveat:** none of the three languages this prototype ships is
+right-to-left, so the mechanism is built and reasoned but not exercised in
+anger. Arabic appears in the `/system` picker at nine languages specifically so
+the case is visible rather than theoretical.
 
 ## 9. Every new surface handles four states
 
