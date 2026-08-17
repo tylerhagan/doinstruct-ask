@@ -88,6 +88,17 @@ class OfficeState {
 
 	readonly selected = $derived(this.visible.find((q) => q.id === this.selectedId) ?? null);
 
+	/**
+	 * Someone has been waiting more than two hours.
+	 *
+	 * Two hours is where a wait stops being a queue and starts being a person
+	 * stuck at a machine. The rail encodes it in the badge's colour so it reads
+	 * without arithmetic; the same threshold marks the row.
+	 */
+	readonly overdue = $derived(
+		this.open.some((q) => Date.now() - Date.parse(q.waitingSince) > 2 * 60 * 60 * 1000)
+	);
+
 	/** Lines present in the data, for the filter. Identifiers, so not localised. */
 	readonly lines = $derived([...new Set(QUEUE.map((q) => q.line))].sort());
 

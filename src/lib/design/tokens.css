@@ -143,6 +143,13 @@
 	   scripts/check-register.mjs.
 	   ===================================================================== */
 
+	/* -- Breakpoints -------------------------------------------------------- */
+	/* Tailwind's smallest is 40rem, which is wider than every phone. The office
+	   rail needs one decision below that: under 26rem, three labelled
+	   destinations plus a count no longer fit a row, and the icons come off
+	   rather than the words. Icons are a scanning aid; the text is the meaning. */
+	--breakpoint-xs: 26rem;
+
 	/* -- Layout ------------------------------------------------------------ */
 	/* The office shell stops here. Past about 1400px a queue row becomes a line
 	   of text with a hundred characters of whitespace after it, and the eye has
