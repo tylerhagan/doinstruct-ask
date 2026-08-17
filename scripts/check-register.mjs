@@ -32,7 +32,18 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 
 /** Paths that render on the device. Anything here is held to the floor. */
-const FLOOR = ['src/lib/components/floor', 'src/lib/voice', 'src/routes/+page.svelte'];
+/**
+ * Shared components are in this list on purpose. Anything both registers use
+ * runs on the floor, so it must meet the floor's constraints; a shared button
+ * at 36px is unhittable through a glove wherever else it also appears. The
+ * stricter register wins for anything held in common.
+ */
+const FLOOR = [
+	'src/lib/components/floor',
+	'src/lib/components/shared',
+	'src/lib/voice',
+	'src/routes/+page.svelte'
+];
 
 /** Paths exempt because they are review surfaces, not the product. */
 const EXEMPT = ['src/routes/system'];

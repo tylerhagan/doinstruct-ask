@@ -37,6 +37,7 @@
 	import Button from './Button.svelte';
 	import Panel from './Panel.svelte';
 	import TriageBadge from './TriageBadge.svelte';
+	import StatusMark from '$lib/components/shared/StatusMark.svelte';
 
 	interface Props {
 		item: QueueItem | null;
@@ -167,6 +168,9 @@
 								bind:group={safety}
 								class="sr-only"
 							/>
+							{#if level !== 'none'}
+								<StatusMark level={level === 'stop' ? 'stop' : 'caution'} />
+							{/if}
 							{tOffice(`composer.safety.${level}`)}
 						</label>
 					{/each}

@@ -32,6 +32,7 @@
 	import { session } from '$lib/state/session.svelte';
 	import { tOffice, waitLabel } from '$lib/i18n/office';
 	import TriageBadge from './TriageBadge.svelte';
+	import StatusMark from '$lib/components/shared/StatusMark.svelte';
 
 	interface Props {
 		item: QueueItem;
@@ -70,7 +71,10 @@
 		<span class="flex items-center gap-2">
 			<span class="text-meta font-bold">{item.machine}</span>
 			{#if live}
-				<span class="rounded-full bg-pending-surface px-2 py-0.5 text-meta font-bold text-pending">
+				<span
+					class="inline-flex items-center gap-1.5 rounded-full bg-pending-surface px-2 py-0.5 text-meta font-bold text-pending"
+				>
+					<StatusMark level="pending" />
 					{tOffice('queue.justArrived')}
 				</span>
 			{/if}

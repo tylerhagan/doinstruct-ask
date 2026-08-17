@@ -27,6 +27,7 @@
 	import Button from './Button.svelte';
 	import SourceChip from './SourceChip.svelte';
 	import SafetyBanner from './SafetyBanner.svelte';
+	import StatusMark from '$lib/components/shared/StatusMark.svelte';
 	import StepList from './StepList.svelte';
 	import { t } from '$lib/i18n/floor';
 
@@ -85,9 +86,10 @@
 	>
 		{#if answer.confidence !== 'none'}
 			<p
-				class="mb-2 text-meta font-bold tracking-wide uppercase
+				class="mb-2 flex items-center gap-2 text-meta font-bold tracking-wide uppercase
 				       {CONFIDENCE_TEXT[answer.confidence]}"
 			>
+				<StatusMark level={answer.confidence === 'sourced' ? 'ok' : 'caution'} />
 				{t(CONFIDENCE_KEY[answer.confidence])}
 			</p>
 		{/if}

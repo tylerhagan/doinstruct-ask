@@ -30,6 +30,7 @@
 <script lang="ts">
 	import { session } from '$lib/state/session.svelte';
 	import { tOffice } from '$lib/i18n/office';
+	import StatusMark from '$lib/components/shared/StatusMark.svelte';
 </script>
 
 {#if !session.online}
@@ -37,7 +38,10 @@
 		class="flex flex-col gap-1 rounded-lg border border-caution bg-caution-surface px-4 py-3"
 		role="status"
 	>
-		<p class="text-small font-bold text-caution">{tOffice('office.offline')}</p>
+		<p class="flex items-center gap-2 text-small font-bold text-caution">
+			<StatusMark level="caution" />
+			{tOffice('office.offline')}
+		</p>
 		<p class="max-w-prose text-meta text-caution">{tOffice('office.offlineBody')}</p>
 	</div>
 {/if}
