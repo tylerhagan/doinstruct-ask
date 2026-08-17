@@ -35,14 +35,24 @@ if (!existsSync(build)) {
 /**
  * Budgets in bytes, gzipped.
  *
- * Headroom is deliberate but small. A budget with none fails on every honest
- * change and gets raised until it means nothing; a budget with plenty is not a
- * budget. These sit roughly 5% above today's measurement, which is enough for a
- * feature and not enough for a library.
+ * Derived from the constraint, not from the measurement. The first version of
+ * this file set the ceiling about 5% above whatever the build happened to weigh
+ * that afternoon, which is a snapshot wearing a budget's clothes: it fails on
+ * the next honest feature, gets raised because it is inconvenient, and after
+ * two of those nobody believes it.
+ *
+ * The real question is what a five-year-old Android on plant wifi can fetch
+ * before a worker at a stopped machine gives up. 75 KB of gzipped JavaScript is
+ * roughly a second on a bad 3G connection and is still lean by any modern
+ * measure: a single charting library would eat most of it, which is exactly the
+ * decision this number exists to force.
+ *
+ * So there is room for several features and none at all for a dependency, which
+ * is the shape a budget should have.
  */
 const BUDGETS = {
-	js: 52 * 1024,
-	css: 9 * 1024
+	js: 75 * 1024,
+	css: 12 * 1024
 };
 
 const gz = (file) => gzipSync(readFileSync(file)).length;

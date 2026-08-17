@@ -1719,11 +1719,13 @@
 					<tbody>
 						<tr>
 							<td>JavaScript, gzipped</td>
-							<td class="num">49 KB</td>
+							<td class="num">51 KB</td>
 							<td>
-								What the device actually fetches for the floor route. The office surface and the
-								design-system gallery are separate chunks a worker never loads, and the supervisor's
-								entire vocabulary is a 9.8 KB chunk that shares nothing with the floor's.
+								What the device actually fetches for the floor route, against a 75 KB ceiling that
+								<code>scripts/check-budget.mjs</code> enforces on every build. The office surface
+								and the design-system gallery are separate chunks a worker never loads, and the
+								supervisor's entire vocabulary is a 9.8 KB chunk that shares nothing with the
+								floor's.
 							</td>
 						</tr>
 						<tr>
