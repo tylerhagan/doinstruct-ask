@@ -58,7 +58,7 @@
 			{#if session.machine}
 				<p class="truncate text-small font-bold">{session.machine.line}</p>
 				<p class="truncate text-meta text-fg-inverse-muted">
-					{session.machine.machine} · {session.machine.assetId}
+					{session.machine.machine} · <span class="plate">{session.machine.assetId}</span>
 				</p>
 			{:else}
 				<p class="truncate text-small font-bold text-fg-inverse-muted">{t('machine.none')}</p>

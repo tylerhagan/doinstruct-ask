@@ -129,7 +129,9 @@
 			{#if session.machine}
 				<p class="text-small font-bold text-fg-inverse-muted">{session.machine.line}</p>
 				<p class="text-display font-bold">{session.machine.machine}</p>
-				<p class="text-meta text-fg-inverse-muted">{session.machine.assetId}</p>
+				<p class="text-meta text-fg-inverse-muted">
+					<span class="plate">{session.machine.assetId}</span>
+				</p>
 			{:else if session.scannedAsset}
 				<!-- The sticker resolved to nothing. Show the code so it can be read out
 			     to whoever prints the stickers; the flow carries on regardless. -->

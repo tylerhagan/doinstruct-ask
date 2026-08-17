@@ -76,7 +76,9 @@
 			{/if}
 		</span>
 		<span class="text-meta text-fg-muted">
-			{item.line} · {item.assetId}{#if item.faultCode}{' · '}{item.faultCode}{/if}
+			{item.line} · <span class="plate">{item.assetId}</span>{#if item.faultCode}{' · '}<span
+					class="plate">{item.faultCode}</span
+				>{/if}
 		</span>
 	</div>
 

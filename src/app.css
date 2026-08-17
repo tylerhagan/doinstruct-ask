@@ -75,6 +75,86 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Fira Sans, for the proposed language only.
+
+   Chosen for a reason rather than for fashion, and the reason is the whole
+   argument. Fira was drawn by Erik Spiekermann's team for Firefox OS:
+   explicitly for legibility on cheap, low-resolution phones, in the markets
+   where those phones are what people have. That is doinstruct's constraint
+   stated as a type brief, and it covers Latin, Latin Extended, Greek and
+   Cyrillic, which is a precondition for a company advertising 35+ languages
+   rather than a nice-to-have.
+
+   Only Latin and Latin Extended are vendored, because those are the scripts
+   this prototype has copy in. Greek and Cyrillic exist in the family and are a
+   download away, which is the point of picking it.
+
+   A browser downloads a face only when something on the page uses it, so these
+   cost nothing until the proposed theme is switched on. `optional` for the same
+   reason as Manrope: it never blocks paint and never swaps.
+--------------------------------------------------------------------------- */
+@font-face {
+	font-family: 'Fira Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-display: optional;
+	src: url('/fonts/fira-latin-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+	font-family: 'Fira Sans';
+	font-style: normal;
+	font-weight: 700;
+	font-display: optional;
+	src: url('/fonts/fira-latin-700.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+	font-family: 'Fira Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-display: optional;
+	src: url('/fonts/fira-latin-ext-400.woff2') format('woff2');
+	unicode-range: U+0100-02BA, U+1E00-1E9F, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+	font-family: 'Fira Sans';
+	font-style: normal;
+	font-weight: 700;
+	font-display: optional;
+	src: url('/fonts/fira-latin-ext-700.woff2') format('woff2');
+	unicode-range: U+0100-02BA, U+1E00-1E9F, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------------------------------------------------------------------------
+   The plate.
+
+   Machine identifiers in this product are the one thing that never translates:
+   an asset ID, a fault code, an audit reference. On a plant floor those live on
+   stamped metal nameplates, and the proposed language borrows that literally.
+   A plate is not decoration; it marks the strings that are the same in every
+   language, which is a distinction the product already makes in its type system
+   and has never made visible.
+
+   Shipped language leaves them as text. Only the proposal plates them.
+--------------------------------------------------------------------------- */
+:root[data-theme='v2'] .plate {
+	display: inline-block;
+	padding: 0.1em 0.45em;
+	border: 1.5px solid color-mix(in oklab, var(--color-border) 60%, transparent);
+	border-radius: 3px;
+	background: color-mix(in oklab, var(--color-fg) 6%, transparent);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.02em;
+}
+
+:root[data-theme='v2'].ground-dark .plate,
+:root[data-theme='v2'] .ground-dark .plate {
+	border-color: color-mix(in oklab, var(--color-fg-inverse) 28%, transparent);
+	background: color-mix(in oklab, var(--color-fg-inverse) 10%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
    The halftone.
 
    doinstruct's own photography is dot-matrix, and the case study writeup uses a
