@@ -144,6 +144,13 @@ export const OFFICE = {
 			'Du kannst weiterlesen. Was du schreibst, bleibt stehen und geht raus, sobald die Verbindung wieder da ist.',
 		'composer.offline': 'Ohne Verbindung nicht veröffentlichen. Dein Text bleibt stehen.',
 
+		'stats.waiting': 'warten gerade',
+		'stats.longest': 'längste Wartezeit',
+		'stats.answered': 'in dieser Sitzung beantwortet',
+		'stats.gaps': 'Stellen zu überarbeiten',
+		'stats.entries': 'Einträge',
+		'stats.served': 'mal ausgeliefert',
+
 		'time.minutes': '{n} Min',
 		'time.hours': '{n} Std',
 		'time.hoursMinutes': '{h} Std {m} Min',
@@ -267,6 +274,13 @@ export const OFFICE = {
 			'Poți citi mai departe. Ce scrii rămâne aici și pleacă imediat ce revine conexiunea.',
 		'composer.offline': 'Fără conexiune nu poți publica. Textul tău rămâne.',
 
+		'stats.waiting': 'așteaptă acum',
+		'stats.longest': 'cea mai lungă așteptare',
+		'stats.answered': 'răspunse în această sesiune',
+		'stats.gaps': 'locuri de rescris',
+		'stats.entries': 'înregistrări',
+		'stats.served': 'livrări',
+
 		'time.minutes': '{n} min',
 		'time.hours': '{n} h',
 		'time.hoursMinutes': '{h} h {m} min',
@@ -389,6 +403,13 @@ export const OFFICE = {
 		'office.offlineBody':
 			'You can keep reading. What you write stays here and goes out as soon as the connection is back.',
 		'composer.offline': 'Cannot publish without a connection. Your text stays put.',
+
+		'stats.waiting': 'waiting now',
+		'stats.longest': 'longest wait',
+		'stats.answered': 'answered this session',
+		'stats.gaps': 'places to rewrite',
+		'stats.entries': 'entries',
+		'stats.served': 'times served',
 
 		'time.minutes': '{n} min',
 		'time.hours': '{n} h',

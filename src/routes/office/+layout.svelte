@@ -16,7 +16,6 @@
 	import { session } from '$lib/state/session.svelte';
 	import { office } from '$lib/state/office.svelte';
 	import { tOffice } from '$lib/i18n/office';
-	import OfflineNotice from '$lib/components/office/OfflineNotice.svelte';
 	import { LANGUAGE_LABEL, type Language } from '$lib/domain/types';
 
 	let { children }: { children: Snippet } = $props();
@@ -156,12 +155,14 @@
 			</div>
 		</header>
 
+		<!-- Flush, because each screen opens with its own dark header band and the
+		     band has to reach the edges to close the L with the rail. Padding is
+		     the page's business now. -->
 		<main
 			bind:this={mainEl}
 			tabindex="-1"
-			class="order-2 min-w-0 flex-1 p-4 outline-none md:order-none md:p-6"
+			class="order-2 min-w-0 flex-1 outline-none md:order-none"
 		>
-			<div class="mb-4 empty:mb-0"><OfflineNotice /></div>
 			{@render children()}
 		</main>
 	</div>

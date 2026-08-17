@@ -34,6 +34,20 @@
 		<div class="mb-2 w-72 rounded-lg border-2 border-dashed border-ink bg-cream p-4 shadow-none">
 			<p class="mb-3 font-bold tracking-wide uppercase">Reviewer controls</p>
 
+			<!--
+				The loop is the point, and it only runs if you stay in the same tab:
+				the question a worker escalates and the answer a supervisor publishes
+				are the same state object, so a full page load resets it. A normal
+				link is a client-side navigation in SvelteKit, which keeps it.
+			-->
+			<p class="mb-1 text-fg-muted">See the loop close</p>
+			<a
+				href="/office"
+				class="mb-4 block rounded-sm border-2 border-ink bg-yellow px-2 py-2 no-underline"
+			>
+				Ask the third scenario, then answer it here &rarr;
+			</a>
+
 			<p class="mb-1 text-fg-muted">Scenario</p>
 			<div class="mb-4 flex flex-col gap-1">
 				{#each SCENARIOS as s (s.id)}

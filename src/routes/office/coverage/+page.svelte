@@ -21,6 +21,23 @@
 	import Trend from '$lib/components/office/Trend.svelte';
 	import TriageBadge from '$lib/components/office/TriageBadge.svelte';
 	import Button from '$lib/components/office/Button.svelte';
+	import PageHeader from '$lib/components/office/PageHeader.svelte';
+	import OfflineNotice from '$lib/components/office/OfflineNotice.svelte';
+
+	/**
+	 * Only what is visible. Suppressed buckets are excluded from the total as
+	 * well as from the chart, because a headline figure that quietly includes
+	 * counts we refuse to show would give them back by arithmetic.
+	 */
+	const totalUnanswered = $derived(COVERAGE.reduce((n, b) => n + (b.count ?? 0), 0));
+
+	const stats = $derived([
+		{ value: totalUnanswered, label: tOffice('coverage.unanswered') },
+		{
+			value: COVERAGE.filter((b) => b.triage === 'documentation' && b.count !== null).length,
+			label: tOffice('stats.gaps')
+		}
+	]);
 
 	/** Colour follows the entity, never the rank: the slot is fixed per class,
 	 *  so filtering the view never repaints the survivors. */
@@ -62,11 +79,10 @@
 			}));
 </script>
 
-<div class="flex flex-col gap-4">
-	<header>
-		<h1 class="text-display font-bold">{tOffice('coverage.title')}</h1>
-		<p class="mt-2 max-w-prose text-small text-fg-muted">{tOffice('coverage.lede')}</p>
-	</header>
+<PageHeader title={tOffice('coverage.title')} lede={tOffice('coverage.lede')} {stats} />
+
+<div class="flex flex-col gap-4 p-4 md:p-6">
+	<div class="empty:hidden"><OfflineNotice /></div>
 
 	<div class="flex flex-wrap items-center gap-3">
 		<p class="text-meta font-bold text-fg-muted">{tOffice('coverage.period')}</p>

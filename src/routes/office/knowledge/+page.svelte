@@ -14,6 +14,8 @@
 	import KnowledgeCard from '$lib/components/office/KnowledgeCard.svelte';
 	import FilterGroup from '$lib/components/office/FilterGroup.svelte';
 	import Button from '$lib/components/office/Button.svelte';
+	import PageHeader from '$lib/components/office/PageHeader.svelte';
+	import OfflineNotice from '$lib/components/office/OfflineNotice.svelte';
 
 	type Review = KnowledgeEntry['review'];
 	const REVIEWS: Review[] = ['current', 'due', 'superseded'];
@@ -34,16 +36,21 @@
 
 	/** The number that says the loop is working, and the only aggregate here. */
 	const served = $derived(KNOWLEDGE.reduce((total, e) => total + e.served, 0));
+
+	const stats = $derived([
+		{ value: KNOWLEDGE.length, label: tOffice('stats.entries') },
+		{ value: served, label: tOffice('stats.served') },
+		{
+			value: KNOWLEDGE.filter((e) => e.review === 'due').length,
+			label: tOffice('knowledge.review.due')
+		}
+	]);
 </script>
 
-<div class="flex flex-col gap-4">
-	<header>
-		<h1 class="text-display font-bold">{tOffice('knowledge.title')}</h1>
-		<p class="mt-2 max-w-prose text-small text-fg-muted">{tOffice('knowledge.lede')}</p>
-		<p class="mt-2 text-meta font-bold text-fg-muted">
-			{tOffice('knowledge.served', { n: served })}
-		</p>
-	</header>
+<PageHeader title={tOffice('knowledge.title')} lede={tOffice('knowledge.lede')} {stats} />
+
+<div class="flex flex-col gap-4 p-4 md:p-6">
+	<div class="empty:hidden"><OfflineNotice /></div>
 
 	<div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
 		<FilterGroup

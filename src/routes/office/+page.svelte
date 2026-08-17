@@ -17,6 +17,22 @@
 	import Panel from '$lib/components/office/Panel.svelte';
 	import FilterGroup from '$lib/components/office/FilterGroup.svelte';
 	import type { Shift } from '$lib/domain/office';
+	import PageHeader from '$lib/components/office/PageHeader.svelte';
+	import OfflineNotice from '$lib/components/office/OfflineNotice.svelte';
+	import { waitLabel } from '$lib/i18n/office';
+
+	/** The oldest thing in the queue, which is the number that should sting. */
+	const longest = $derived(
+		office.open.length
+			? waitLabel(office.open[0].waitingSince)
+			: waitLabel(new Date().toISOString())
+	);
+
+	const stats = $derived([
+		{ value: office.peopleWaiting, label: tOffice('stats.waiting') },
+		{ value: longest, label: tOffice('stats.longest') },
+		{ value: office.answered.size, label: tOffice('stats.answered') }
+	]);
 
 	const SHIFTS: Shift[] = ['early', 'late', 'night'];
 
@@ -31,11 +47,10 @@
 	]);
 </script>
 
-<div class="flex flex-col gap-4">
-	<header>
-		<h1 class="text-display font-bold">{tOffice('queue.title')}</h1>
-		<p class="mt-2 max-w-prose text-small text-fg-muted">{tOffice('queue.lede')}</p>
-	</header>
+<PageHeader title={tOffice('queue.title')} lede={tOffice('queue.lede')} {stats} />
+
+<div class="flex flex-col gap-4 p-4 md:p-6">
+	<div class="empty:hidden"><OfflineNotice /></div>
 
 	<div class="flex flex-wrap gap-x-6 gap-y-3">
 		<FilterGroup
@@ -53,11 +68,12 @@
 	</div>
 
 	<div class="grid gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,8fr)] lg:items-start">
-		<Panel
-			title={tOffice('nav.queue')}
-			lede={tOffice('nav.waitingCount', { n: office.peopleWaiting })}
-			class="overflow-hidden"
-		>
+		<!-- No panel title. It repeated the page heading and its lede repeated the
+		     figure now standing at 42px in the header band. The list keeps a
+		     heading for anyone navigating by them; it just does not need to be
+		     said twice on screen. -->
+		<Panel class="overflow-hidden">
+			<h2 class="sr-only">{tOffice('nav.queue')}</h2>
 			{#if office.open.length === 0}
 				<div class="px-5 py-8">
 					<p class="text-small font-bold">{tOffice('queue.empty.title')}</p>

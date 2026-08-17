@@ -24,6 +24,20 @@
 	import { recognition, speak, stopSpeaking } from '$lib/voice/recognition.svelte';
 	import { scenarioById, type ScenarioId } from '$lib/data/floor';
 	import { LANGUAGE_LABEL, type Answer, type Escalation, type Language } from '$lib/domain/types';
+	import type { QueueItem } from '$lib/domain/office';
+	import { exchange, type PublishedAnswer } from '$lib/state/exchange.svelte';
+
+	/** Copy for the queue row this screen creates. Localised, like everything. */
+	const ROLE = {
+		de: 'Anlagenführerin',
+		ro: 'Operator linie',
+		en: 'Line operator'
+	};
+	const ATTEMPT = {
+		de: 'Dazu steht nichts in der Dokumentation, die wir haben.',
+		ro: 'Nu există nimic despre asta în documentația pe care o avem.',
+		en: 'There is nothing about this in the documentation we hold.'
+	};
 
 	/** The languages this prototype's content exists in. */
 	const LANGUAGES: Language[] = ['de', 'ro', 'en'];
@@ -168,11 +182,51 @@
 		// set genuinely takes a moment, and a worker who sees nothing happen taps
 		// again.
 		setTimeout(() => {
+			// Anything a supervisor has published is answered from knowledge rather
+			// than escalated a second time. This is the loop closing, and it is the
+			// only part of the product that has to be watched to be believed.
+			const captured = exchange.answerFor(scenario.topic);
+			if (captured) {
+				answer = fromKnowledge(captured);
+				escalation = null;
+				phase = 'answer';
+				return;
+			}
+
 			const built = scenario.build(session.language);
 			answer = built.answer ?? null;
 			escalation = built.escalation ?? null;
 			phase = built.escalation ? 'escalation' : 'answer';
 		}, 900);
+	}
+
+	/**
+	 * Turn a published answer into an answer this screen can render.
+	 *
+	 * Served in the language the supervisor wrote it in, and said so when that
+	 * differs from the worker's, using the same mechanism a translated manual
+	 * already uses. A real deployment translates on publish; pretending this one
+	 * does would be the only dishonest thing on the screen.
+	 */
+	function fromKnowledge(captured: PublishedAnswer): Answer {
+		return {
+			id: captured.ref,
+			question: captured.topic,
+			summary: captured.text,
+			steps: [],
+			confidence: 'sourced',
+			safety: captured.safety,
+			sources: [
+				{
+					id: captured.ref,
+					document: captured.ref,
+					section: captured.verifiedBy,
+					page: 1,
+					language: captured.writtenIn,
+					updatedAt: captured.at
+				}
+			]
+		};
 	}
 
 	function readAloud() {
@@ -194,6 +248,44 @@
 		escalation = built.escalation ? { ...built.escalation, status: 'waiting' } : null;
 		answer = null;
 		phase = 'escalation';
+
+		// The supervisor's queue gains a row while they are looking at it. Not a
+		// simulation and not on a timer: the same state object, read from the
+		// other register.
+		if (escalation) exchange.ask(asQueueItem(escalation.id));
+	}
+
+	/**
+	 * The question as the supervisor sees it.
+	 *
+	 * Localised into all three, because the supervisor reads it in theirs while
+	 * the worker asked in theirs, and that gap is the product. The asker is a
+	 * name and a role and nothing else: present tense only, and there is nowhere
+	 * for anything else to accumulate.
+	 */
+	function asQueueItem(id: string): QueueItem {
+		const s = scenarioById('miss');
+		return {
+			id: `live-${id}`,
+			question: { de: s.utterance.de, ro: s.utterance.ro, en: s.utterance.en },
+			askedIn: session.language,
+			line: session.machine?.line ?? '',
+			machine: session.machine?.machine ?? '',
+			assetId: session.machine?.assetId ?? '',
+			faultCode: session.machine?.faultCode,
+			shift: 'early',
+			waitingSince: new Date().toISOString(),
+			askedBy: { name: 'Ana Popescu', role: ROLE },
+			alsoWaiting: 0,
+			attempt: {
+				outcome: 'no-source',
+				detail: ATTEMPT,
+				searched: ['Wartungshandbuch Füller F2']
+			},
+			triage: 'documentation',
+			safety: 'none',
+			topic: s.topic
+		};
 	}
 
 	function notifyMe() {

@@ -87,6 +87,14 @@ export interface QueueItem {
 	attempt: Attempt;
 	triage: TriageClass;
 	safety: SafetyLevel;
+	/**
+	 * What this question is about, as a stable key rather than as prose.
+	 *
+	 * It is how an answer published here becomes the answer a worker gets on the
+	 * floor: the same topic identifies the question on both surfaces. Absent on
+	 * fixtures that exist only to populate the queue.
+	 */
+	topic?: string;
 }
 
 /**

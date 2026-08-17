@@ -46,6 +46,13 @@ export type ScenarioId = 'sourced' | 'refusal' | 'miss';
 interface Scenario {
 	id: ScenarioId;
 	label: string;
+	/**
+	 * Links this question to the supervisor's queue and back again. When an
+	 * answer for this topic has been published, the assistant serves it instead
+	 * of escalating, which is the entire product argument happening rather than
+	 * being described. See src/lib/state/exchange.svelte.ts.
+	 */
+	topic?: string;
 	utterance: Localised;
 	/** Words the recogniser marks as uncertain, always the fault code, which is
 	 *  exactly the token you must not get wrong. */
@@ -169,6 +176,7 @@ export const SCENARIOS: Scenario[] = [
 	{
 		id: 'miss',
 		label: 'Not in any manual → escalate',
+		topic: 'capper-knock',
 		utterance: {
 			de: 'Der Verschließer klopft seit dem Formatwechsel, kennt das jemand?',
 			ro: 'Închizătorul bate de la schimbarea formatului, știe cineva?',

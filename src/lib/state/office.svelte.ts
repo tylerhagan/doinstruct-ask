@@ -1,4 +1,6 @@
 import { QUEUE } from '$lib/data/office';
+import { exchange } from './exchange.svelte';
+import { session } from './session.svelte';
 import type { QueueItem, Shift, TriageClass } from '$lib/domain/office';
 import type { SafetyLevel } from '$lib/domain/types';
 
@@ -19,6 +21,15 @@ import type { SafetyLevel } from '$lib/domain/types';
  * the name that gets attached to an answer they publish, and inventing an auth
  * model to demonstrate a queue would be scope for its own sake.
  */
+
+/**
+ * Who an answer is attributed to.
+ *
+ * The real product takes this from the authenticated supervisor. Here it is the
+ * shift lead the floor already routes to, so the name on the answer is the name
+ * the worker was told to expect, which is the point of naming anyone at all.
+ */
+const SHIFT_LEAD = 'Marek Kowalski';
 
 export type ShiftFilter = Shift | 'all';
 export type LineFilter = string;
@@ -52,11 +63,17 @@ class OfficeState {
 	/** Set on publish, so the confirmation can name the person and the audit ref. */
 	lastPublished = $state<{ name: string; ref: string } | null>(null);
 
-	/** Everything still waiting, oldest first. Waiting is the whole problem. */
+	/**
+	 * Everything still waiting, oldest first. Waiting is the whole problem.
+	 *
+	 * Fixtures plus anything asked on the floor in this session. A question
+	 * escalated on the device appears here while the supervisor is looking at
+	 * the screen, which is the loop running rather than being described.
+	 */
 	readonly open = $derived(
-		QUEUE.filter((q) => !this.answered.has(q.id)).sort(
-			(a, b) => Date.parse(a.waitingSince) - Date.parse(b.waitingSince)
-		)
+		[...QUEUE, ...exchange.waiting]
+			.filter((q) => !this.answered.has(q.id))
+			.sort((a, b) => Date.parse(a.waitingSince) - Date.parse(b.waitingSince))
 	);
 
 	/** What the filters leave. The badge count uses `open`, not this: a filter
@@ -97,11 +114,27 @@ class OfficeState {
 		const item = this.selected;
 		if (!item || this.draft.trim() === '') return;
 
-		this.lastPublished = {
-			name: item.askedBy.name,
-			ref: `WE-2026-${String(900 + this.answered.size).padStart(4, '0')}`
-		};
+		const ref = `WE-2026-${String(900 + this.answered.size).padStart(4, '0')}`;
+		this.lastPublished = { name: item.askedBy.name, ref };
 		this.answered = new Set([...this.answered, item.id]);
+
+		// The part that makes this a product rather than two screens. Published
+		// against a topic, the answer is what the next worker to ask that question
+		// gets, with no second escalation.
+		if (item.topic) {
+			exchange.publish(
+				{
+					topic: item.topic,
+					text: this.draft.trim(),
+					writtenIn: session.language,
+					safety: this.draftSafety,
+					verifiedBy: SHIFT_LEAD,
+					ref,
+					at: new Date().toISOString()
+				},
+				item.id
+			);
+		}
 	}
 
 	/** Move to the next waiting question, or back to the empty state. */
@@ -115,6 +148,7 @@ class OfficeState {
 		this.shift = 'all';
 		this.line = 'all';
 		this.select(null);
+		exchange.reset();
 	}
 }
 
