@@ -100,10 +100,18 @@
 	</Panel>
 {:else}
 	<Panel elevation="raised">
-		<div class="border-b border-hairline px-5 py-4">
-			<p class="text-meta font-bold text-fg-muted">{tOffice('composer.forQuestion')}</p>
-			<p class="mt-1 text-lead">{item.question[session.language]}</p>
-			<p class="mt-2 text-meta text-fg-muted">
+		<!--
+			The question is context, not work, so it takes the brand ground like the
+			rest of the chrome. It also puts the thing being answered at the top of
+			the most important screen in the product at a weight that matches its
+			importance, which a grey line above a textarea did not.
+		-->
+		<div class="ground-dark bg-surface-inverse px-5 py-4 text-fg-inverse">
+			<p class="text-meta font-bold tracking-wide text-fg-inverse-muted uppercase">
+				{tOffice('composer.forQuestion')}
+			</p>
+			<p class="mt-2 text-lead font-bold text-balance">{item.question[session.language]}</p>
+			<p class="mt-2 text-meta text-fg-inverse-muted">
 				{item.machine} · {item.assetId}{#if item.faultCode}{' · '}{item.faultCode}{/if} · {tOffice(
 					`queue.shift.${item.shift}`
 				)}

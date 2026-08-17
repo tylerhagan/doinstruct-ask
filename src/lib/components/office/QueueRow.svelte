@@ -44,6 +44,16 @@
 	/** Over two hours is the point where a wait stops being a queue and starts
 	 *  being a person stuck at a machine. */
 	const overdue = $derived(Date.now() - Date.parse(item.waitingSince) > 2 * 60 * 60 * 1000);
+
+	/**
+	 * Escalated from the floor during this session rather than loaded as fixture.
+	 *
+	 * Worth marking, because a row appearing in a list you are already looking at
+	 * is easy to miss, and this one is the whole product argument arriving. The
+	 * tone is `pending`, which is the token reserved for escalated and waiting on
+	 * a human: exactly what this is.
+	 */
+	const live = $derived(item.id.startsWith('live-'));
 </script>
 
 <button
@@ -57,7 +67,14 @@
 		: 'border-s-transparent bg-surface hover:bg-surface-raised'}"
 >
 	<div class="flex w-full flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-		<span class="text-meta font-bold">{item.machine}</span>
+		<span class="flex items-center gap-2">
+			<span class="text-meta font-bold">{item.machine}</span>
+			{#if live}
+				<span class="rounded-full bg-pending-surface px-2 py-0.5 text-meta font-bold text-pending">
+					{tOffice('queue.justArrived')}
+				</span>
+			{/if}
+		</span>
 		<span class="text-meta text-fg-muted">
 			{item.line} · {item.assetId}{#if item.faultCode}{' · '}{item.faultCode}{/if}
 		</span>
