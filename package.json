@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && node scripts/check-contrast.mjs && node scripts/check-i18n.mjs && node scripts/check-tokens.mjs && node scripts/check-register.mjs && vitest run",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && node scripts/check-contrast.mjs && node scripts/check-i18n.mjs && node scripts/check-tokens.mjs && node scripts/check-register.mjs && vitest run && prettier --check .",
 		"check:contrast": "node scripts/check-contrast.mjs",
 		"check:i18n": "node scripts/check-i18n.mjs",
 		"check:tokens": "node scripts/check-tokens.mjs",

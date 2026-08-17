@@ -21,6 +21,25 @@
 import { readFileSync } from 'node:fs';
 
 const json = readFileSync(new URL('../src/lib/design/tokens.json', import.meta.url), 'utf8');
+
+/**
+ * Parse it, do not just read it.
+ *
+ * The colour comparison below works on raw text, which meant nothing in the
+ * repository ever parsed this file. A missing comma sat in it happily through
+ * the type checker, four rule checks and 58 tests, and was caught by prettier
+ * in CI, which is the wrong place and two minutes too late.
+ *
+ * The file calls itself the intent layer and agents are told to read it. A
+ * malformed intent layer is worse than a stale one: a stale file misleads, a
+ * broken one cannot be read at all.
+ */
+try {
+	JSON.parse(json);
+} catch (error) {
+	console.error(`FAIL  tokens.json is not valid JSON: ${error.message}`);
+	process.exit(1);
+}
 const css = readFileSync(new URL('../src/lib/design/tokens.css', import.meta.url), 'utf8');
 
 const hexes = (source) =>
