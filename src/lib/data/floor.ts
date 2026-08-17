@@ -298,7 +298,6 @@ export const SCENARIOS: Scenario[] = [
 	}
 ];
 
-
 export function scenarioById(id: ScenarioId): Scenario {
 	return SCENARIOS.find((s) => s.id === id) ?? SCENARIOS[0];
 }
