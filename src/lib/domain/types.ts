@@ -102,9 +102,26 @@ export interface Responder {
 	onShift: boolean;
 }
 
+/**
+ * Why the assistant handed this to a person.
+ *
+ * - `no-source`: nothing in the corpus covered it. The original miss.
+ * - `needs-identity`: it could be answered, but only for someone the system can
+ *   name, and this product deliberately cannot name anyone. A holiday balance
+ *   is not missing knowledge, it is knowledge that belongs to one person.
+ *
+ * The distinction matters because the two read completely differently to a
+ * worker. "Nobody wrote this down" is the documentation's failure. "I will not
+ * guess at your pay" is the product working as designed, and saying so is what
+ * keeps the refusal from feeling like a shrug.
+ */
+export type EscalationReason = 'no-source' | 'needs-identity';
+
 export interface Escalation {
 	id: string;
 	question: string;
+	/** Defaults to `no-source` where absent, which is the original behaviour. */
+	reason?: EscalationReason;
 	responder: Responder;
 	askedAt: string;
 	status: 'waiting' | 'answered';

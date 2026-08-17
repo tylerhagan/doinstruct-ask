@@ -43,6 +43,15 @@
 	const sharesLanguage = $derived(r.languages.includes(session.language));
 	const waiting = $derived(escalation.status === 'waiting');
 
+	/**
+	 * Why this went to a person, which changes what the worker should take from
+	 * it. "Nobody wrote this down" is the documentation failing. "I will not
+	 * guess at your pay" is the product working exactly as designed, and the
+	 * copy has to make that difference obvious or the second one reads as the
+	 * first one with extra steps.
+	 */
+	const needsIdentity = $derived(escalation.reason === 'needs-identity');
+
 	const initials = $derived(
 		r.name
 			.split(' ')
@@ -74,7 +83,19 @@
 
 	{#if waiting}
 		<div>
-			<p class="text-body">{t('esc.notFound')} {r.name}.</p>
+			<p class="text-body">
+				{needsIdentity ? t('esc.needsIdentity') : t('esc.notFound')}
+				{r.name}.
+			</p>
+
+			{#if needsIdentity}
+				<!--
+					The reason is the product's own argument turned outward. A worker
+					who is told "no" deserves to know that the no is the same decision
+					that stops anyone reading what they asked.
+				-->
+				<p class="mt-2 text-small text-fg-muted">{t('esc.needsIdentityWhy')}</p>
+			{/if}
 			<ul class="mt-3 flex flex-col gap-1 text-small text-fg-muted">
 				<li>{t('esc.replies', { n: r.typicalResponseMinutes })}</li>
 				<li>{r.onShift ? t('esc.onShift') : t('esc.offShift')}</li>

@@ -39,6 +39,11 @@ export const DICT = {
 		'source.daysOld': 'Tage alt',
 		'source.monthsOld': 'Monate alt',
 		'esc.notFound': 'Das steht in keiner Anleitung. Ich habe deine Frage weitergegeben an',
+		'esc.needsIdentity':
+			'Das kann ich nur für dich persönlich beantworten, und ich weiß nicht, wer du bist. Ich habe deine Frage weitergegeben an',
+		'esc.needsIdentityWhy':
+			'Kein Login heißt: niemand kann mitlesen, was du fragst. Der Preis ist, dass ich deine persönlichen Daten nicht sehe.',
+		'esc.policy': 'Das gilt für alle:',
 		'esc.replies': 'Antwortet normalerweise in ~{n} Min.',
 		'esc.onShift': 'Ist gerade in der Schicht.',
 		'esc.offShift': 'Ist nicht in der Schicht. Ich frage den Nächsten.',
@@ -95,6 +100,11 @@ export const DICT = {
 		'source.daysOld': 'zile vechime',
 		'source.monthsOld': 'luni vechime',
 		'esc.notFound': 'Asta nu apare în niciun manual. Am trimis întrebarea ta către',
+		'esc.needsIdentity':
+			'Asta pot răspunde doar personal pentru tine, și nu știu cine ești. Am trimis întrebarea ta către',
+		'esc.needsIdentityWhy':
+			'Fără cont înseamnă că nimeni nu vede ce întrebi. Prețul este că nu văd datele tale personale.',
+		'esc.policy': 'Asta este valabil pentru toți:',
 		'esc.replies': 'Răspunde de obicei în ~{n} min.',
 		'esc.onShift': 'Este acum în tură.',
 		'esc.offShift': 'Nu este în tură. Întreb pe următorul.',
@@ -149,6 +159,11 @@ export const DICT = {
 		'source.daysOld': 'days old',
 		'source.monthsOld': 'months old',
 		'esc.notFound': "That isn't in any manual. I've passed your question to",
+		'esc.needsIdentity':
+			'I can only answer that for you personally, and I do not know who you are. I have passed your question to',
+		'esc.needsIdentityWhy':
+			'No login means nobody can see what you ask. The price is that I cannot see your personal data either.',
+		'esc.policy': 'This applies to everyone:',
 		'esc.replies': 'Usually replies in ~{n} min.',
 		'esc.onShift': 'On shift right now.',
 		'esc.offShift': 'Not on shift. Asking the next person.',

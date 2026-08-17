@@ -32,6 +32,36 @@ const MANUAL: Source = {
 	updatedAt: '2026-05-02'
 };
 
+/**
+ * An HR source, and the date on it is the point.
+ *
+ * A works agreement is renegotiated, and in Germany much of what a frontline
+ * worker asks about is governed by a Betriebsvereinbarung or a Tarifvertrag
+ * that varies by site and expires. A stale collective agreement quoted
+ * confidently is a worse failure than a stale torque value, because the worker
+ * has no way to notice and the consequences are legal. This is exactly why
+ * provenance stopped being a nice feature the moment HR arrived.
+ */
+const WORKS_AGREEMENT: Source = {
+	id: 'src-bv-krank',
+	document: 'Betriebsvereinbarung Arbeitszeit und Fehlzeiten',
+	section: '§5 Krankmeldung',
+	page: 9,
+	language: 'de',
+	updatedAt: '2026-02-10'
+};
+
+/** HR is a named person too. The whole product refuses to route to a mailbox. */
+const SABINE: Responder = {
+	id: 'r-sabine',
+	name: 'Sabine Vogt',
+	role: { de: 'Personalabteilung', ro: 'Resurse umane', en: 'HR' },
+	line: 'Werk Nord',
+	typicalResponseMinutes: 90,
+	languages: ['de', 'en'],
+	onShift: true
+};
+
 const LOTO: Source = {
 	id: 'src-loto',
 	document: 'Betriebsanweisung Verriegelung und Freischaltung',
@@ -41,7 +71,7 @@ const LOTO: Source = {
 	updatedAt: '2026-01-15'
 };
 
-export type ScenarioId = 'sourced' | 'refusal' | 'miss';
+export type ScenarioId = 'sourced' | 'refusal' | 'miss' | 'hr-policy' | 'hr-personal';
 
 interface Scenario {
 	id: ScenarioId;
@@ -123,6 +153,36 @@ const MISS_REPLY = {
 
 /* -------------------------------------------------------------------------- */
 
+const HR_POLICY = {
+	de: {
+		summary:
+			'Melde dich vor Schichtbeginn bei der Schichtleitung, telefonisch oder über die App. Ab dem vierten Tag brauchst du eine Bescheinigung vom Arzt.',
+		steps: [
+			'Schichtleitung anrufen, bevor deine Schicht beginnt.',
+			'Wenn du niemanden erreichst, sprich auf die Mailbox und schreib zusätzlich.',
+			'Ab dem vierten Krankheitstag die Bescheinigung an die Personalabteilung.'
+		]
+	},
+	ro: {
+		summary:
+			'Anunță șeful de tură înainte de începerea turei, telefonic sau prin aplicație. Din a patra zi ai nevoie de adeverință de la medic.',
+		steps: [
+			'Sună șeful de tură înainte să înceapă tura.',
+			'Dacă nu răspunde nimeni, lasă mesaj și scrie și un mesaj text.',
+			'Din a patra zi de boală, trimite adeverința la resurse umane.'
+		]
+	},
+	en: {
+		summary:
+			'Tell the shift lead before your shift starts, by phone or through the app. From the fourth day you need a doctor’s certificate.',
+		steps: [
+			'Call the shift lead before your shift starts.',
+			'If nobody answers, leave a message and text as well.',
+			'From the fourth day of illness, send the certificate to HR.'
+		]
+	}
+};
+
 export const SCENARIOS: Scenario[] = [
 	{
 		id: 'sourced',
@@ -194,8 +254,50 @@ export const SCENARIOS: Scenario[] = [
 				auditRef: 'WE-2026-0412'
 			}
 		})
+	},
+	{
+		id: 'hr-policy',
+		label: 'HR policy → answered like any other document',
+		utterance: {
+			de: 'Wie melde ich mich krank?',
+			ro: 'Cum anunț că sunt bolnav?',
+			en: 'How do I report sick?'
+		},
+		uncertain: [],
+		build: (lang) => ({
+			answer: {
+				id: 'a-krank',
+				question: 'Krankmeldung',
+				summary: HR_POLICY[lang].summary,
+				steps: HR_POLICY[lang].steps.map((text, i) => ({ n: i + 1, text })),
+				sources: [WORKS_AGREEMENT],
+				confidence: 'sourced',
+				safety: 'none'
+			}
+		})
+	},
+	{
+		id: 'hr-personal',
+		label: 'HR personal → refused, because it needs to know who you are',
+		utterance: {
+			de: 'Wie viele Urlaubstage habe ich noch?',
+			ro: 'Câte zile de concediu mai am?',
+			en: 'How many holiday days do I have left?'
+		},
+		uncertain: [],
+		build: () => ({
+			escalation: {
+				id: 'esc-hr',
+				question: 'remaining holiday',
+				reason: 'needs-identity' as const,
+				responder: SABINE,
+				askedAt: new Date().toISOString(),
+				status: 'waiting' as const
+			}
+		})
 	}
 ];
+
 
 export function scenarioById(id: ScenarioId): Scenario {
 	return SCENARIOS.find((s) => s.id === id) ?? SCENARIOS[0];
