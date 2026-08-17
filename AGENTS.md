@@ -189,10 +189,12 @@ src/lib/
   domain/office.ts                Office model, plus the suppression rule
   data/floor.ts                   Device scenarios
   data/office.ts                  Queue, coverage and knowledge fixtures
+  data/assets.ts                  Asset register, and QR URL resolution
   i18n/floor.ts                   t()       floor copy, three languages
   i18n/office.ts                  tOffice() office copy, falls back to floor
   state/session.svelte.ts         Shared: language, contrast, machine context
   state/office.svelte.ts          Office: view, filters, selection, draft
+  state/exchange.svelte.ts        THE LOOP. The only module both registers import.
   voice/recognition.svelte.ts     Mic, level metering, scripted fallback
   components/floor/*.svelte       Device register. 64px, 18px, no shadows.
   components/office/*.svelte      Desk register. 36px, 16px, elevation, charts.
@@ -207,16 +209,18 @@ scripts/check-contrast.mjs        Contrast rules and the chart palette, enforced
 scripts/check-i18n.mjs            The no-literal-text rule, enforced
 scripts/check-tokens.mjs          tokens.json and tokens.css must agree, enforced
 scripts/check-register.mjs        No office tokens on the floor, enforced
+scripts/check-budget.mjs          The floor route's gzipped cost, enforced
+scripts/generate-labels.mjs       Build time only. Writes the QR label SVGs.
 ```
 
 **Tests sit beside the code they test**, as `*.test.ts`. They cover the pure
-functions that encode a rule, namely suppression, the wait formatter and
-dictionary parity, because those are the places where a silent change is both
+functions that encode a rule, namely suppression, the wait formatter, dictionary
+parity and the loop, because those are the places where a silent change is both
 easy and consequential. Rendering is not tested: four build checks and the type
 checker already cover it, and mounting components would cost three dependencies
 to assert what is already asserted.
 
-**Why there are four check scripts and not a paragraph of prose.** Every rule in
+**Why there are five check scripts and not a paragraph of prose.** Every rule in
 this project that lived only in a document has eventually been broken, usually by
 me, and every one of those breakages was found by a human looking at the running
 product rather than by anything automated. The high-contrast border rule, the
@@ -237,10 +241,47 @@ and worth stating precisely rather than claiming a purity the code does not have
 
 ---
 
-## 8. Component inventory
+## 8. Where the fixtures end
+
+The first question anyone inheriting this asks, so it is answered here rather
+than discovered.
+
+**Real:** both surfaces and the wire between them, the design system and its five
+checks, the i18n layer, QR resolution from the URL, contrast mode, and the
+recognition path including the level meter and the measured noise floor.
+
+**Fixtures:** retrieval, the queue's history, the coverage counts, the knowledge
+record. There is no server and nothing is persisted; a reload is a fresh start.
+
+**The seams, and there are only two.** Content comes from `src/lib/data/*` and
+the loop runs through `src/lib/state/exchange.svelte.ts`. Nothing else in the
+codebase knows where data comes from, which is deliberate: components are dumb
+about flow state and dumber still about transport.
+
+Attaching a backend means replacing those two and nothing else. `exchange` is
+already shaped like the API it would call: `ask()` posts an escalation,
+`publish()` writes a knowledge entry, `answerFor()` is a read. Make them async
+and the components do not change.
+
+**What must survive that swap**, because it is the argument rather than the
+implementation:
+
+- Suppression stays in the data layer, applied once, before a component sees a
+  count. A component cannot leak what it was never given.
+- Nothing accumulates against a person. The queue's asker carries a name and a
+  role, and the test suite fails if a third field appears.
+- `Localised` and `Identifier` stay distinct in the domain model. A real backend
+  will want to send one string; it must not.
+
+---
+
+## 9. Component inventory
 
 Full contracts sit in the header comment of each file. Read that header before
-modifying a component.
+modifying a component. Both registers are rendered in every state at `/system`,
+which is faster than reading this table.
+
+**Floor register.**
 
 | Component           | Purpose                                    | Key props                                               |
 | ------------------- | ------------------------------------------ | ------------------------------------------------------- |
@@ -258,7 +299,7 @@ modifying a component.
 
 ---
 
-## 9. Prompts that work
+## 10. Prompts that work
 
 Copy and paste. The first two were run against this repo and the results,
 including what the agent got wrong, are in `docs/handover-proof.md`. The third
@@ -292,7 +333,7 @@ step is a prompt whose output nobody checked.
 
 ---
 
-## 10. Definition of done
+## 11. Definition of done
 
 1. `npm run check` passes: 0 type errors, all contrast checks, no literal text,
    tokens agree, no office tokens on the floor.

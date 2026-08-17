@@ -1,0 +1,51 @@
+---
+description: doinstruct Ask. Svelte 5 runes, Tailwind v4, two design registers, four build checks. Read AGENTS.md before writing code.
+globs:
+alwaysApply: true
+---
+
+# Read AGENTS.md first
+
+[`AGENTS.md`](mdc:AGENTS.md) is the rules file for this repository and it wins
+over your defaults. This file is a pointer rather than a copy: two files of
+rules become two versions of the rules, and the one you are not reading is the
+one that is current.
+
+## The traps specific to this stack
+
+- **Svelte 5 runes only.** `runes: true` is forced in `vite.config.ts`, so
+  `export let`, `$:`, `on:click`, `<slot />` and `svelte/store` are compile
+  errors, not warnings. Use `$props`, `$state`, `$derived`, `$effect`,
+  `{@render children()}` and callback props.
+- **`$derived.by(() => { … })`** for multi-statement derivations. `$derived(() =>
+  …)` assigns the function and the bug is silent.
+- **Tailwind v4, CSS-first.** There is no `tailwind.config.js`; creating one does
+  nothing. The theme is `@theme { … }` in `src/lib/design/tokens.css`.
+- **Never a bare radius utility.** `rounded`, `rounded-t` and `rounded-b` resolve
+  to Tailwind's own 0.25rem, not this system's scale. Name the step.
+- **Reassign collections.** `set.add(x)` does not notify; `set = new Set([...set,
+  x])` does.
+
+## Non-negotiables
+
+- No raw hex, no raw px, no arbitrary values such as `p-[13px]`. Every value is a
+  token.
+- No user-facing string literal in a component, including `aria-label`. Copy goes
+  through `t()` (floor) or `tOffice()` (office), in three languages.
+- Two registers. Floor components live in `src/lib/components/floor/` and may
+  never use an office token; the office may use anything. Enforced by
+  `scripts/check-register.mjs`.
+- Red is reserved for safety. Yellow appears at most once per screen and never in
+  the office.
+- Nothing in the office resolves analytics to an individual person.
+
+## Verify before you claim done
+
+```
+npm run check          # types, 4 rule checks, 51 tests
+npm run build
+npm run check:budget   # the floor route's gzipped budget
+```
+
+Never weaken a check to make it pass. Fix the code, or stop and say why you
+cannot.

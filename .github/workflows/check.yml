@@ -1,0 +1,42 @@
+# The checks are this project's argument, so they run on every push and every
+# pull request rather than on whoever remembers.
+#
+# A rule that only fails on the machine of the person who wrote it is a rule
+# with a half life, which is the thesis of the whole case study. Leaving four
+# build checks and a test suite as something you opt into locally would have
+# undercut it.
+
+name: check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Matches .nvmrc. Pinned rather than "latest", because "it worked on
+          # my machine" is a Node version most of the time.
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # svelte-check, then contrast, i18n, token agreement, register
+      # boundaries, then 51 tests. One command, same as a developer runs.
+      - run: npm run check
+
+      - run: npm run lint
+
+      - run: npm run build
+
+      # The floor bundle is a claim in the writeup, so it is measured rather
+      # than asserted. Fails if the route a worker loads crosses the budget.
+      - name: Floor bundle budget
+        run: node scripts/check-budget.mjs

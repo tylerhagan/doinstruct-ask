@@ -18,7 +18,8 @@
 		"format": "prettier --write .",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"labels": "node scripts/generate-labels.mjs"
+		"labels": "node scripts/generate-labels.mjs",
+		"check:budget": "node scripts/check-budget.mjs"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^3.0.10",
@@ -35,5 +36,8 @@
 		"typescript": "^6.0.3",
 		"vite": "^8.0.16",
 		"vitest": "^4.1.10"
+	},
+	"engines": {
+		"node": ">=20.19"
 	}
 }
