@@ -242,6 +242,38 @@
 		overflow-wrap: anywhere;
 	}
 
+	/* --- The flow diagram ------------------------------------------------- */
+
+	.diagram {
+		margin: 2rem 0;
+	}
+
+	/* Wider than the measure on purpose. A two-lane flowchart squeezed into 40rem
+	   puts its labels below legibility, so it keeps its own scroll container and
+	   the page body never scrolls sideways. */
+	.diagram-scroll {
+		overflow-x: auto;
+		border: 1.5px solid var(--rule);
+		border-radius: 14px;
+		padding: 1.25rem;
+		background: var(--paper);
+	}
+
+	.diagram svg {
+		display: block;
+		min-width: 46rem;
+		max-width: 100%;
+		height: auto;
+		color: var(--dark);
+	}
+
+	.diagram figcaption {
+		margin-top: 0.9rem;
+		font-size: 0.92rem;
+		line-height: 1.6;
+		color: var(--muted);
+	}
+
 	/* --- Sections -------------------------------------------------------- */
 
 	section {
@@ -332,135 +364,9 @@
 
 	/* --- Cards ------------------------------------------------------------ */
 
-	.loop,
-	.flow-stages {
-		max-width: var(--content);
-		display: grid;
-		gap: 0.75rem;
-		grid-template-columns: 1fr;
-		margin: 0;
-	}
-
-	.branch,
-	.stage {
-		background: var(--card);
-		border-radius: 18px;
-		padding: 1.4rem 1.45rem;
-		display: grid;
-		grid-template-columns: 4rem 1fr;
-		column-gap: 1.6rem;
-		align-items: start;
-	}
-
-	.branch > :not(.tag),
-	.stage > :not(.num) {
-		grid-column: 2;
-	}
-
-	.branch .tag,
-	.stage .num {
-		grid-column: 1;
-		display: block;
-		font-size: 0.68rem;
-		font-weight: 600;
-		letter-spacing: 0.13em;
-		text-transform: uppercase;
-		color: var(--muted);
-		margin-bottom: 0;
-		line-height: 1.3;
-	}
-
-	.stage .num b,
-	.branch .tag b {
-		display: block;
-		font-size: 2rem;
-		font-weight: 800;
-		letter-spacing: -0.04em;
-		line-height: 1;
-		color: var(--dark);
-		margin-bottom: 0.15rem;
-	}
-
-	.branch h4,
-	.stage h4 {
-		font-size: 1.08rem;
-		font-weight: 700;
-		letter-spacing: -0.01em;
-		margin: 0 0 0.55rem;
-	}
-
-	.branch p,
-	.stage p {
-		font-size: 0.95rem;
-		line-height: 1.5;
-		margin: 0;
-		color: var(--muted);
-	}
-
 	/* The branch that loops is the point, so it gets the dark treatment. */
-	.branch.route {
-		background: var(--dark);
-	}
-
-	.branch.route h4 {
-		color: var(--yellow);
-	}
-
-	.branch.route p {
-		color: var(--light-green);
-	}
-
-	.branch.route .tag {
-		color: var(--light-green);
-	}
-
 	/* The numeral is dark ink by default, which disappears on the dark card. */
-	.branch.route .tag b {
-		color: var(--yellow);
-	}
-
-	.branch.route .escape {
-		color: var(--yellow);
-		border-color: #2c3a24;
-	}
-
-	.escape {
-		display: block;
-		margin-top: 0.9rem;
-		padding-top: 0.75rem;
-		border-top: 1.5px dashed var(--rule);
-		font-size: 0.78rem;
-		font-weight: 600;
-		line-height: 1.45;
-		color: var(--dark);
-	}
-
 	/* --- The flow --------------------------------------------------------- */
-
-	.flow {
-		max-width: var(--content);
-		margin: 2rem 0 2.5rem;
-	}
-
-	.flow-caption {
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.13em;
-		text-transform: uppercase;
-		color: var(--muted);
-		margin: 0 0 0.9rem;
-	}
-
-	.flow-fork {
-		font-size: 0.7rem;
-		font-weight: 600;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: var(--muted);
-		text-align: center;
-		margin: 0;
-		padding: 1rem 0;
-	}
 
 	.flow-return {
 		margin-top: 0.75rem;
@@ -1143,79 +1049,429 @@
 				anything. It has reproduced the original failure with better manners. The miss is the
 				product. There are only three honest responses available:
 			</p>
-			<div class="flow">
-				<p class="flow-caption">The flow, including every escape</p>
+			<figure class="diagram">
+				<div class="diagram-scroll">
+					<svg
+						viewBox="0 0 900 1090"
+						role="img"
+						aria-label="Flow across both surfaces. A worker scans a QR code, chooses a language and asks. The assistant refuses safety-critical tasks, answers what the documentation covers, and escalates the rest to a supervisor's queue. The supervisor writes the answer once and publishes it, and that answer is what the assistant serves the next time anyone asks."
+					>
+						<defs>
+							<marker
+								id="ar"
+								viewBox="0 0 10 10"
+								refX="9"
+								refY="5"
+								markerWidth="7"
+								markerHeight="7"
+								orient="auto-start-reverse"
+							>
+								<path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
+							</marker>
+							<marker
+								id="ar-loop"
+								viewBox="0 0 10 10"
+								refX="9"
+								refY="5"
+								markerWidth="7"
+								markerHeight="7"
+								orient="auto-start-reverse"
+							>
+								<path d="M0 0 L10 5 L0 10 z" fill="#008f83" />
+							</marker>
+						</defs>
 
-				<div class="flow-stages">
-					<div class="stage">
-						<span class="num"><b>1</b>Stage</span>
-						<h4>Scan and choose</h4>
-						<p>
-							The QR on the machine resolves to Line 3, Filler F2, on a personal phone or a shared
-							terminal. Language first, in its own script. No login, no download, and nothing typed
-							by a gloved hand.
-						</p>
-					</div>
-					<div class="stage">
-						<span class="num"><b>2</b>Stage</span>
-						<h4>Hold and ask</h4>
-						<p>
-							Hold to talk, never an open mic. The level meter is the only proof the device can hear
-							you at 90 dB, and the room's noise floor is measured, not guessed at.
-						</p>
-						<span class="escape">Escape: type instead. Always present, never buried.</span>
-					</div>
-					<div class="stage">
-						<span class="num"><b>3</b>Stage</span>
-						<h4>Confirm what was heard</h4>
-						<p>
-							Never auto-skipped on high confidence. Uncertain words are marked, and in the demo the
-							marked word is the fault code, which is the token you least want wrong.
-						</p>
-						<span class="escape">Escape: say it again, or switch to typing.</span>
-					</div>
+						<rect
+							x="16"
+							y="56"
+							width="454"
+							height="956"
+							rx="14"
+							fill="currentColor"
+							opacity="0.035"
+						/>
+						<rect
+							x="486"
+							y="56"
+							width="398"
+							height="956"
+							rx="14"
+							fill="currentColor"
+							opacity="0.035"
+						/>
+						<text
+							x="40"
+							y="42"
+							font-size="13"
+							font-weight="700"
+							letter-spacing="0.08em"
+							fill="currentColor"
+						>
+							THE FLOOR · the worker's phone
+						</text>
+						<text
+							x="510"
+							y="42"
+							font-size="13"
+							font-weight="700"
+							letter-spacing="0.08em"
+							fill="currentColor"
+						>
+							THE OFFICE · the shift lead's desk
+						</text>
+
+						<rect
+							x="40"
+							y="78"
+							width="200"
+							height="52"
+							rx="26"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="140"
+							y="100.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Scan the QR
+						</text>
+						<text
+							x="140"
+							y="115.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							on the machine
+						</text>
+						<rect
+							x="40"
+							y="156"
+							width="200"
+							height="52"
+							rx="8"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="140"
+							y="186"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Choose language
+						</text>
+						<rect
+							x="40"
+							y="234"
+							width="200"
+							height="52"
+							rx="8"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="140"
+							y="264"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Hold and ask
+						</text>
+
+						<polygon
+							points="140,308 240,350 140,392 40,350"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="140"
+							y="354"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Heard it right?
+						</text>
+
+						<polygon
+							points="140,418 240,460 140,502 40,460"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="140"
+							y="456.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Qualified
+						</text>
+						<text
+							x="140"
+							y="471.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							person only?
+						</text>
+						<rect
+							x="276"
+							y="434"
+							width="180"
+							height="52"
+							rx="26"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="360"
+							y="456.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Stop. Name a
+						</text>
+						<text
+							x="360"
+							y="471.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							qualified person.
+						</text>
+
+						<polygon
+							points="140,528 240,572 140,616 40,572"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="140"
+							y="568.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Do we have
+						</text>
+						<text
+							x="140"
+							y="583.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							an answer?
+						</text>
+						<rect
+							x="276"
+							y="546"
+							width="180"
+							height="52"
+							rx="26"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="360"
+							y="568.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Answer, with
+						</text>
+						<text
+							x="360"
+							y="583.5"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							provenance
+						</text>
+
+						<rect
+							x="515"
+							y="674"
+							width="340"
+							height="52"
+							rx="8"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="685"
+							y="704"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Lands in the queue, marked "just arrived"
+						</text>
+						<rect
+							x="515"
+							y="764"
+							width="340"
+							height="52"
+							rx="8"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="685"
+							y="794"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							They see what the assistant already tried
+						</text>
+						<rect
+							x="515"
+							y="854"
+							width="340"
+							height="52"
+							rx="8"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="685"
+							y="884"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							They write the answer once
+						</text>
+						<rect
+							x="515"
+							y="944"
+							width="340"
+							height="52"
+							rx="8"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+						/>
+						<text
+							x="685"
+							y="974"
+							text-anchor="middle"
+							font-size="12"
+							font-weight="500"
+							fill="currentColor"
+						>
+							Publish: knowledge entry + audit reference
+						</text>
+
+						<g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ar)">
+							<line x1="140" y1="130" x2="140" y2="154" />
+							<line x1="140" y1="208" x2="140" y2="232" />
+							<line x1="140" y1="286" x2="140" y2="306" />
+							<line x1="140" y1="392" x2="140" y2="416" />
+							<line x1="140" y1="502" x2="140" y2="526" />
+							<line x1="240" y1="460" x2="272" y2="460" />
+							<line x1="240" y1="572" x2="272" y2="572" />
+							<polyline points="240,350 274,350 274,260 242,260" />
+							<polyline points="140,616 140,660 685,660 685,672" />
+							<line x1="685" y1="726" x2="685" y2="762" />
+							<line x1="685" y1="816" x2="685" y2="852" />
+							<line x1="685" y1="906" x2="685" y2="942" />
+						</g>
+
+						<g font-size="11" fill="currentColor" opacity="0.75">
+							<text x="286" y="344" text-anchor="middle">no</text>
+							<text x="152" y="410">yes</text>
+							<text x="257" y="453" text-anchor="middle">yes</text>
+							<text x="152" y="521">no</text>
+							<text x="257" y="565" text-anchor="middle">yes</text>
+							<text x="152" y="637">no, nothing covers it</text>
+						</g>
+
+						<polyline
+							points="685,996 685,1046 28,1046 28,572 36,572"
+							fill="none"
+							stroke="#008f83"
+							stroke-width="2.5"
+							stroke-dasharray="7 5"
+							marker-end="url(#ar-loop)"
+						/>
+						<text x="300" y="1068" font-size="12" font-weight="700" fill="#008f83">
+							Answered once. Next time this is a yes, with his name on it.
+						</text>
+					</svg>
 				</div>
+				<figcaption>
+					The whole product in one picture. Two of the three floor outcomes end there; only the
+					third crosses into the office, and the dashed return is the reason the crossing is worth
+					making. It is wired, not drawn: escalate on the device and the row appears in the queue
+					while you are looking at it.
+				</figcaption>
+			</figure>
 
-				<p class="flow-fork">Then exactly one of three</p>
+			<h3>Every branch has an escape, and none of them are buried</h3>
+			<ul class="plain">
+				<li>
+					<b>Asking.</b> Type instead of speaking, always on screen, never behind a menu. The
+					interface offers it <em>before</em> recognition fails rather than after.
+				</li>
+				<li>
+					<b>Confirming.</b> Say it again, or switch to typing. Confirmation is never auto-skipped
+					on high confidence, and the word marked uncertain in the demo is the fault code, which is
+					the token you least want wrong.
+				</li>
+				<li>
+					<b>The answer.</b> "This didn't help" drops straight into the third branch, so a wrong
+					answer costs one tap rather than a dead end. Every one of those is also a gap in the
+					knowledge base, reported for free.
+				</li>
+			</ul>
 
-				<div class="loop">
-					<div class="branch">
-						<span class="tag"><b>1</b>Response</span>
-						<h4>Answer, with provenance</h4>
-						<p>
-							Grounded in a named document, section and page, with the document's age visible. Stale
-							documentation is a hazard, and hiding its age quietly transfers that risk to the
-							worker.
-						</p>
-						<span class="escape">Escape: "this didn't help" drops straight into response 3.</span>
-					</div>
-					<div class="branch">
-						<span class="tag"><b>2</b>Response</span>
-						<h4>Refuse, on safety</h4>
-						<p>
-							Guard-door bypass, lockout and tagout: an explicit stop, and a named qualified person.
-							A refusal, not a hedged procedure wearing a disclaimer.
-						</p>
-					</div>
-					<div class="branch route">
-						<span class="tag"><b>3</b>Response</span>
-						<h4>Route to a named human</h4>
-						<p>
-							Marek, shift lead, usually replies in about four minutes, speaks Romanian. A named
-							person, an observed wait, not a promised one, and permission to walk away and be
-							fetched.
-						</p>
-						<span class="escape">Then: reply, capture, audit entry, and back into response 1.</span>
-					</div>
-				</div>
-
-				<div class="flow-return">
-					<b>Only the third branch loops, and that loop is the product.</b> Marek's answer is
-					captured, credited to the worker who asked, and written into the knowledge base with an
-					audit entry attached. The next person to ask the same thing gets response 1 instead, in
-					their own language. The wait happens once, and it produces an asset.
-				</div>
+			<div class="flow-return">
+				<b>Only the third branch loops, and that loop is the product.</b> Marek's answer is
+				captured, credited to the worker who asked, and written into the knowledge base with an
+				audit entry attached. The wait happens once, and it produces an asset.
 			</div>
+
 			<h3>Three decisions in that flow are about people, not machines</h3>
 
 			<p>
@@ -1467,7 +1723,7 @@
 							<td>
 								What the device actually fetches for the floor route. The office surface and the
 								design-system gallery are separate chunks a worker never loads, and the supervisor's
-								entire vocabulary is a 9 KB chunk that shares nothing with the floor's.
+								entire vocabulary is a 9.8 KB chunk that shares nothing with the floor's.
 							</td>
 						</tr>
 						<tr>
@@ -1504,8 +1760,8 @@
 							<td>Minimum body text</td>
 							<td class="num">18 px</td>
 							<td>
-								Read at arm's length from a wall mount, often through safety glasses. 14px exists
-								only for timestamps and audit references, never for instructions.
+								Read at arm's length, often through safety glasses, and frequently by someone over
+								fifty. 14px exists only for timestamps and audit references, never for instructions.
 							</td>
 						</tr>
 						<tr>
@@ -1527,9 +1783,10 @@
 			</p>
 			<ul class="plain">
 				<li>
-					<b>A low-end device.</b> Open devtools, throttle to slow 3G and reload. There are no web
-					fonts to wait for and no server round trip, so first paint does not depend on the network
-					finishing.
+					<b>A low-end device.</b> Open devtools, throttle to slow 3G and reload. There is no server
+					round trip, and the one web font is declared <code>optional</code>, so it is skipped
+					entirely rather than waited for. First paint does not depend on the network finishing, and
+					nothing reflows when it arrives.
 				</li>
 				<li>
 					<b>A noisy line.</b> Demo, then <em>Loud room</em>. The level meter turns to caution and
@@ -1546,8 +1803,10 @@
 					case where eyes are committed too.
 				</li>
 				<li>
-					<b>Another language.</b> Switch to Deutsch or English in the top bar. The procedure steps
-					change, not just the buttons, and the source chip discloses that the manual stayed German.
+					<b>Another language.</b> Tap the language chip in the top bar, which shows the current
+					language in its own script and returns you to the picker. The procedure steps change, not
+					just the buttons, and the source chip discloses that the manual stayed German. Changing it
+					mid-flow returns you to the screen you were on rather than resetting.
 				</li>
 				<li>
 					<b>Low digital literacy</b> is the one that shows by absence. No login, no download, no
@@ -1665,29 +1924,32 @@
 					><code>AGENTS.md</code></a
 				>
 				is the deliverable: exact versions, a Svelte 4 to 5 translation table, the token contract,
-				and nine non-negotiables that encode safety and accessibility, not taste. One structural
+				and ten non-negotiables that encode safety and accessibility, not taste. One structural
 				decision does most of the work. Components are dumb; they render props and report gestures,
 				and the state machine lives in one route. So "change the flow" touches one file, "restyle
 				the answer" touches another, and neither breaks the other.
 			</p>
 
 			<p>
-				The rules are split across four files instead of one, and the split is itself a design
+				The rules are split across five files instead of one, and the split is itself a design
 				decision about working with agents. A rules file long enough to cover everything gets
 				skimmed by humans and diluted in a long session, so every rule you add makes the others
 				slightly less likely to be followed. <code>AGENTS.md</code> holds what applies always, and
-				indexes three focused files with a stated trigger for each: conduct rules for any code
+				indexes four focused files with a stated trigger for each: conduct rules for any code
 				change, copy rules when text is involved, accessibility rules when an interactive element
-				is. Telling an agent <em>when</em> to load something is context budgeting made explicit.
+				is, and visualisation rules before anyone draws a chart. Telling an agent <em>when</em> to
+				load something is context budgeting made explicit.
 			</p>
 
 			<p>
-				The rules I'd point at first aren't the visual ones. <b>The dependency list is closed</b>,
-				because one convenience library quietly destroys the 46 KB budget that every claim in the
-				previous section rests on, and nothing would catch it. And
-				<b>never weaken a check to make it pass</b>, which matters now that there are checks worth
-				protecting. An agent that can't reach 7:1 will lower the threshold instead of fixing the
-				colour, and the result compiles, passes, and is a lie.
+				The rules I'd point at first aren't the visual ones.
+				<b>The dependency list is closed to anything that ships</b>, because one convenience library
+				quietly destroys the 49 KB budget that every claim in the previous section rests on, and
+				nothing would catch it. It used to read "closed" full stop, which also banned the test
+				tooling that keeps the other rules honest, so it now distinguishes what reaches the device
+				from what does not. And <b>never weaken a check to make it pass</b>, which matters now that
+				there are checks worth protecting. An agent that can't reach 7:1 will lower the threshold
+				instead of fixing the colour, and the result compiles, passes, and is a lie.
 			</p>
 
 			<h3>I chose Svelte having never shipped it</h3>
@@ -1756,9 +2018,9 @@
 				Prompt 3 restyled <code>EscalationCard</code> so the responder's name and expected wait
 				became dominant. The mechanical layer was faultless: token classes only, no raw values,
 				every prop and aria attribute preserved, existing translation keys reused instead of new
-				strings invented, exactly the one file touched, and both checks passing on the first
-				attempt. I verified all of that myself instead of trusting its summary. Six lines added,
-				four removed.
+				strings invented, exactly the one file touched, and both of the checks that existed then
+				passing on the first attempt. I verified all of that myself instead of trusting its summary.
+				Six lines added, four removed.
 			</p>
 
 			<p>Three things it got wrong, none of which any check can see.</p>
@@ -1779,8 +2041,8 @@
 
 			<p>
 				<b>It put a status in 14px</b>, which rule 2 reserves for timestamps and audit references.
-				Nothing caught it, because one script checks colour and the other checks literal strings.
-				Neither checks type size.
+				Nothing caught it, because the checks look at colour, literal strings, token agreement and
+				register boundaries. None of the four looks at type size, and that gap is still open.
 			</p>
 
 			<p>
