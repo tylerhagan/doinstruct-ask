@@ -49,7 +49,7 @@
 
 <PageHeader title={tOffice('queue.title')} lede={tOffice('queue.lede')} {stats} />
 
-<div class="flex flex-col gap-4 p-4 md:p-6">
+<div class="flex max-w-work flex-col gap-4 p-4 md:p-6">
 	<div class="empty:hidden"><OfflineNotice /></div>
 
 	<div class="flex flex-wrap gap-x-6 gap-y-3">

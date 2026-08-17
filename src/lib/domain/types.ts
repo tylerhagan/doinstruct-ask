@@ -25,6 +25,9 @@ export type Localised = Record<Language, string>;
  */
 export type Identifier = string;
 
+/** The languages this build's content exists in. The picker takes a list. */
+export const LANGUAGES: Language[] = ['de', 'ro', 'en'];
+
 export const LANGUAGE_LABEL: Record<Language, string> = {
 	de: 'Deutsch',
 	ro: 'Română',

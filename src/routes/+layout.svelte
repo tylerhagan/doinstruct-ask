@@ -2,11 +2,12 @@
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { session } from '$lib/state/session.svelte';
+	import { LANGUAGES } from '$lib/domain/types';
 	import { onMount } from 'svelte';
 
 	let { children } = $props();
 
-	onMount(() => session.restore());
+	onMount(() => session.restore(LANGUAGES));
 
 	// Contrast is applied at the document root so it also covers the scrollbar and
 	// any portalled content. Written as an effect rather than a class binding

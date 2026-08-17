@@ -151,12 +151,27 @@
 	--breakpoint-xs: 26rem;
 
 	/* -- Layout ------------------------------------------------------------ */
-	/* The office shell stops here. Past about 1400px a queue row becomes a line
-	   of text with a hundred characters of whitespace after it, and the eye has
-	   to travel the width of a monitor to get from the machine name to the wait.
+	/* The shell itself is fluid. These cap the CONTENT, per surface, because the
+	   right width depends entirely on what is in it.
+
+	   `work` is for a screen holding sentences in two columns: the queue and the
+	   composer. Past this a question becomes a line of text with a hundred
+	   characters of whitespace after it, and the eye has to travel the width of a
+	   monitor to get from the machine name to the wait.
+
+	   `read` is for a single column of prose, which is the knowledge record.
+
+	   Coverage has neither, deliberately: it is charts, and a chart uses width
+	   without its labels getting any longer.
+
+	   Applied left-aligned rather than centred, so the content stays flush with
+	   the header band above it and with the rail beside it. Centring a capped
+	   column next to a fixed rail puts a growing gap between them.
+
 	   Named `--container-*` and not `--spacing-*`: those namespaces overlap and
 	   a shared name silently resolves to the wrong one. */
-	--container-office: 1400px;
+	--container-work: 1400px;
+	--container-read: 62rem;
 
 	/* -- Density ----------------------------------------------------------- */
 	/* 64px assumes a glove. A mouse cursor is one pixel and a trackpad has

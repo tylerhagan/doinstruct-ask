@@ -23,7 +23,13 @@
 	import { t } from '$lib/i18n/floor';
 	import { recognition, speak, stopSpeaking } from '$lib/voice/recognition.svelte';
 	import { scenarioById, type ScenarioId } from '$lib/data/floor';
-	import { LANGUAGE_LABEL, type Answer, type Escalation, type Language } from '$lib/domain/types';
+	import {
+		LANGUAGE_LABEL,
+		LANGUAGES,
+		type Answer,
+		type Escalation,
+		type Language
+	} from '$lib/domain/types';
 	import type { QueueItem } from '$lib/domain/office';
 	import { exchange, type PublishedAnswer } from '$lib/state/exchange.svelte';
 
@@ -38,9 +44,6 @@
 		ro: 'Nu există nimic despre asta în documentația pe care o avem.',
 		en: 'There is nothing about this in the documentation we hold.'
 	};
-
-	/** The languages this prototype's content exists in. */
-	const LANGUAGES: Language[] = ['de', 'ro', 'en'];
 
 	type Phase =
 		| 'language'
@@ -142,7 +145,6 @@
 		// The QR code on the machine is the only thing that says which machine
 		// this is. Read client-side: the app is prerendered, so a query string
 		// cannot be baked in at build time.
-		session.guessLanguage(LANGUAGES);
 		session.resolveMachine(page.url);
 		recognition.detect();
 	});

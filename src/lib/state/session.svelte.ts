@@ -52,22 +52,19 @@ class Session {
 	 * the wrong one, which is the correct trade.
 	 */
 	/**
-	 * Take the device's own language as the pre-choice default, if we speak it.
+	 * The device's own language, if we speak it.
 	 *
-	 * On a personal phone this is very often right, and it costs nothing when it
-	 * is wrong because the picker is the very next thing the worker sees. Matched
-	 * on the primary subtag, so `ro-RO` finds `ro`.
+	 * Matched on the primary subtag, so `ro-RO` finds `ro`. Returns null rather
+	 * than assigning, because the caller decides what beats what.
 	 */
-	guessLanguage(available: Language[]) {
-		if (typeof navigator === 'undefined') return;
+	#deviceLanguage(available: Language[]): Language | null {
+		if (typeof navigator === 'undefined') return null;
 		const tags = navigator.languages ?? [navigator.language ?? ''];
 		for (const tag of tags) {
 			const primary = tag.split('-')[0] as Language;
-			if (available.includes(primary)) {
-				this.language = primary;
-				return;
-			}
+			if (available.includes(primary)) return primary;
 		}
+		return null;
 	}
 
 	resolveMachine(url: URL) {
@@ -75,8 +72,29 @@ class Session {
 		this.machine = resolveAsset(url);
 	}
 
+	/**
+	 * A worker's explicit choice, remembered.
+	 *
+	 * WHY THIS IS SAVED AND WHY THE PICKER STILL APPEARS
+	 * On a personal phone, asking someone to pick their language every time they
+	 * scan a machine is the interface forgetting who it is talking to. So the
+	 * choice persists.
+	 *
+	 * But the same URL opens on a shared terminal in a hygiene zone, and there
+	 * the previous person's language is the wrong answer for the next one. This
+	 * product has argued from the start that a shared device has nobody to own
+	 * preferences, and silently starting in Romanian for a Polish worker because
+	 * someone else stood here an hour ago is exactly the failure the language
+	 * screen exists to prevent.
+	 *
+	 * So it is remembered as an ORDERING, not as a skip. The saved language goes
+	 * to the top of the picker and is one tap away; it never removes the screen.
+	 * A returning worker on their own phone pays one tap, and a worker on a
+	 * shared terminal is never handed a language they cannot read.
+	 */
 	setLanguage(next: Language) {
 		this.language = next;
+		if (typeof localStorage !== 'undefined') localStorage.setItem('ask:language', next);
 	}
 
 	toggleContrast() {
@@ -86,10 +104,27 @@ class Session {
 		}
 	}
 
-	/** Called once on mount. Safe to call during SSR, it no-ops. */
-	restore() {
+	/**
+	 * Called once on mount. Safe to call during SSR, where it no-ops.
+	 *
+	 * Precedence, and it is deliberate: a previous explicit choice beats the
+	 * device's own setting, because someone who has told us once has told us
+	 * something the browser locale cannot know. The device setting beats the
+	 * hardcoded default. Neither skips the picker.
+	 */
+	restore(available: Language[]) {
 		if (typeof localStorage === 'undefined') return;
+
 		this.highContrast = localStorage.getItem('ask:contrast') === 'high';
+
+		const saved = localStorage.getItem('ask:language') as Language | null;
+		if (saved && available.includes(saved)) {
+			this.language = saved;
+			return;
+		}
+
+		const device = this.#deviceLanguage(available);
+		if (device) this.language = device;
 	}
 }
 

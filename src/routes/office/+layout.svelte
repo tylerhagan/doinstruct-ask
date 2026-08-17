@@ -43,12 +43,24 @@
      than as boxes drawn beside it. Two surfaces plus a shadow is the whole
      hierarchy; a third would be decoration. -->
 <div class="min-h-dvh bg-surface-sunken">
-	<div class="mx-auto flex min-h-dvh max-w-office flex-col md:flex-row">
+	<div class="flex min-h-dvh flex-col md:flex-row">
 		<!-- Rail on a desk, bottom bar on a phone. -->
+		<!--
+			The rail is exactly one viewport tall from `md` up, and scrolls inside
+			itself if it ever outgrows one.
+
+			It used to be as tall as the page, because a flex child stretches by
+			default and the page is long. That made `mt-auto` on the utilities push
+			them to the bottom of a two-thousand pixel column rather than to the
+			bottom of the screen, so language and contrast sat below the fold on
+			every screen with a queue in it. `self-start` is the part that is easy
+			to miss: a stretched item has no room to move, so sticky does nothing
+			until you stop it stretching.
+		-->
 		<header
 			class="ground-dark sticky top-0 z-10 order-1 border-b border-hairline-inverse
-			       bg-surface-inverse text-fg-inverse md:order-none md:flex md:w-60 md:shrink-0
-			       md:flex-col md:border-e md:border-b-0"
+			       bg-surface-inverse text-fg-inverse md:order-none md:flex md:h-dvh md:w-60
+			       md:shrink-0 md:flex-col md:self-start md:overflow-y-auto md:border-e md:border-b-0"
 		>
 			<OfficeRail />
 		</header>

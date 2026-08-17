@@ -81,6 +81,9 @@
 
 <PageHeader title={tOffice('coverage.title')} lede={tOffice('coverage.lede')} {stats} />
 
+<!-- No width cap here, unlike the other two office screens. This one is charts,
+     and a chart uses the width it is given without its labels getting any
+     longer. Three panels across a wide monitor is the point of the screen. -->
 <div class="flex flex-col gap-4 p-4 md:p-6">
 	<div class="empty:hidden"><OfflineNotice /></div>
 

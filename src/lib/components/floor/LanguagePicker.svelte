@@ -33,9 +33,11 @@
 	  once, read out of the dictionary so it cannot drift.
 	- Labels are endonyms. "Română", not "Romanian"; "العربية", not "Arabic". A
 	  worker scanning for their language is not reading the interface language.
-	- The device's own language goes first, from `navigator.languages`. On a
-	  personal phone that is very often the right answer, and it costs nothing
-	  when it is wrong because the rest of the list is still there.
+	- The worker's own language goes first: a previously saved choice if there is
+	  one, the device's language otherwise. Remembered as an ordering and never as
+	  a skip, because the same URL opens on a shared terminal where the previous
+	  person's language is the wrong answer for the next one. One tap for someone
+	  returning to their own phone; never a language they cannot read.
 	- 64px rows rather than three tall buttons. Tall buttons stop working the
 	  moment the list is longer than a screen, which is the normal case.
 	- Past roughly a dozen this needs a search field. Nine scrolls fine, thirty
@@ -74,28 +76,15 @@
 	let { options, onchoose }: Props = $props();
 
 	/**
-	 * The device's preferred language, if the plant offers it.
-	 *
-	 * Matched on the primary subtag, so `ro-RO` finds `ro`. Read once at module
-	 * evaluation because a worker does not change their phone's language between
-	 * scanning a QR code and reading the screen.
+	 * Whatever the session already resolved: a saved choice if there is one, the
+	 * device's own language otherwise. Computed once, in `session.restore`, so
+	 * this component does not repeat the precedence rules and get them subtly
+	 * different.
 	 */
-	const preferred = (() => {
-		if (typeof navigator === 'undefined') return null;
-		const wanted = (navigator.languages ?? [navigator.language ?? '']).map(
-			(tag) => tag.split('-')[0]
-		);
-		for (const tag of wanted) {
-			const hit = options.find((o) => o.code === tag);
-			if (hit) return hit.code;
-		}
-		return null;
-	})();
-
 	const ordered = $derived(
-		preferred
-			? [...options].sort((a, b) => Number(b.code === preferred) - Number(a.code === preferred))
-			: options
+		[...options].sort(
+			(a, b) => Number(b.code === session.language) - Number(a.code === session.language)
+		)
 	);
 
 	/**
