@@ -78,8 +78,8 @@
 	 * both would render on an answer screen if they did, which is cream.
 	 */
 	const SURFACE: Record<PttState, string> = {
-		idle: 'bg-yellow border-yellow text-ink',
-		listening: 'bg-surface-inverse-raised border-yellow text-fg-inverse',
+		idle: 'bg-accent border-accent text-accent-fg',
+		listening: 'bg-surface-inverse-raised border-accent text-fg-inverse',
 		thinking: 'bg-surface-inverse-raised border-hairline-inverse text-fg-inverse-muted',
 		speaking: 'bg-surface-raised border-ink text-fg',
 		error: 'bg-stop-surface border-stop text-stop'

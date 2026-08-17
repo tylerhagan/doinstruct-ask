@@ -43,7 +43,7 @@
 			<p class="mb-1 text-fg-muted">See the loop close</p>
 			<a
 				href="/office"
-				class="mb-4 block rounded-sm border-2 border-ink bg-yellow px-2 py-2 no-underline"
+				class="mb-4 block rounded-sm border-2 border-ink bg-accent px-2 py-2 no-underline"
 			>
 				Ask the third scenario, then answer it here &rarr;
 			</a>
@@ -55,7 +55,7 @@
 						type="button"
 						onclick={() => pick(s.id)}
 						class="rounded-sm border-2 px-2 py-2 text-left
-						       {scenarioId === s.id ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
+						       {scenarioId === s.id ? 'border-ink bg-accent' : 'border-border bg-surface'}"
 					>
 						{s.label}
 					</button>
@@ -69,7 +69,7 @@
 					onclick={() => (recognition.mode = 'live')}
 					disabled={!recognition.supported}
 					class="flex-1 rounded-sm border-2 px-2 py-2 disabled:opacity-40
-					       {recognition.mode === 'live' ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
+					       {recognition.mode === 'live' ? 'border-ink bg-accent' : 'border-border bg-surface'}"
 				>
 					live
 				</button>
@@ -77,7 +77,7 @@
 					type="button"
 					onclick={() => (recognition.mode = 'scripted')}
 					class="flex-1 rounded-sm border-2 px-2 py-2
-					       {recognition.mode === 'scripted' ? 'border-ink bg-yellow' : 'border-border bg-surface'}"
+					       {recognition.mode === 'scripted' ? 'border-ink bg-accent' : 'border-border bg-surface'}"
 				>
 					scripted
 				</button>

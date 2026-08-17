@@ -20,6 +20,7 @@ const readTokens = (block) =>
 		[...block.matchAll(/--color-([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})/g)].map((m) => [m[1], m[2]])
 	);
 
+const v2Start = css.indexOf("[data-theme='v2']");
 const highStart = css.indexOf("[data-contrast='high']");
 
 /**
@@ -28,13 +29,22 @@ const highStart = css.indexOf("[data-contrast='high']");
  * trivially pass, since that block is mostly pure black and white, and a silent
  * green tick is exactly what this script exists to prevent.
  */
-const base = readTokens(css.slice(css.indexOf('@theme'), highStart));
+const base = readTokens(css.slice(css.indexOf('@theme'), v2Start));
 
 /** High contrast only overrides some names; the rest fall through to base. */
 const high = {
 	...base,
 	...readTokens(css.slice(highStart, css.indexOf('[data-contrast', highStart + 1)))
 };
+
+/**
+ * The proposed language, held to the same floors as the shipped one.
+ *
+ * That is the whole claim of the proposal: a brand for people who cannot rely
+ * on language should be provably legible rather than tastefully legible. A
+ * theme exempt from the check would be a mood board with a build step.
+ */
+const v2 = { ...base, ...readTokens(css.slice(v2Start, highStart)) };
 
 const channel = (v) => {
 	const c = v / 255;
@@ -63,8 +73,9 @@ const PAIRS = [
 	['fg-inverse', 'surface-inverse-raised', 7, 'text on a card on the dark ground'],
 	['fg-inverse-muted', 'surface-inverse', 7, 'secondary text on the dark ground'],
 	['fg-inverse-muted', 'surface-inverse-raised', 7, 'secondary text on a dark card'],
-	['yellow', 'surface-inverse', 3, 'the voice action against the dark ground'],
-	['ink', 'yellow', 7, 'label on the primary voice action'],
+	['accent', 'surface-inverse', 3, 'the voice action against the dark ground'],
+	['accent', 'surface-inverse-raised', 3, 'the level meter on a dark card'],
+	['accent-fg', 'accent', 7, 'label on the primary action'],
 	['stop', 'stop-surface', 7, 'safety stop text'],
 	['caution', 'caution-surface', 7, 'caution text'],
 	['ok', 'ok-surface', 7, 'sourced-answer badge'],
@@ -153,6 +164,7 @@ function runRamp(tokens) {
 
 run('Default palette', base);
 run('High contrast', high);
+run('V2 proposal', v2);
 
 if (failed) {
 	console.error(`\n${failed} contrast check(s) failed.`);

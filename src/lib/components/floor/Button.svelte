@@ -9,7 +9,9 @@
 	- ...rest: any native button attribute, incl. onclick, disabled, aria-*
 
 	RULES
-	- `primary` is yellow and there may be only ONE per screen: the voice action.
+	- `primary` wears `accent` and there may be only ONE per screen: the voice
+	  action. The token is named for its role, not its colour, because a theme
+	  can change the colour and a name like `yellow` then becomes a lie.
 	- `stop` is red and is reserved for safety. Never use it for destructive UI
 	  actions like "delete", and never for form validation.
 	- `md` is 64px tall, `lg` is 96px. Neither may be overridden smaller; both are
@@ -39,7 +41,7 @@
 	}: Props = $props();
 
 	const VARIANT: Record<Variant, string> = {
-		primary: 'bg-yellow text-ink border-ink',
+		primary: 'bg-accent text-accent-fg border-accent',
 		secondary: 'bg-surface-raised text-fg border-hairline',
 		quiet: 'bg-transparent text-fg border-transparent underline underline-offset-4',
 		stop: 'bg-stop text-cream border-stop'

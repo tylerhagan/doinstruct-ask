@@ -11,6 +11,14 @@
 	/* -- Brand: exact values from doinstruct's own swatch system ---------- */
 	--color-ink: #11190c; /* --swatch--dark-green */
 	--color-yellow: #d9ff1e; /* --swatch--yellow (their name for it, not "lime") */
+
+	/* The primary action's colour, and the text that sits on it, named by ROLE.
+	   `--color-yellow` is named after how it looks, which is fine until a theme
+	   changes what it looks like: a token called yellow that renders teal is a
+	   lie with a build step. Components use `accent`; `yellow` survives as the
+	   brand swatch itself, for the palette display in /system. */
+	--color-accent: #d9ff1e;
+	--color-accent-fg: #11190c;
 	--color-cream: #fcfbf8; /* --swatch--off-white */
 
 	/* -- Surfaces --------------------------------------------------------- */
@@ -237,6 +245,98 @@
 	   against series-2, teal to rust, with a neutral grey midpoint, because
 	   those are the only two poles here that read as opposite. Adding it now
 	   would be a token nobody uses. */
+}
+
+/* ---------------------------------------------------------------------------
+   V2: a proposed design language, as a working theme.
+
+   Not a repaint. The argument is that a brand for people who cannot rely on
+   language should be built the way industrial safety signage is: engineered to
+   be understood at a glance, by anyone, in any condition. So every value below
+   was SOLVED to a contrast floor along an OKLCH hue rather than picked and
+   checked afterwards, and scripts/check-contrast.mjs validates this theme with
+   the same pairs and the same thresholds as the other two.
+
+   Three changes carry it.
+
+   1. THE ACCENT CAN DO WORK. doinstruct's yellow is 1.1:1 on their off-white,
+      so it can never be text, a border, a chart mark or a status. It is their
+      most recognisable asset and it is confined to one button per screen. Here
+      the accent is a solved teal that clears 7:1 as text on paper and 7:1 on
+      the dark ground, so one colour carries the primary action, links, focus
+      and a chart series. The yellow is not deleted: it moves to brand
+      expression, at scale, in marketing, where 1.1:1 is nobody's problem.
+
+   2. THE PALETTE HAS A MIDDLE. Their system is near-black greens, an acid
+      accent and off-whites, with nothing usable between: --swatch--mid-green
+      measures 4.6:1 and --swatch--light-green 1.65:1, and I had to darken both
+      to build anything. These ramps are perceptually even, so a mid-tone is
+      available and predictable.
+
+   3. THE GROUND IS WARM INK, NOT GREEN. Green stays, promoted to meaning
+      rather than decoration: it is the colour of verified and current, which is
+      what green already means to someone standing on a plant floor.
+--------------------------------------------------------------------------- */
+[data-theme='v2'] {
+	--color-ink: #12140f;
+	--color-cream: #f7f6f2;
+
+	--color-surface: #f7f6f2;
+	--color-surface-raised: #eeece3;
+	--color-surface-sunken: #dedbcf;
+	--color-surface-inverse: #12140f;
+	--color-surface-inverse-raised: #20241c;
+
+	--color-fg: #212117;
+	--color-fg-muted: #4c4d41;
+	--color-fg-inverse: #f7f6f2;
+	--color-fg-inverse-muted: #afb0a2;
+
+	/* The bright step, not the dark one, and that correction came from building
+	   it rather than from drawing it.
+
+	   The first accent here was solved to 7:1 as TEXT on paper, which made it a
+	   deep teal. Correct by every number and wrong on the screen: the primary
+	   voice action's whole job is to be unmissable across a room, and a dark fill
+	   is the one thing it must never be. The yellow it replaces was salient
+	   before it was legible.
+
+	   So an accent needs two steps, which is exactly what a ramp is for: this
+	   bright one for fills that must be seen, and a darker sibling for links and
+	   text on paper, which this prototype has no use for yet and which is
+	   therefore not declared. Naming a colour in a comment is still naming it,
+	   and check-tokens.mjs is right to ask where it lives. Solved to 15.6:1
+	   against the dark ground and 7.3:1 against paper. */
+	--color-accent: #0db4b6;
+	--color-accent-fg: #12140f;
+
+	--color-stop: #991d1c;
+	--color-stop-surface: #fbeceb;
+	--color-caution: #754800;
+	--color-caution-surface: #fdf3e0;
+	--color-ok: #0a5c2a;
+	--color-ok-surface: #e9f4ec;
+	--color-pending: #034d98;
+	--color-pending-surface: #e8effa;
+
+	--color-hairline: #e2dfd4;
+	--color-hairline-inverse: #2c3128;
+	--color-border: #8c8d7e;
+	--color-border-strong: #6f7061;
+
+	/* The chart palette moves with the accent: series 1 IS the brand teal, so a
+	   chart and a button finally belong to the same system. */
+	--color-series-1: #0c7d7e;
+	--color-series-2: #b8531d;
+	--color-series-3: #6243bd;
+	--color-series-4: #7f7010;
+	--color-series-5: #ad3a76;
+
+	--color-scale-1: #0db4b6;
+	--color-scale-2: #0f9799;
+	--color-scale-3: #0c7d7e;
+	--color-scale-4: #056465;
+	--color-scale-5: #044c4d;
 }
 
 /* ---------------------------------------------------------------------------

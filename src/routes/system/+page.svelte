@@ -129,6 +129,12 @@
 		<header class="mb-10 border-b-2 border-hairline pb-8">
 			<h1 class="text-display font-bold">Design system</h1>
 			<p class="mt-3 max-w-prose text-body text-fg-muted">
+				Toggle <b>Design language</b> to see the proposed rebrand applied to every component on this
+				page. It is a real theme, not a mock: same tokens, same components, and every colour pair in
+				it is validated by <code class="text-meta">scripts/check-contrast.mjs</code> against the same
+				7:1 floor as the shipped palette.
+			</p>
+			<p class="mt-3 max-w-prose text-body text-fg-muted">
 				Every component, in every state. The floor components are sized for a gloved hand on a
 				worker's own phone or a shared terminal; the office register below them is sized for a
 				supervisor at a desk. Content is pulled from the real scenarios, so switching language below
@@ -153,6 +159,12 @@
 				of. A gallery control is the right home for a gallery affordance.
 			-->
 			<div class="mt-6 flex flex-wrap gap-3">
+				<Button
+					variant={session.theme === 'v2' ? 'primary' : 'secondary'}
+					onclick={() => session.toggleTheme()}
+				>
+					Design language: {session.theme === 'v2' ? 'proposed' : 'today'}
+				</Button>
 				<Button onclick={() => session.toggleContrast()}>
 					High contrast: {session.highContrast ? 'on' : 'off'}
 				</Button>

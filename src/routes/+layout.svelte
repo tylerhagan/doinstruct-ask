@@ -3,17 +3,32 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { session } from '$lib/state/session.svelte';
 	import { LANGUAGES } from '$lib/domain/types';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 
 	let { children } = $props();
 
-	onMount(() => session.restore(LANGUAGES));
+	onMount(() => {
+		session.restore(LANGUAGES);
+
+		// A shareable link to the proposal: /system?theme=v2. Same affordance as
+		// ?asset= on the floor, and the reason it exists is that a rebrand you
+		// cannot send someone is a rebrand nobody reviews.
+		if (page.url.searchParams.get('theme') === 'v2') session.theme = 'v2';
+	});
 
 	// Contrast is applied at the document root so it also covers the scrollbar and
 	// any portalled content. Written as an effect rather than a class binding
 	// because the toggle lives three components away from <html>.
 	$effect(() => {
 		document.documentElement.dataset.contrast = session.highContrast ? 'high' : 'normal';
+	});
+
+	// Same reasoning as contrast: applied at the root so it reaches the
+	// scrollbar, the device frame and anything portalled.
+	$effect(() => {
+		if (session.theme === 'v2') document.documentElement.dataset.theme = 'v2';
+		else delete document.documentElement.dataset.theme;
 	});
 
 	/**

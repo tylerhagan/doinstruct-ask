@@ -27,6 +27,20 @@ class Session {
 	/** A lighting condition, not a preference. Persisted per device. */
 	highContrast = $state(false);
 
+	/**
+	 * Which design language is applied.
+	 *
+	 * A review control rather than a product feature: it exists so a proposed
+	 * rebrand can be judged on the real screens instead of on a mood board. The
+	 * v2 palette is validated by the same contrast checks as the shipped one, so
+	 * flipping this cannot produce an illegal pair.
+	 */
+	theme = $state<'v1' | 'v2'>('v1');
+
+	toggleTheme() {
+		this.theme = this.theme === 'v1' ? 'v2' : 'v1';
+	}
+
 	/** Simulated for the demo; real builds read navigator.onLine + a heartbeat. */
 	online = $state(true);
 

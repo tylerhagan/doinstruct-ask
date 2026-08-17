@@ -46,7 +46,7 @@
 >
 	{#each heights as h, i (i)}
 		<span
-			class="w-3 rounded-full transition-[height] duration-75 {noisy ? 'bg-caution' : 'bg-yellow'}"
+			class="w-3 rounded-full transition-[height] duration-75 {noisy ? 'bg-caution' : 'bg-accent'}"
 			style="height: {Math.round(h * 100)}%"
 		></span>
 	{/each}
