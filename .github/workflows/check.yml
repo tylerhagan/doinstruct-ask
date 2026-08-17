@@ -17,9 +17,12 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # v5 on both: v4 targets a Node runtime GitHub has deprecated, which the
+      # runner forces onto a newer one and warns about on every single run. A
+      # warning nobody can act on is a warning everybody learns to ignore.
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           # Matches .nvmrc. Pinned rather than "latest", because "it worked on
           # my machine" is a Node version most of the time.
